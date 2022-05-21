@@ -13,21 +13,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { Field, Form, Formik } from 'formik';
 
 const theme = createTheme();
 
 export default function SignIn() {
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        console.log('handleSubmit')
+        
         const data = new FormData(event.currentTarget);
-        console.log({
+        console.log(JSON.stringify(data),data,{
             email: data.get('email'),
             password: data.get('password'),
         });
-        axios.post('http://127.0.0.1:8000/api/user/login/', data).then((response) => {
-            console.log(response)
+        axios.post('http://127.0.0.1:8000/api/user/login/', data)
+        .then((response) => {
+            console.log('then',response)
         }).catch((error) => {
-            console.log(error)
+            console.log('catch',error.message)
         })
     };
 
@@ -43,27 +48,15 @@ export default function SignIn() {
                         Sign IN
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            required
-                            margin="normal"
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+                        {/* <Formik initialValues={{ email: '', password: '', rememberme: false }}> */}
+                            {/* {(props) => { */}
+                                {/* <Form> */}
+                                    <TextField name='email' margin="normal" required fullWidth id="email" label="Email Address" autoComplete="email" autoFocus />
+                                    <TextField name='password' required margin="normal" fullWidth label="Password" type="password" id="password" autoComplete="current-password" />
+                                    <FormControlLabel name='rememberme' control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+                                {/* </Form> */}
+                            {/* }} */}
+                        {/* </Formik> */}
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} > Sign In </Button>
                         <Grid container>
                             <Grid item xs>
