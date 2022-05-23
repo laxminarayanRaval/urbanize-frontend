@@ -1,42 +1,31 @@
-import React, { Component } from "react";
-import logo from "./logo.png";
-import Box from "@mui/material/Box";
+import React from "react";
 import "./App.css";
-import SignIn from "./component/Signin";
-import Footer from "./component/Footer";
-import Header from "./component/Header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  DashboardPage,
+  HomePage,
+  NotFoundPage,
+  SigninPage,
+  SignupPage,
+} from "./pages/";
+import PrivateRoute from "./utils/PrivateRoute";
 
-class App extends Component {
-  render() {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-        }}
-      >
-        <Header />
-        <SignIn />
-        <div className="">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-          <h2>Welcome to Urbanize</h2>
-        </div>
-        <Footer />
-      </Box>
-    );
-  }
-}
+const App = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Routes elements=''>
+          <Route element={<PrivateRoute />}>
+            <Route index path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+          </Route>
+          <Route path="/signin" element={<SigninPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+};
 
 export default App;

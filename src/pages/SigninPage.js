@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,7 +17,8 @@ import { Field, Form, Formik } from 'formik';
 
 const theme = createTheme();
 
-export default function SignIn() {
+const SigninPage = () => {
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -48,15 +49,9 @@ export default function SignIn() {
                         Sign IN
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        {/* <Formik initialValues={{ email: '', password: '', rememberme: false }}> */}
-                            {/* {(props) => { */}
-                                {/* <Form> */}
-                                    <TextField name='email' margin="normal" required fullWidth id="email" label="Email Address" autoComplete="email" autoFocus />
-                                    <TextField name='password' required margin="normal" fullWidth label="Password" type="password" id="password" autoComplete="current-password" />
-                                    <FormControlLabel name='rememberme' control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-                                {/* </Form> */}
-                            {/* }} */}
-                        {/* </Formik> */}
+                        <TextField name='email' margin="normal" required fullWidth id="email" label="Email Address" autoComplete="email" autoFocus />
+                        <TextField name='password' required margin="normal" fullWidth label="Password" type="password" id="password" autoComplete="current-password" />
+                        <FormControlLabel name='rememberme' control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} > Sign In </Button>
                         <Grid container>
                             <Grid item xs>
@@ -76,3 +71,5 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+
+export default SigninPage;
