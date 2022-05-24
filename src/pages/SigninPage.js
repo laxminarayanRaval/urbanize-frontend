@@ -13,28 +13,30 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import { Field, Form, Formik } from 'formik';
 
 const theme = createTheme();
 
 const SigninPage = () => {
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        console.log('handleSubmit')
-        
-        const data = new FormData(event.currentTarget);
-        console.log(JSON.stringify(data),data,{
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-        axios.post('http://127.0.0.1:8000/api/user/login/', data)
+      console.log("handleSubmit");
+
+      const data = new FormData(event.currentTarget);
+
+      console.log(JSON.stringify(data), data, {
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+      axios
+        .post("user/login/", data)
         .then((response) => {
-            console.log('then',response)
-        }).catch((error) => {
-            console.log('catch',error.message)
+          console.log("then", response);
         })
+        .catch((error) => {
+          console.log("catch", error.message);
+        });
     };
 
     return (

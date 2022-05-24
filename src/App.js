@@ -7,6 +7,7 @@ import {
   NotFoundPage,
   SigninPage,
   SignupPage,
+  MainLayout,
 } from "./pages/";
 import PrivateRoute from "./utils/PrivateRoute";
 
@@ -14,14 +15,16 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Routes elements=''>
-          <Route element={<PrivateRoute />}>
-            <Route index path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route element={<PrivateRoute />}>
+              <Route index path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
+            <Route path="/signin" element={<SigninPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>
@@ -29,3 +32,13 @@ const App = () => {
 };
 
 export default App;
+
+/**
+ * 
+import jwt_decode from "jwt-decode";
+ 
+var token = "eyJ0eXAiO.../// jwt token";
+var decoded = jwt_decode(token);
+ 
+console.log(decoded);
+ */
