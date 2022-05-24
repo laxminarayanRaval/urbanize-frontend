@@ -11,8 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import BlurOnIcon from "@mui/icons-material/BlurOn";
 import { Link } from "react-router-dom";
+
+import Logo from "../assets/logo.png"
 
 const pages = ["Products", "Pricing", "dashboard"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -42,7 +45,13 @@ const ResponsiveAppBar = () => {
     <AppBar sx={{ backgroundColor: "#222" }} position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <BlurOnIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          {/* <BlurOnIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
+          <Avatar
+            key="logo"
+            alt="logo"
+            sx={{ display: { xs: "none", md: "flex" } }}
+            src={Logo}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -61,7 +70,10 @@ const ResponsiveAppBar = () => {
             URBANIZE
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box
+            key="box1"
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -98,7 +110,12 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
-          <BlurOnIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Avatar
+            alt="logo"
+            sx={{ display: { xs: "flex", md: "none" } }}
+            src={Logo}
+          />
+          {/* <BlurOnIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -117,9 +134,13 @@ const ResponsiveAppBar = () => {
           >
             URBANIZE
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            key="box2"
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+          >
             {pages.map((page) => (
               <Button
+                key={page}
                 sx={{ my: 2, mx: 1, color: "white", display: "block" }}
                 component={Link}
                 to={`/${page}`}
@@ -129,44 +150,44 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            {isAuth ? (
-              <>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  keepMounted
-                  transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
+          <Box key="box3" sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <AccountCircleIcon
+                  sx={{ color: "white", fontSize: "xx-large" }}
+                />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              keepMounted
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {isAuth
+                ? settings.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                      <Typography sx={{ color: "#222" }} textAlign="center">
+                        {setting}
+                      </Typography>
+                    </MenuItem>
+                  ))
+                : ["Signin", "Signup"].map((element) => (
+                    <MenuItem key={element}>
+                      <Button
+                        component={Link}
+                        sx={{ color: "#222" }}
+                        to={`/${element}`}
+                      >
+                        {element}
+                      </Button>
                     </MenuItem>
                   ))}
-                </Menu>
-              </>
-            ) : (
-              <>
-                <Button component={Link} to="/Signin">
-                  Signin
-                </Button>
-                <Button component={Link} to="/Signup">
-                  Signup
-                </Button>
-              </>
-            ) }
+            </Menu>
           </Box>
         </Toolbar>
       </Container>

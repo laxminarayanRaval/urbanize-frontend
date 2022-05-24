@@ -4,10 +4,10 @@ import "./NotFoundPage.css";
 
 const NotFoundPage = () => {
   return (
-    <section class="error-container">
+    <section className="error-container">
       <span>4</span>
       <span>
-        <span class="screen-reader-text">0</span>
+        <span className="screen-reader-text">0</span>
       </span>
       <span>4</span>
     </section>

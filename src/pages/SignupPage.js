@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Link as RRLink } from "react-router-dom"
 
 const theme = createTheme();
 
@@ -41,8 +42,7 @@ const SignupPage = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {" "}
-            Sign up{" "}
+            Sign up
           </Typography>
           <Box
             component="form"
@@ -112,7 +112,7 @@ const SignupPage = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link component={RRLink} to="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
