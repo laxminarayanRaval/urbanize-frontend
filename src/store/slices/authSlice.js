@@ -13,14 +13,18 @@ export const signup = createAsyncThunk(
   async ({ full_name, email, password }, thunkAPI) => {
     try {
       const response = await authService.signup(full_name, email, password);
-      thunkAPI.dispatch(setMessage(response.data.message));
+      thunkAPI.dispatch(setMessage(response.data?.message));
       return response.data;
     } catch (err) {
-      const message =
-        (err.response && err.response.data && err.response.data.message) ||
-        err.message ||
-        err.toString();
-      thunkAPI.dispatch(setMessage(message));
+      console.log("err", err);
+      Object.keys(err.response.data).forEach((key) => {
+        thunkAPI.dispatch(setMessage(`${key} : ${err.response.data[key]}`));
+      });
+      // const message = 
+      // (err.response && err.response.data && err.response.data) ||
+      // err.message ||
+      // err.toString();
+      // thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
   }
@@ -60,7 +64,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
     },
     [signin.pending]: (state, action) => {
-      state.isAuthLoading = true;
+      state.isAuthenticated = false;
     },
     [signin.fulfilled]: (state, action) => {
       state.isAuthenticated = true;

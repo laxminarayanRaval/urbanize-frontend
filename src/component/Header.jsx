@@ -11,17 +11,21 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import BlurOnIcon from "@mui/icons-material/BlurOn";
 import { Link } from "react-router-dom";
 
-import Logo from "../assets/logo.png"
+import Logo from "../assets/logo.png";
+import { useSelector } from "react-redux";
 
 const pages = ["Products", "Pricing", "dashboard"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
-  const isAuth = false;
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  const settings = isAuth
+    ? ["Profile", "Account", "Dashboard", "Signout"]
+    : ["Signin", "Signup"];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -168,25 +172,17 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {isAuth
-                ? settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography sx={{ color: "#222" }} textAlign="center">
-                        {setting}
-                      </Typography>
-                    </MenuItem>
-                  ))
-                : ["Signin", "Signup"].map((element) => (
-                    <MenuItem key={element}>
-                      <Button
-                        component={Link}
-                        sx={{ color: "#222" }}
-                        to={`/${element}`}
-                      >
-                        {element}
-                      </Button>
-                    </MenuItem>
-                  ))}
+              {settings.map((setting) => (
+                <MenuItem key={setting}>
+                  <Button
+                    component={Link}
+                    sx={{ color: "#222" }}
+                    to={`/${setting}`}
+                  >
+                    {setting}
+                  </Button>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
         </Toolbar>

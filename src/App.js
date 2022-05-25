@@ -10,15 +10,18 @@ import {
   MainLayout,
 } from "./pages/";
 import PrivateRoute from "./utils/PrivateRoute";
+import AlertMessage from "./component/AlertMessage";
 
 const App = () => {
+  // debugger
   return (
     <>
+    <AlertMessage />
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout />}>
             <Route element={<PrivateRoute />}>
-              <Route index path="/" element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
             </Route>
             <Route path="/signin" element={<SigninPage />} />
