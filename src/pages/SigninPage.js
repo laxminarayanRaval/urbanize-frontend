@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -16,12 +16,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { Link as RRLink, Navigate } from "react-router-dom";
-import Logo from "../assets/logo.png";
+// import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "../store/slices/messageSlice";
 import { signin } from "../store/slices/authSlice";
-import axios from "axios";
+// import axios from "axios";
 
+import SigninAnimation from "../assets/lottiefiles/signin_animation.json";
+import Lottie from "lottie-react";
 const theme = createTheme();
 
 const SigninPage = (props) => {
@@ -55,7 +57,7 @@ const SigninPage = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const data = new FormData(event.currentTarget);
+    // const data = new FormData(event.currentTarget);
     console.log("handleSubmit: ", formData);
     dispatch(signin(formData))
       .unwrap()
@@ -75,22 +77,32 @@ const SigninPage = (props) => {
   if (isAuth) return <Navigate to="/" />;
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      {/* <Container component="main" maxWidth="xs"> */}
+      <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+
+        <Grid item xs sm md={6} sx={{ marginLeft: "5%" }}>
+          <Lottie
+            animationData={SigninAnimation}
+            style={{ width: "90%" }}
+            loop={true}
+          />
+        </Grid>
+        <Grid
+          elevation={3}
+          sx={{ mx: "3%", padding: "3%", minHight: "max-content" }}
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          maxWidth="xs"
         >
           {/* <Avatar src={Logo} sx={{ m: 2, bgcolor: "#222", width: "25%", height: "25%" }}          /> */}
           <Typography
             sx={{
               fontFamily: "Smooch",
               letterSpacing: 15,
-              fontSize: "7rem",
+              fontSize: "6rem",
               transform: "rotate(-15deg)",
             }}
             component="h1"
@@ -157,8 +169,11 @@ const SigninPage = (props) => {
               </Grid>
             </Grid>
           </Box>
-        </Box>
-      </Container>
+        </Grid>
+        <Grid item xs sm md={2} />
+      </Grid>
+
+      {/* </Container> */}
     </ThemeProvider>
   );
 };

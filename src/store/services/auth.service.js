@@ -2,8 +2,8 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const signup = (full_name, email, password) => {
-  return axios.post(BASE_URL + "auth/signup/", { full_name, email, password });
+const signup = (full_name, email, password, password2) => {
+  return axios.post(BASE_URL + "auth/signup/", { full_name, email, password, password2 });
 };
 
 const signin = (email, password) => {

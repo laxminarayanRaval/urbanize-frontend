@@ -19,8 +19,8 @@ export default function Footer() {
                         : theme.palette.grey[800],
             }}
         >
-            <Container maxWidth="sm">
-                <Typography variant="body1">
+            <Container maxWidth="sm" >
+                <Typography variant="body1" textAlign="center">
                     My sticky footer can be found here.
                 </Typography>
                 <Copyright />
