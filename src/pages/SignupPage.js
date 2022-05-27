@@ -30,7 +30,6 @@ const theme = createTheme();
 
 const SignupPage = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  if (isAuth) return <Navigate to="/" />;
 
   const dispatch = useDispatch();
   const [sucessful, setSuccessful] = React.useState(false);
@@ -84,6 +83,8 @@ const SignupPage = () => {
     },
   });
 
+  if (isAuth) return <Navigate to="/" />;
+
   return (
     <ThemeProvider theme={theme}>
       {/* <Container component="main" maxWidth="xs"> */}
@@ -108,7 +109,7 @@ const SignupPage = () => {
         > */}
           {/* <Avatar sx={{ m: 1, bgcolor: "#222", width: "25%", height: "25%" }} src={Logo} /> */}
           <Typography
-            xs={false}
+            // xs={false}
             sx={{
               fontFamily: "Smooch",
               letterSpacing: 15,

@@ -1,9 +1,42 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import jwtDecode from "jwt-decode";
 import authService from "../services/auth.service";
 import { setMessage } from "./messageSlice";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
 
+const checkAuth = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user?.access) {
+    const { user_id, full_name, email, role, exp, ..._ } = jwtDecode(
+      user.access
+    );
+    if (is_expired(exp)) {
+      const { exp, ..._ } = jwtDecode(user.refresh);
+      if (is_expired(exp)) {
+        localStorage.removeItem("user");
+        return null;
+      }
+      try {
+        return authService.refreshAuthToken(user.refresh).then((response) => {
+          if (response.data)
+            localStorage.setItem("user", JSON.stringify(response.data));
+
+          const newUser = JSON.parse(response.data);
+          const { user_id, full_name, email, role, exp, ..._ } = jwtDecode(
+            newUser.access
+          );
+          return { ...newUser, user_id, full_name, email, role, exp };
+        });
+      } catch (e) {
+        return null;
+      }
+    }
+    return { ...user, user_id, full_name, email, role, exp };
+  }
+  return null;
+};
+const user = checkAuth();
 const initialState = user
   ? { isAuthenticated: true, user }
   : { isAuthenticated: false, user: null };
@@ -12,15 +45,22 @@ export const signup = createAsyncThunk(
   "auth/signup",
   async ({ full_name, email, password, password2 }, thunkAPI) => {
     try {
-      const response = await authService.signup(full_name, email, password, password2);
+      const response = await authService.signup(
+        full_name,
+        email,
+        password,
+        password2
+      );
       thunkAPI.dispatch(setMessage(response.data?.message));
+      thunkAPI.dispatch(signin({ email, password }));
+
       return response.data;
     } catch (err) {
       console.log("err", err);
       Object.keys(err.response.data).forEach((key) => {
         thunkAPI.dispatch(setMessage(`${key} : ${err.response.data[key]}`));
       });
-      // const message = 
+      // const message =
       // (err.response && err.response.data && err.response.data) ||
       // err.message ||
       // err.toString();

@@ -12,20 +12,24 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import BlurOnIcon from "@mui/icons-material/BlurOn";
+// import BlurOnIcon from "@mui/icons-material/BlurOn";
 import { Link } from "react-router-dom";
 
 import Logo from "../assets/logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const pages = ["Products", "Pricing", "dashboard"];
+import { signout } from "../store/slices/authSlice";
+
+const pages = ["Products", "Pricing", "dashboard", "Contactus"];
 
 const ResponsiveAppBar = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const settings = isAuth
-    ? ["Profile", "Account", "Dashboard", "Signout"]
+    ? ["Profile", "Account", "Dashboard"]
     : ["Signin", "Signup"];
+
+  const dispatch = useDispatch();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -140,7 +144,7 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box
             key="box2"
-            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex", justifyContent: "space-evenly", } }}
           >
             {pages.map((page) => (
               <Button
@@ -183,6 +187,20 @@ const ResponsiveAppBar = () => {
                   </Button>
                 </MenuItem>
               ))}
+              <hr />
+              {isAuth && (
+                <MenuItem key="signout">
+                  <Button
+                    // component={Link}
+                    sx={{ color: "#222",  }}
+                    onClick={() => {
+                      dispatch(signout());
+                    }}
+                  >
+                    signout
+                  </Button>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>

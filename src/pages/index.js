@@ -1,3 +1,4 @@
+export { default as ContactUsPage } from "./ContactUsPage";
 export { default as DashboardPage } from "./DashboardPage";
 export { default as HomePage } from "./HomePage";
 export { default as MainLayout } from "./MainLayout";

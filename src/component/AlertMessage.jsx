@@ -12,7 +12,7 @@ const AlertMessage = () => {
     React.useEffect(() => {
         setTimeout(()=>{
             setOpen(false)
-        }, 3000);
+        }, 10000);
       }, [message]);
 
   if (!message) return <></>;
