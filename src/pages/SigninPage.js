@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 // import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { Link as RRLink, Navigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import { signin } from "../store/slices/authSlice";
 
 import SigninAnimation from "../assets/lottiefiles/signin_animation.json";
 import Lottie from "lottie-react";
-const theme = createTheme();
+// const theme = createTheme();
 
 const SigninPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,10 +76,11 @@ const SigninPage = (props) => {
 
   if (isAuth) return <Navigate to="/" />;
   return (
-    <ThemeProvider theme={theme}>
+    <>
+      {/* <ThemeProvider theme={theme}> */}
       {/* <Container component="main" maxWidth="xs"> */}
       <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
 
         <Grid item xs sm md={6} sx={{ marginLeft: "5%" }}>
           <Lottie
@@ -99,14 +100,14 @@ const SigninPage = (props) => {
         >
           {/* <Avatar src={Logo} sx={{ m: 2, bgcolor: "#222", width: "25%", height: "25%" }}          /> */}
           <Typography
-            sx={{
-              fontFamily: "Smooch",
-              letterSpacing: 15,
-              fontSize: "6rem",
-              transform: "rotate(-15deg)",
-            }}
+            // sx={{
+            // fontFamily: "Smooch",
+            // letterSpacing: 15,
+            // fontSize: "6rem",
+            // transform: "rotate(-15deg)",
+            // }}
             component="h1"
-            // variant="h1"
+            variant="h1"
           >
             Sign in
           </Typography>
@@ -143,7 +144,7 @@ const SigninPage = (props) => {
             />
             <FormControlLabel
               name="rememberme"
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" />}
               label="Remember me"
               disabled={isLoading}
             />
@@ -174,7 +175,8 @@ const SigninPage = (props) => {
       </Grid>
 
       {/* </Container> */}
-    </ThemeProvider>
+      {/* </ThemeProvider> */}
+    </>
   );
 };
 

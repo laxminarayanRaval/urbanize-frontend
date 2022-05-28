@@ -110,14 +110,14 @@ const SignupPage = () => {
           {/* <Avatar sx={{ m: 1, bgcolor: "#222", width: "25%", height: "25%" }} src={Logo} /> */}
           <Typography
             // xs={false}
-            sx={{
-              fontFamily: "Smooch",
-              letterSpacing: 15,
-              fontSize: "6rem",
-              transform: "rotate(-15deg)",
-            }}
+            // sx={{
+              // fontFamily: "Smooch",
+              // letterSpacing: 15,
+              // fontSize: "6rem",
+              // transform: "rotate(-15deg)",
+            // }}
             component="h1"
-            // variant="h1"
+            variant="h1"
           >
             Sign up
           </Typography>

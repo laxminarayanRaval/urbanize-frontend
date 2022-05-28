@@ -1,29 +1,41 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import {
+  AccountCircle,
+  DarkMode,
+  LightMode,
+  MenuSharp,
+} from "@mui/icons-material";
 // import BlurOnIcon from "@mui/icons-material/BlurOn";
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-
 import { signout } from "../store/slices/authSlice";
+import { changeThemeMode } from "../store/slices/themeSlice";
 
-const pages = ["Products", "Pricing", "dashboard", "Contactus"];
+const pages = [
+  { txt: "Products", link: "products" },
+  { txt: "Pricing", link: "pricing" },
+  { txt: "Dashboard", link: "dashboard" },
+  { txt: "Contact Us", link: "contact_us" },
+];
 
 const ResponsiveAppBar = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const themeMode = useSelector((state) => state.theme.mode);
 
   const settings = isAuth
     ? ["Profile", "Account", "Dashboard"]
@@ -50,7 +62,7 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#222" }} position="static">
+    <AppBar>
       <Container maxWidth="xl">
         <Toolbar>
           {/* <BlurOnIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
@@ -90,7 +102,7 @@ const ResponsiveAppBar = () => {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuSharp />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -111,9 +123,15 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.txt} onClick={handleCloseNavMenu}>
                   {/* <Typography textAlign="center">{page}</Typography> */}
-                  <Button variant="contained">{page}</Button>
+                  <Button
+                    sx={{ color: "#222" }}
+                    component={Link}
+                    to={`/${page.link}`}
+                  >
+                    {page.txt}
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -144,28 +162,43 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box
             key="box2"
-            sx={{ flexGrow: 1, display: { xs: "none", md: "flex", justifyContent: "space-evenly", } }}
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: "none",
+                md: "flex",
+                justifyContent: "space-evenly",
+              },
+            }}
           >
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.txt}
                 sx={{ my: 2, mx: 1, color: "white", display: "block" }}
                 component={Link}
-                to={`/${page}`}
+                to={`/${page.link}`}
               >
-                {page}
+                {page.txt}
               </Button>
             ))}
           </Box>
 
-          <Box key="box3" sx={{ flexGrow: 0 }}>
+          <Box key="box3" display="flex">
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircleIcon
-                  sx={{ color: "white", fontSize: "xx-large" }}
-                />
+                <AccountCircle sx={{ color: "white", fontSize: "xx-large" }} />
               </IconButton>
             </Tooltip>
+            <Tooltip title={`${themeMode} Mode`}>
+              <IconButton sx={{ p: 0 }}
+                onClick={(_) =>
+                  dispatch(changeThemeMode())
+                }
+              >
+                {themeMode === "light" ? <LightMode sx={{ fontSize: "xx-large" }} /> : <DarkMode sx={{ fontSize: "xx-large" }} />}
+              </IconButton>
+            </Tooltip>
+
             <Menu
               keepMounted
               sx={{ mt: "45px" }}
@@ -180,19 +213,19 @@ const ResponsiveAppBar = () => {
                 <MenuItem key={setting}>
                   <Button
                     component={Link}
-                    sx={{ color: "#222" }}
+                    // sx={{ color: "#222" }}
                     to={`/${setting}`}
                   >
                     {setting}
                   </Button>
                 </MenuItem>
               ))}
-              <hr />
               {isAuth && (
                 <MenuItem key="signout">
+                  <hr width="50%" />
                   <Button
                     // component={Link}
-                    sx={{ color: "#222",  }}
+                    sx={{ color: "#222" }}
                     onClick={() => {
                       dispatch(signout());
                     }}
