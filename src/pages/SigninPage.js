@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
 
-// import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CircularProgress from "@mui/material/CircularProgress";
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { Link as RRLink, Navigate } from "react-router-dom";
-// import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+
 import { clearMessage } from "../store/slices/messageSlice";
 import { signin } from "../store/slices/authSlice";
-// import axios from "axios";
 
 import SigninAnimation from "../assets/lottiefiles/signin_animation.json";
 import Lottie from "lottie-react";
-// const theme = createTheme();
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SigninPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +32,8 @@ const SigninPage = (props) => {
     password: "",
   });
   const dispatch = useDispatch();
+  const [passVisible, setPassVisible] = useState(false);
+  const passVisibleClickHandler = () => setPassVisible(!passVisible);
 
   useEffect(() => {
     console.log("dispatch: ", formData);
@@ -72,16 +70,11 @@ const SigninPage = (props) => {
         setIsLoading(false);
       });
   };
-  // console.log("<==> ", formData);
 
   if (isAuth) return <Navigate to="/" />;
   return (
     <>
-      {/* <ThemeProvider theme={theme}> */}
-      {/* <Container component="main" maxWidth="xs"> */}
       <Grid container component="main" sx={{ height: "100vh" }}>
-        {/* <CssBaseline /> */}
-
         <Grid item xs sm md={6} sx={{ marginLeft: "5%" }}>
           <Lottie
             animationData={SigninAnimation}
@@ -98,17 +91,7 @@ const SigninPage = (props) => {
           md={4}
           maxWidth="xs"
         >
-          {/* <Avatar src={Logo} sx={{ m: 2, bgcolor: "#222", width: "25%", height: "25%" }}          /> */}
-          <Typography
-            // sx={{
-            // fontFamily: "Smooch",
-            // letterSpacing: 15,
-            // fontSize: "6rem",
-            // transform: "rotate(-15deg)",
-            // }}
-            component="h1"
-            variant="h1"
-          >
+          <Typography component="h1" variant="h1">
             Sign in
           </Typography>
           <Box
@@ -130,7 +113,7 @@ const SigninPage = (props) => {
               disabled={isLoading}
             />
             <TextField
-              type="password"
+              type={passVisible ? "text" : "password"}
               name="password"
               required
               margin="normal"
@@ -139,6 +122,13 @@ const SigninPage = (props) => {
               helperText={
                 !isFormValid && "Password must be at least 8 characters"
               }
+              InputProps={{
+                endAdornment: passVisible ? (
+                  <Visibility onClick={passVisibleClickHandler} />
+                ) : (
+                  <VisibilityOff onClick={passVisibleClickHandler} />
+                ),
+              }}
               onChange={onChangeFormData}
               disabled={isLoading}
             />
@@ -153,7 +143,7 @@ const SigninPage = (props) => {
               fullWidth
               variant="contained"
               disabled={!isFormValid || isLoading}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, cursor: isFormValid ? "pointer" : "not-allowed"}}
             >
               {isLoading ? <CircularProgress /> : "Sign In"}
             </Button>
@@ -173,9 +163,6 @@ const SigninPage = (props) => {
         </Grid>
         <Grid item xs sm md={2} />
       </Grid>
-
-      {/* </Container> */}
-      {/* </ThemeProvider> */}
     </>
   );
 };

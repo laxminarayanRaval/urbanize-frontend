@@ -1,17 +1,16 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+
 import { Link as RRLink, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,16 +22,16 @@ import { signup } from "../store/slices/authSlice";
 import Lottie from "lottie-react";
 import circle_check from "../assets/lottiefiles/circle_check.json";
 import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
-
-// import Logo from "../assets/logo.png";
-
-const theme = createTheme();
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const dispatch = useDispatch();
   const [sucessful, setSuccessful] = React.useState(false);
+
+  const [passVisible, setPassVisible] = React.useState(false);
+  const passVisibleClickHandler = () => setPassVisible(!passVisible);
 
   React.useEffect(() => {
     dispatch(clearMessage());
@@ -86,39 +85,26 @@ const SignupPage = () => {
   if (isAuth) return <Navigate to="/" />;
 
   return (
-    <ThemeProvider theme={theme}>
-      {/* <Container component="main" maxWidth="xs"> */}
-      <Grid container component="main" sx={{ height: "100vh",marginBottom: "5%" }}>
-        {/* <CssBaseline /> */}
-        {/* <Grid item xs sm md={1} /> */}
-        <Grid item xs={12} sm={12} md={4} maxWidth="xs"
-        sx={{
+    <>
+      <Grid
+        container
+        component="main"
+        sx={{ height: "100vh", marginBottom: "5%" }}
+      >
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          maxWidth="xs"
+          sx={{
             mx: "3%",
             padding: "3%",
             // minHight: "max-content",
             marginTop: "-3%",
           }}
         >
-          {/* <Box
-          sx={{
-            marginTop: 3,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        > */}
-          {/* <Avatar sx={{ m: 1, bgcolor: "#222", width: "25%", height: "25%" }} src={Logo} /> */}
-          <Typography
-            // xs={false}
-            // sx={{
-              // fontFamily: "Smooch",
-              // letterSpacing: 15,
-              // fontSize: "6rem",
-              // transform: "rotate(-15deg)",
-            // }}
-            component="h1"
-            variant="h1"
-          >
+          <Typography component="h1" variant="h1">
             Sign up
           </Typography>
           <Box
@@ -128,8 +114,6 @@ const SignupPage = () => {
             onSubmit={formik.handleSubmit}
             sx={{ mt: 3, display: sucessful && "none" }}
           >
-            {/* <Grid container spacing={3}> */}
-            {/* <Grid item xs={12}> */}
             <TextField
               autoComplete="off"
               name="full_name"
@@ -145,8 +129,7 @@ const SignupPage = () => {
               }
               helperText={formik.touched.full_name && formik.errors.full_name}
             />
-            {/* </Grid> */}
-            {/* <Grid item xs={12}> */}
+
             <TextField
               type="email"
               autoComplete="off"
@@ -160,11 +143,10 @@ const SignupPage = () => {
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
-            {/* </Grid> */}
-            {/* <Grid item xs={12}> */}
+
             <TextField
               // required
-              type="password"
+              type={passVisible ? "text" : "password"}
               fullWidth
               name="password"
               label="Password"
@@ -175,11 +157,18 @@ const SignupPage = () => {
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                endAdornment: passVisible ? (
+                  <Visibility color="primary" onClick={passVisibleClickHandler} />
+                ) : (
+                  <VisibilityOff color="primary" onClick={passVisibleClickHandler} />
+                ),
+              }}
             />
             <TextField
+              type={passVisible ? "text" : "password"}
               name="password2"
               label="Confirm Password"
-              type="password"
               id="password2"
               autoComplete="new-password"
               fullWidth
@@ -190,22 +179,27 @@ const SignupPage = () => {
                 formik.touched.password2 && Boolean(formik.errors.password2)
               }
               helperText={formik.touched.password2 && formik.errors.password2}
+              InputProps={{
+                endAdornment: passVisible ? (
+                  <Visibility color="primary" onClick={passVisibleClickHandler} />
+                ) : (
+                  <VisibilityOff color="primary" onClick={passVisibleClickHandler} />
+                ),
+              }}
             />
-            {/* </Grid> */}
-            {/* <Grid item xs={12}> */}
+
             <FormControlLabel
               control={<Checkbox value="allowExtraEmails" color="primary" />}
               label="I want to receive inspiration, marketing promotions and updates via email."
             />
-            {/* </Grid> */}
-            {/* </Grid> */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {" "}
+              Sign Up{" "}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
@@ -228,7 +222,6 @@ const SignupPage = () => {
               </Grid>
             </Grid>
           )}
-          {/* </Box> */}
         </Grid>
         <Grid item xs sm md={6} sx={{ marginLeft: "5%", marginTop: "5%" }}>
           <Lottie
@@ -238,8 +231,7 @@ const SignupPage = () => {
           />
         </Grid>
       </Grid>
-      {/* </Container> */}
-    </ThemeProvider>
+    </>
   );
 };
 

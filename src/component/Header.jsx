@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   IconButton,
   Menu,
   MenuItem,
@@ -13,9 +14,15 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  AccountBox,
   AccountCircle,
+  AppRegistration,
   DarkMode,
+  Dashboard,
   LightMode,
+  Login,
+  Logout,
+  ManageAccounts,
   MenuSharp,
 } from "@mui/icons-material";
 // import BlurOnIcon from "@mui/icons-material/BlurOn";
@@ -27,19 +34,59 @@ import { signout } from "../store/slices/authSlice";
 import { changeThemeMode } from "../store/slices/themeSlice";
 
 const pages = [
-  { txt: "Products", link: "products" },
-  { txt: "Pricing", link: "pricing" },
-  { txt: "Dashboard", link: "dashboard" },
-  { txt: "Contact Us", link: "contact_us" },
+  { name: "Products", link: "products" },
+  { name: "Pricing", link: "pricing" },
+  { name: "Contact Us", link: "contact_us" },
 ];
-
 const ResponsiveAppBar = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const themeMode = useSelector((state) => state.theme.mode);
-
+  const userData = useSelector((state) => state.auth.user);
+  const userMenuIconStyle = {
+    fontSize: "large",
+    mr: 1,
+    ":hover": {
+      borderLeft: "7px solid primary",
+    },
+  };
   const settings = isAuth
-    ? ["Profile", "Account", "Dashboard"]
-    : ["Signin", "Signup"];
+    ? [
+        {
+          name: "Profile",
+          link: "profile",
+          icon: <AccountBox sx={{ ...userMenuIconStyle }} />,
+        },
+        {
+          name: "Account",
+          link: "account",
+          icon: <ManageAccounts sx={userMenuIconStyle} />,
+        },
+        {
+          name: "Dashboard",
+          link: "dashboard",
+          icon: <Dashboard sx={userMenuIconStyle} />,
+        },
+      ]
+    : [
+        {
+          name: "Sign In",
+          link: "signin",
+          icon: <Login sx={userMenuIconStyle} />,
+        },
+        {
+          name: "Sign Up",
+          link: "signup",
+          icon: <AppRegistration sx={userMenuIconStyle} />,
+        },
+      ];
+
+  if (userData && userData.role === "user") {
+    settings.push({
+      name: "Became a Professional",
+      link: "as_a_professional",
+      icon: <AppRegistration sx={userMenuIconStyle} />,
+    });
+  }
 
   const dispatch = useDispatch();
 
@@ -75,8 +122,8 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h5"
             noWrap
-            // component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -123,14 +170,14 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.txt} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   {/* <Typography textAlign="center">{page}</Typography> */}
                   <Button
                     sx={{ color: "#222" }}
                     component={Link}
                     to={`/${page.link}`}
                   >
-                    {page.txt}
+                    {page.name}
                   </Button>
                 </MenuItem>
               ))}
@@ -145,8 +192,8 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -173,12 +220,12 @@ const ResponsiveAppBar = () => {
           >
             {pages.map((page) => (
               <Button
-                key={page.txt}
-                sx={{ my: 2, mx: 1, color: "white", display: "block" }}
+                key={page.name}
+                sx={{ mx: 1, color: "white", display: "block" }}
                 component={Link}
                 to={`/${page.link}`}
               >
-                {page.txt}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -186,16 +233,19 @@ const ResponsiveAppBar = () => {
           <Box key="box3" display="flex">
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircle sx={{ color: "white", fontSize: "xx-large" }} />
+                <AccountCircle sx={{ color: "#ddd", fontSize: "xx-large" }} />
               </IconButton>
             </Tooltip>
             <Tooltip title={`${themeMode} Mode`}>
-              <IconButton sx={{ p: 0 }}
-                onClick={(_) =>
-                  dispatch(changeThemeMode())
-                }
+              <IconButton
+                sx={{ p: 0 }}
+                onClick={(_) => dispatch(changeThemeMode())}
               >
-                {themeMode === "light" ? <LightMode sx={{ fontSize: "xx-large" }} /> : <DarkMode sx={{ fontSize: "xx-large" }} />}
+                {themeMode === "light" ? (
+                  <LightMode sx={{ color: "#ddd", fontSize: "xx-large" }} />
+                ) : (
+                  <DarkMode sx={{ color: "#ddd", fontSize: "xx-large" }} />
+                )}
               </IconButton>
             </Tooltip>
 
@@ -209,28 +259,45 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting}>
-                  <Button
-                    component={Link}
-                    // sx={{ color: "#222" }}
-                    to={`/${setting}`}
-                  >
-                    {setting}
+              {settings.map((element) => (
+                <MenuItem
+                  key ={element.name}
+                  component={Link}
+                  to={`/${element.link}`}
+                  sx={{
+                    ":hover": {
+                      borderLeft: "7px solid",
+                      borderColor: 'primary',
+                      transition: "ease-in-out",
+                    },
+                  }}
+                >
+                  <Divider />
+                  <Button>
+                    {element.icon}
+                    {element.name}
                   </Button>
                 </MenuItem>
               ))}
               {isAuth && (
-                <MenuItem key="signout">
-                  <hr width="50%" />
+                <MenuItem
+                  key="signout"
+                  flexDirection="column"
+                  sx={{
+                    ":hover": {
+                      borderLeft: "7px solid #700",
+                      transition: "ease-in-out",
+                    },
+                  }}
+                >
                   <Button
-                    // component={Link}
-                    sx={{ color: "#222" }}
+                    sx={{ color: "#700" }}
                     onClick={() => {
                       dispatch(signout());
                     }}
                   >
-                    signout
+                    <Logout sx={userMenuIconStyle} />
+                    sign out
                   </Button>
                 </MenuItem>
               )}

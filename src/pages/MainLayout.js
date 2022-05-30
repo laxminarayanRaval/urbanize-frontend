@@ -7,7 +7,77 @@ import { useSelector } from "react-redux";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blueGrey, brown } from "@mui/material/colors";
+import { CssBaseline } from "@mui/material";
 
+const MainLayout = () => {
+  const themeMode = useSelector((state) => state.theme.mode);
+  console.log(themeMode);
+
+  const theme = createTheme({
+    palette: {
+      mode: themeMode,
+      common: {
+        black: "#333",
+        white: "#ddd",
+      },
+      primary: { main: themeMode === "dark" ? blueGrey.A400 : blueGrey[900] },
+      secondary: { main: brown[600] },
+      danger: { main: "#700" },
+      action: { hover: "#0002" },
+      background: themeMode === "dark" ? {
+        paper: '#323232',
+        default: '#222'
+      } : {},
+    },
+    typography: {
+      fontWeightLight: 300,
+      fontWeightRegular: 400,
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 14,
+    },
+    divider: "#333",
+    spacing: 10,
+    shape: {
+      borderRadius: 10,
+    },
+    components: {
+      MuiIcon: {
+        styleOverrides: {
+          root: {
+            color: blueGrey[800],
+          },
+        },
+      },
+      MuiMenuItem: {
+        defaultProps: {
+          hover: {
+            borderLeft: {
+              color: blueGrey[800],
+              width: 2,
+              style: 'solid'
+            }
+          }
+        },
+      },
+    },
+  });
+
+  // const theme = createTheme({ mode: 'light', palette: lightPalette, ...themeOptions });
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header />
+      <div style={{ marginTop: "5%" }}>
+        <Outlet />
+      </div>
+      <Footer />
+    </ThemeProvider>
+  );
+};
+
+export default MainLayout;
+
+/*
 const themeCode = {
   primary: {
     light: "#62727b",
@@ -22,7 +92,8 @@ const themeCode = {
     contrastText: "#000",
   },
 };
-
+*/
+/*
 const lightPalette = {
   primary: {
     main: "#144043",
@@ -32,7 +103,8 @@ const lightPalette = {
   },
   divider: "rgba(67,58,58,0.94)",
 };
-
+*/
+/*
 const darkPalette = {
   primary: {
     main: "#a64600",
@@ -46,7 +118,8 @@ const darkPalette = {
     paper: "#313131",
   },
 };
-
+*/
+/*
 export const themeOptions = {
   typography: {
     fontWeightLight: 300,
@@ -118,38 +191,4 @@ export const themeOptions = {
     },
   },
 };
-
-const MainLayout = () => {
-  const themeMode = useSelector((state) => state.theme.mode);
-  console.log(themeMode);
-  const theme = createTheme({
-    palette: {
-      mode: themeMode,
-      primary: { main: blueGrey[800] },
-      secondary: { main: brown[500] },
-    },
-    typography: {
-      fontWeightLight: 300,
-      fontWeightRegular: 400,
-      fontFamily: "'DM Sans', sans-serif",
-      fontSize: 14,
-    },
-    spacing: 10,
-    shape: {
-      borderRadius: 8,
-    },
-  });
-
-  // const theme = createTheme({ mode: 'light', palette: lightPalette, ...themeOptions });
-  return (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <div style={{ marginTop: "5%" }}>
-        <Outlet />
-      </div>
-      <Footer />
-    </ThemeProvider>
-  );
-};
-
-export default MainLayout;
+*/

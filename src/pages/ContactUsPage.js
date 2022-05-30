@@ -27,14 +27,14 @@ const ContactUsPage = () => {
             Contact Us
           </Typography>
         </Tooltip>
-        <Grid component="form">
+        <Grid>
           <Grid container spacing={5}>
             <Grid item md={6}>
               <TextField
                 name="first_name"
                 id="first_name"
                 label="First Name"
-                variant="standard"
+                // variant="standard"
               />
             </Grid>
             <Grid item md={6}>
@@ -42,7 +42,7 @@ const ContactUsPage = () => {
                 name="last_name"
                 id="last_name"
                 label="Last Name"
-                variant="standard"
+                // variant="standard"
               />
             </Grid>
           </Grid>
@@ -52,7 +52,7 @@ const ContactUsPage = () => {
                 name="email_id"
                 id="email_id"
                 label="Email Id"
-                variant="standard"
+                // variant="standard"
               />
             </Grid>
             <Grid item md={6}>
@@ -60,7 +60,7 @@ const ContactUsPage = () => {
                 name="phone"
                 id="phone"
                 label="Phone Number"
-                variant="standard"
+                // variant="standard"
               />
             </Grid>
           </Grid>
@@ -69,7 +69,7 @@ const ContactUsPage = () => {
               name="message_title"
               id="message_title"
               label="Message Title"
-              variant="standard"
+              // variant="standard"
               fullWidth
               margin="normal"
             />
@@ -77,7 +77,7 @@ const ContactUsPage = () => {
               name="message_desc"
               id="message_desc"
               label="Message Description"
-              variant="standard"
+              // variant="standard"
               multiline
               rows={4}
               fullWidth

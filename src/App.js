@@ -13,18 +13,19 @@ import {
 import PrivateRoute from "./utils/PrivateRoute";
 import AlertMessage from "./component/AlertMessage";
 
+export const privateRoutesList = [
+  { url: "/dashboard", element: <DashboardPage /> },
+  { url: "/as_a_professional", element: <DashboardPage /> },
+];
+export const publicRoutesList = [
+  { name: "Home", url: "/", element: <HomePage /> },
+  { name: "Sign In", url: "/signin", element: <SigninPage /> },
+  { name: "Sign Up", url: "/signup", element: <SignupPage /> },
+  { name: "Contact Us", url: "/contact_us", element: <ContactUsPage /> },
+  // { url: "*", element: <NotFoundPage /> },
+];
+
 const App = () => {
-  const privateRoutesList = [
-    { path: "/dashboard", element: <DashboardPage /> },
-  ];
-  const publicRoutesList = [
-    { path: "/", element: <HomePage /> },
-    { path: "/signin", element: <SigninPage /> },
-    { path: "/signup", element: <SignupPage /> },
-    { path: "/contact_us", element: <ContactUsPage /> },
-    { path: "*", element: <NotFoundPage /> },
-  ];
-  // debugger
   return (
     <>
       <AlertMessage />
@@ -33,13 +34,14 @@ const App = () => {
           <Route element={<MainLayout />}>
             <Route element={<PrivateRoute />}>
               {privateRoutesList.map((route) => (
-                <Route path={route.path} element={route.element} />
+                <Route path={route.url} element={route.element} />
               ))}
               {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
             </Route>
             {publicRoutesList.map((route) => (
-              <Route path={route.path} element={route.element} />
+              <Route path={route.url} element={route.element} />
             ))}
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
