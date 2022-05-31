@@ -265,6 +265,7 @@ const ResponsiveAppBar = () => {
                   component={Link}
                   to={`/${element.link}`}
                   sx={{
+                    borderLeft: "7px solid #0000",
                     ":hover": {
                       borderLeft: "7px solid",
                       borderColor: 'primary',
@@ -284,9 +285,9 @@ const ResponsiveAppBar = () => {
                   key="signout"
                   flexDirection="column"
                   sx={{
+                    borderLeft: "7px solid #0000",
                     ":hover": {
                       borderLeft: "7px solid #700",
-                      transition: "ease-in-out",
                     },
                   }}
                 >
