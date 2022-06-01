@@ -261,14 +261,13 @@ const ResponsiveAppBar = () => {
             >
               {settings.map((element) => (
                 <MenuItem
-                  key ={element.name}
+                  key={element.name}
                   component={Link}
                   to={`/${element.link}`}
                   sx={{
                     borderLeft: "7px solid #0000",
                     ":hover": {
                       borderLeft: "7px solid",
-                      borderColor: 'primary',
                       transition: "ease-in-out",
                     },
                   }}
@@ -286,17 +285,16 @@ const ResponsiveAppBar = () => {
                   flexDirection="column"
                   sx={{
                     borderLeft: "7px solid #0000",
+                    color: "#700",
                     ":hover": {
                       borderLeft: "7px solid #700",
                     },
                   }}
+                  onClick={() => {
+                    dispatch(signout());
+                  }}
                 >
-                  <Button
-                    sx={{ color: "#700" }}
-                    onClick={() => {
-                      dispatch(signout());
-                    }}
-                  >
+                  <Button>
                     <Logout sx={userMenuIconStyle} />
                     sign out
                   </Button>
