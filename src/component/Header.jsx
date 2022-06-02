@@ -32,6 +32,7 @@ import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../store/slices/authSlice";
 import { changeThemeMode } from "../store/slices/themeSlice";
+import { getService, getSubservice } from "../store/slices/contentSlice";
 
 const pages = [
   { name: "Products", link: "products" },
@@ -107,6 +108,14 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(() => {
+    dispatch(getService());
+    dispatch(getSubservice());
+    return () => {
+      //   second;
+    };
+  }, []);
 
   return (
     <AppBar>
@@ -282,7 +291,7 @@ const ResponsiveAppBar = () => {
               {isAuth && (
                 <MenuItem
                   key="signout"
-                  flexDirection="column"
+                  // flexDirection="column"
                   sx={{
                     borderLeft: "7px solid #0000",
                     color: "#700",

@@ -36,7 +36,7 @@ const SigninPage = (props) => {
   const passVisibleClickHandler = () => setPassVisible(!passVisible);
 
   useEffect(() => {
-    console.log("dispatch: ", formData);
+    // console.log("dispatch: ", formData);
     dispatch(clearMessage);
   }, [dispatch]);
 
@@ -56,16 +56,16 @@ const SigninPage = (props) => {
     event.preventDefault();
     setIsLoading(true);
     // const data = new FormData(event.currentTarget);
-    console.log("handleSubmit: ", formData);
+    // console.log("handleSubmit: ", formData);
     dispatch(signin(formData))
       .unwrap()
       .then(() => {
         // props.history.push("/");
-        console.log("then: ", formData);
+        // console.log("then: ", formData);
         console.log("Login success");
       })
       .catch(() => {
-        console.log("catch: ", formData);
+        // console.log("catch: ", formData);
         console.log("Login fails");
         setIsLoading(false);
       });

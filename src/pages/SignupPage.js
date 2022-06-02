@@ -67,17 +67,17 @@ const SignupPage = () => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      // console.log(JSON.stringify(values, null, 2));
       setSuccessful(false);
       dispatch(signup(values))
         .unwrap()
         .then(() => {
           setSuccessful(true);
-          console.log("dispatch then");
+          // console.log("dispatch then");
         })
         .catch(() => {
           setSuccessful(false);
-          console.log("dispatch catch");
+          // console.log("dispatch catch");
         });
     },
   });

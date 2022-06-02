@@ -7,7 +7,7 @@ const PrivateRoute = () => {
 
   if (isAuth) return <Outlet />;
 
-  console.log("Private routes Working");
+  console.log("---- Private Routes Working ----");
   return <Navigate to="signin" state={{ from: location }} />;
 };
 

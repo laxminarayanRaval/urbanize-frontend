@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const AlertMessage = () => {
   const [open, setOpen] = React.useState(true);
   const { message } = useSelector((state) => state.message);
-    console.log(message);
+    // console.log(message);
 
     React.useEffect(() => {
         setTimeout(()=>{

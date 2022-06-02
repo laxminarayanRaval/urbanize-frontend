@@ -11,7 +11,7 @@ import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
   const themeMode = useSelector((state) => state.theme.mode);
-  console.log(themeMode);
+  // console.log(themeMode);
 
   const theme = createTheme({
     palette: {
@@ -67,7 +67,7 @@ const MainLayout = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <div style={{ marginTop: "5%" }}>
+      <div style={{ marginTop: "15vh" }}>
         <Outlet />
       </div>
       <Footer />
