@@ -16,7 +16,7 @@ const signup = (full_name, email, password, password2) => {
 
 const signin = (email, password) => {
   return axios
-    .post(API_URL + "/auth/signin/", { email, password })
+    .post(`${API_URL}/auth/signin/`, { email, password })
     .then((response) => {
       if (response.data) {
         // Object.keys(response.data).map((key) => {
@@ -27,9 +27,7 @@ const signin = (email, password) => {
         // });
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-      const { token_type, iat, jti, ...rest } = jwtDecode(
-        response.data.access
-      );
+      const { token_type, iat, jti, ...rest } = jwtDecode(response.data.access);
       return { ...rest, ...response.data };
     });
 };
@@ -39,7 +37,17 @@ const signout = () => {
   localStorage.removeItem("user");
 };
 
+const forgetPassword = (email) =>
+  axios
+    .post(`${API_URL}/request/forget_password`, email)
+    // .then((response) => response.data)
+    // .catch((error) => {
+    //   console.log(error);
+    //   return error.data;
+    // });
+
 const authService = {
+  forgetPassword,
   signup,
   signin,
   signout,
