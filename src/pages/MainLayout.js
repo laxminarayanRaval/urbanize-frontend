@@ -6,7 +6,7 @@ import { Footer, Header } from "../component";
 import { useSelector } from "react-redux";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { blueGrey, brown } from "@mui/material/colors";
+import { teal, deepOrange, red } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
@@ -20,13 +20,12 @@ const MainLayout = () => {
         black: "#333",
         white: "#ddd",
       },
-      primary: { main: themeMode === "dark" ? blueGrey.A400 : blueGrey[900] },
-      secondary: { main: brown[600] },
-      danger: { main: "#700" },
+      primary: { main: themeMode === "dark" ? teal[500] : teal[800] },
+      secondary: { main: deepOrange[600] },
+      danger: { main: red[900] },
       action: { hover: "#0002" },
       background: themeMode === "dark" ? {
-        paper: '#323232',
-        default: '#222'
+        paper: '#000',
       } : {},
     },
     typography: {
@@ -44,7 +43,7 @@ const MainLayout = () => {
       MuiIcon: {
         styleOverrides: {
           root: {
-            color: blueGrey[800],
+            color: teal[800],
           },
         },
       },
@@ -52,7 +51,7 @@ const MainLayout = () => {
         defaultProps: {
           hover: {
             borderLeft: {
-              color: blueGrey[800],
+              color: teal[800],
               width: 2,
               style: 'solid'
             }

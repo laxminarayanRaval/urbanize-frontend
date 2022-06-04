@@ -84,7 +84,7 @@ const ResponsiveAppBar = () => {
   if (userData && userData.role === "user") {
     settings.push({
       name: "Became a Professional",
-      link: "as_a_professional",
+      link: "start_professional",
       icon: <AppRegistration sx={userMenuIconStyle} />,
     });
   }
@@ -241,8 +241,36 @@ const ResponsiveAppBar = () => {
 
           <Box key="box3" display="flex">
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircle sx={{ color: "#ddd", fontSize: "xx-large" }} />
+              <IconButton
+                onClick={handleOpenUserMenu}
+                sx={{
+                  flexDirection: "row",
+                  border: "1px dashed",
+                  p: 0.5,
+                  borderRadius: 5,
+                  ":hover": {
+                    border: "1px solid",
+                  }
+                }}
+              >
+                {isAuth ? (
+                  <>
+                    <Typography
+                      variant="body1"
+                      component="h6"
+                      color="secondary"
+                    >
+                      {userData.full_name}
+                    </Typography>
+                    <Avatar
+                      alt={userData.full_name}
+                      src={userData.pic_url}
+                      sx={{ height: 25, width: 25, ml: 1 }}
+                    />
+                  </>
+                ) : (
+                  <AccountCircle sx={{ color: "#ddd", fontSize: "xx-large" }} />
+                )}
               </IconButton>
             </Tooltip>
             <Tooltip title={`${themeMode} Mode`}>
@@ -303,7 +331,7 @@ const ResponsiveAppBar = () => {
                     dispatch(signout());
                   }}
                 >
-                  <Button>
+                  <Button color="danger">
                     <Logout sx={userMenuIconStyle} />
                     sign out
                   </Button>

@@ -27,10 +27,10 @@ const signin = (email, password) => {
         // });
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-      const { user_id, full_name, email, role, exp, ...rest } = jwtDecode(
+      const { token_type, iat, jti, ...rest } = jwtDecode(
         response.data.access
       );
-      return { user_id, full_name, email, role, exp, ...response.data };
+      return { ...rest, ...response.data };
     });
 };
 

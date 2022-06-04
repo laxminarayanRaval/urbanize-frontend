@@ -2,11 +2,14 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import Services from "../component/Services";
+import { Services } from "../component/";
 
 const HomePage = () => {
   return (
-    <Box component="article" sx={{ display: "flex", flexDirection: "column", minHeight: "90vh" }} >
+    <Box
+      component="article"
+      sx={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}
+    >
       <Typography component="h1" variant="h1">
         {/* Welcome to the HomePage */}
       </Typography>

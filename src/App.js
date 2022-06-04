@@ -2,28 +2,14 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
-  ContactUsPage,
-  DashboardPage,
-  HomePage,
   MainLayout,
   NotFoundPage,
-  SigninPage,
-  SignupPage,
 } from "./pages/";
 import PrivateRoute from "./utils/PrivateRoute";
 import AlertMessage from "./component/AlertMessage";
 
-export const privateRoutesList = [
-  { url: "/dashboard", element: <DashboardPage /> },
-  { url: "/as_a_professional", element: <DashboardPage /> },
-];
-export const publicRoutesList = [
-  { name: "Home", url: "/", element: <HomePage /> },
-  { name: "Sign In", url: "/signin", element: <SigninPage /> },
-  { name: "Sign Up", url: "/signup", element: <SignupPage /> },
-  { name: "Contact Us", url: "/contact_us", element: <ContactUsPage /> },
-  // { url: "*", element: <NotFoundPage /> },
-];
+import { privateRoutesList, publicRoutesList } from "./RoutesList";
+
 
 const App = () => {
   return (

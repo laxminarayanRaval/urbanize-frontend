@@ -8,7 +8,7 @@ const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
 const checkAuth = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user?.access) {
-    const { user_id, full_name, email, role, pic_url, exp, ..._ } = jwtDecode(
+    const { token_type, iat, jti, exp, ...rest } = jwtDecode(
       user.access
     );
     if (is_expired(exp)) {
@@ -22,16 +22,16 @@ const checkAuth = () => {
           if (response.data)
             localStorage.setItem("user", JSON.stringify(response.data));
 
-          const newUser = JSON.parse(response.data);
-          const { user_id, full_name, email, role, pic_url, exp, ..._ } =
-            jwtDecode(newUser.access);
-          return { ...newUser, user_id, full_name, email, role, pic_url, exp };
+          const newUserToken = JSON.parse(response.data);
+          const { token_type, iat, jti, exp, ...rest } =
+            jwtDecode(newUserToken.access);
+          return { ...newUserToken, exp, ...rest };
         });
       } catch (e) {
         return null;
       }
     }
-    return { ...user, user_id, full_name, email, role, pic_url, exp };
+    return { ...user, exp, ...rest };
   }
   return null;
 };
