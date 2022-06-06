@@ -84,6 +84,7 @@ const SigninPage = (props) => {
     console.log("requestForgetPassword", data.get("email"));
     try {
       const response = await authService.forgetPassword(data.get("email"));
+      
       console.log(response, response.data.message);
     } catch (err) {
       console.log(err.response.data.error);

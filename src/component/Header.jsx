@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../store/slices/authSlice";
 import { changeThemeMode } from "../store/slices/themeSlice";
 import { getService, getSubservice } from "../store/slices/contentSlice";
+import { titleCase, makeSlug } from "../utils/Helpers";
 
 const pages = [
   { name: "Products", link: "products" },
@@ -54,7 +55,7 @@ const ResponsiveAppBar = () => {
     ? [
         {
           name: "Profile",
-          link: "profile",
+          link: `profile/${makeSlug(userData.full_name)}/${userData.user_id}/`,
           icon: <AccountBox sx={{ ...userMenuIconStyle }} />,
         },
         {
@@ -250,7 +251,7 @@ const ResponsiveAppBar = () => {
                   borderRadius: 5,
                   ":hover": {
                     border: "1px solid",
-                  }
+                  },
                 }}
               >
                 {isAuth ? (
@@ -260,7 +261,7 @@ const ResponsiveAppBar = () => {
                       component="h6"
                       color="secondary"
                     >
-                      {userData.full_name}
+                      {titleCase(userData.full_name)}
                     </Typography>
                     <Avatar
                       alt={userData.full_name}

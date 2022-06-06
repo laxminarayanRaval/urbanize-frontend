@@ -79,10 +79,9 @@ export const signin = createAsyncThunk(
     } catch (err) {
       // rejected
       const message =
-        (err.response && err.response?.data?.message) || // NOTE: Here i've taken shortcode; this might work
-        err.message ||
-        err.toString();
-      thunkAPI.dispatch(setMessage(message));
+      Object.keys(err.response.data).forEach((key) => {
+        thunkAPI.dispatch(setMessage(`${key} : ${err.response.data[key]}`));
+      });
       return thunkAPI.rejectWithValue();
     }
   }

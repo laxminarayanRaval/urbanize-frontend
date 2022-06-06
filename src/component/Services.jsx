@@ -60,7 +60,9 @@ const Services = () => {
           >
             <Box
               sx={{
-                border: isSelected(service.id) ? "1px solid #555" : "1px solid #0000",
+                border: isSelected(service.id)
+                  ? "1px solid #555"
+                  : "1px solid #0000",
                 borderRadius: 10,
                 padding: 1,
                 cursor: "pointer",
@@ -100,54 +102,33 @@ const Services = () => {
           </Grid>
         ))}
       </Grid>
-      <Grid
-        component={Paper}
-        width="50%"
-        item
-        display="flex"
-        justifyContent="center"
-        flexWrap="wrap"
-      >
-        {!selectedServiceId == 0 && (
-          <>
-            {subservices?.length === 0 &&
-              [1, 2, 3, 4].map((ele) => (
-                <Stack display="flex" key={ele} alignItems="center">
-                  <Skeleton
-                    variant="circle"
-                    sx={{ width: "200px", height: "200px", borderRadius: 10 }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    animation="wave"
-                    sx={{
-                      width: "200px",
-                      height: "60px",
-                      m: 1,
-                      borderRadius: 2,
-                    }}
-                  />
-                </Stack>
-              ))}
-            {subservices
-              .filter((ele) => ele.service_id === selectedServiceId)
-              .map((service) => (
-                <Grid
-                  item
-                  key={service.id}
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  margin={1}
-                >
-                  <Typography component="h5" variant="body1" id={service.id}>
-                    {service.service_name}
-                  </Typography>
-                </Grid>
-              ))}
-          </>
-        )}
-      </Grid>
+      {!selectedServiceId == 0 && (
+        <Grid
+          component={Paper}
+          width="50%"
+          item
+          display="flex"
+          justifyContent="center"
+          flexWrap="wrap"
+        >
+          {subservices
+            .filter((ele) => ele.service_id === selectedServiceId)
+            .map((service) => (
+              <Grid
+                item
+                key={service.id}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                margin={1}
+              >
+                <Typography component="h5" variant="body1" id={service.id}>
+                  {service.service_name}
+                </Typography>
+              </Grid>
+            ))}
+        </Grid>
+      )}
     </Grid>
   );
 };

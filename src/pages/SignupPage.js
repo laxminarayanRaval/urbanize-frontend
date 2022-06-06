@@ -26,6 +26,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const { message } = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
   const [sucessful, setSuccessful] = React.useState(false);
@@ -107,6 +108,11 @@ const SignupPage = () => {
           <Typography component="h1" variant="h1">
             Sign up
           </Typography>
+          {message && (
+            <Typography component="p" variant="body1" color="error">
+              {message}
+            </Typography>
+          )}
           <Box
             component="form"
             method="post"
@@ -159,9 +165,15 @@ const SignupPage = () => {
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
                 endAdornment: passVisible ? (
-                  <Visibility color="primary" onClick={passVisibleClickHandler} />
+                  <Visibility
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
                 ) : (
-                  <VisibilityOff color="primary" onClick={passVisibleClickHandler} />
+                  <VisibilityOff
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
                 ),
               }}
             />
@@ -181,9 +193,15 @@ const SignupPage = () => {
               helperText={formik.touched.password2 && formik.errors.password2}
               InputProps={{
                 endAdornment: passVisible ? (
-                  <Visibility color="primary" onClick={passVisibleClickHandler} />
+                  <Visibility
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
                 ) : (
-                  <VisibilityOff color="primary" onClick={passVisibleClickHandler} />
+                  <VisibilityOff
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
                 ),
               }}
             />

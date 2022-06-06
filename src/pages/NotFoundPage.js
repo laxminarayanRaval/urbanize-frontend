@@ -8,13 +8,13 @@ import { Box, Button } from "@mui/material";
 
 const NotFoundPage = () => {
   return (
-    <Box display="flex" alignItem="center">
+    <Box display="flex" justifyContent="center" alignItem="center">
       <Lottie
         animationData={PageNotFoundAnimation}
-        style={{ width: "65%" }}
+        style={{ width: "75%" }}
         loop={true}
       />
-      <Button component={Link} to="/">Home</Button>
+      {/* <Button component={Link} to="/">Home</Button> */}
     </Box>
   );
 };
