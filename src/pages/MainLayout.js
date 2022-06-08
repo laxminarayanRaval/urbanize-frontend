@@ -6,7 +6,7 @@ import { Footer, Header } from "../component";
 import { useSelector } from "react-redux";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { teal, deepOrange, red } from "@mui/material/colors";
+import { teal, orange, red } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
@@ -21,8 +21,8 @@ const MainLayout = () => {
         white: "#ddd",
       },
       primary: { main: themeMode === "dark" ? teal[500] : teal[800] },
-      secondary: { main: deepOrange[600] },
-      danger: { main: red[900] },
+      secondary: { main: orange[300] },
+      danger: { main: red[500] },
       action: { hover: "#0002" },
       background: themeMode === "dark" ? {
         paper: '#000',

@@ -317,6 +317,7 @@ const ResponsiveAppBar = () => {
                   </Button>
                 </MenuItem>
               ))}
+              <Divider />
               {isAuth && (
                 <MenuItem
                   key="signout"

@@ -81,9 +81,9 @@ const SigninPage = (props) => {
   const requestForgetPassword = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log("requestForgetPassword", data.get("email"));
+    console.log("requestForgetPassword", data.get("email"), data);
     try {
-      const response = await authService.forgetPassword(data.get("email"));
+      const response = await authService.forgetPassword(data);
       
       console.log(response, response.data.message);
     } catch (err) {
@@ -125,6 +125,7 @@ const SigninPage = (props) => {
                 type="email"
                 name="email"
                 margin="normal"
+                helperText="Email Address Which is used to register your account"
                 required
                 fullWidth
                 label="Email Address"

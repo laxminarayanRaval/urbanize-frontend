@@ -1,6 +1,9 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import authHeader from "./auth-header";
 const API_URL = process.env.REACT_APP_API_URL;
+
+const headers = { headers: authHeader() };
 
 const refreshAuthToken = (refreshToken) =>
   axios.post(API_URL + "/auth/signin/refresh/", { refresh: refreshToken });
@@ -37,21 +40,39 @@ const signout = () => {
   localStorage.removeItem("user");
 };
 
+const changePassword = ({oldpassword, password, password2}) =>{
+  debugger
+  return (axios.post(
+    `${API_URL}/auth/change_password/`,
+    {
+      oldpassword,
+      password,
+      password2,
+    },
+    headers
+  ))
+}
+  
+
+const deactivateAccount = (uid, password) =>
+  axios.post(`${API_URL}/auth/deactivate_account`, { uid, password }, headers);
+
 const forgetPassword = (email) =>
-  axios
-    .post(`${API_URL}/request/forget_password`, email)
-    // .then((response) => response.data)
-    // .catch((error) => {
-    //   console.log(error);
-    //   return error.data;
-    // });
+  axios.post(`${API_URL}/request/forget_password`, email);
+// .then((response) => response.data)
+// .catch((error) => {
+//   console.log(error);
+//   return error.data;
+// });
 
 const authService = {
+  changePassword,
+  deactivateAccount,
   forgetPassword,
-  signup,
+  refreshAuthToken,
   signin,
   signout,
-  refreshAuthToken,
+  signup,
 };
 
 export default authService;
