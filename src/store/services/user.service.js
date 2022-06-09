@@ -1,5 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+const headers = { headers: authHeader() };
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,6 +16,13 @@ const getSubservicesList = () =>
 // const getPrivateContent = () =>
 // axios.get(API_URL + "private", { headers: authHeader() });
 
-const userService = { getServiceList, getSubservicesList };
+const updateContactDetails = (data) =>
+  axios.put(`${API_URL}/request/update/contact_details/`, data, headers);
+
+const userService = {
+  getServiceList,
+  getSubservicesList,
+  updateContactDetails,
+};
 
 export default userService;

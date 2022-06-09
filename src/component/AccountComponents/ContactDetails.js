@@ -6,60 +6,82 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  Grid,
   TextField,
   Typography,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Box } from "@mui/system";
+import { Edit, EditOff, Visibility, VisibilityOff } from "@mui/icons-material";
+import userService from "../../store/services/user.service";
+import { updateContacts } from "../../store/slices/authSlice";
 
 const ContactDetails = () => {
-    const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const userData = useSelector((state) => state.auth.user);
 
-  const [oldPassVisible, setOldPassVisible] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassVisible, setNewPassVisible] = useState(false);
-  const [newPassword, setNewPassword] = useState({
-    password: "",
-    password2: "",
-  });
+  const [passVisible, setPassVisible] = useState(false);
+  const [emailEdit, setEmailEdit] = useState(true);
+  const [mobileEdit, setMobileEdit] = useState(true);
+
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(userData?.email);
+  const [mobile, setMobile] = useState(userData?.mobile);
+
+  const [preventChange, setPreventChange] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    if (newPassword.password.length <= 8 || newPassword.password2.length <= 8)
-      setErrorMessage("New password must be at least 8 characters");
-    else if (newPassword.password !== newPassword.password2)
-      setErrorMessage("New Password and Confirm New Password must be same.");
-    else setErrorMessage("");
-  }, [newPassword]);
+    if (userData?.mobile === mobile && userData?.email === email) {
+      setPreventChange(true);
+    } else setPreventChange(false);
+  }, [email, mobile]);
 
-  const oldPassVisibleClickHandler = () => {
-    setOldPassVisible(!oldPassVisible);
-  };
-  const newPassVisibleClickHandler = () => {
-    setNewPassVisible(!newPassVisible);
+  const passVisibleClickHandler = () => {
+    setPassVisible(!passVisible);
   };
 
-  const changePasswordHandler = async (e) => {
+  const dispatch = useDispatch();
+
+  const updateContactDetailHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    console.log(":-->");
+    dispatch(updateContacts({ password, email, mobile }))
+      .unwrap()
+      .then(() => {
+        debugger;
+        setPreventChange(true);
+        setErrorMessage("");
+        setSuccessMessage("Details updated successfully.");
+      })
+      .catch(() => {
+        setSuccessMessage("");
+        setErrorMessage("Update contact details failed.");
+      });
+    setEmailEdit(true);
+    setMobileEdit(true);
+    // console.log("85: ");
+    // debugger;
 
     // try {
-    //   const response = await authService.changePassword({
-    //     oldpassword: oldPassword,
-    //     ...newPassword,
+    //   const response = await userService.updateContactDetails({
+    //     password,
+    //     email,
+    //     mobile,
     //   });
-    //   debugger;
+
     //   const data = await response.data;
-    //   console.log("8==>", data.message);
+    //   console.log("BD: ", data.message);
+    //   setPreventChange(true);
     //   setErrorMessage("");
     //   setSuccessMessage(data.message);
     // } catch (err) {
     //   const errorMessage = JSON.stringify(err?.response?.data?.message)
-    //     .replaceAll(/\[|]|{|}/g, " ")
-    //     .replaceAll(",", "\n")
+    //     .replace(/\[|]|{|}/g, " ")
+    //     // .replaceAll(",", "\n")
     //     .split(":")[1];
     //   setSuccessMessage("");
     //   setErrorMessage(errorMessage);
@@ -72,13 +94,40 @@ const ContactDetails = () => {
       <Typography variant="h3" component="h2">
         Contact Details
       </Typography>
+
+      <Grid
+        container
+        component="address"
+        spacing={3}
+        my={2}
+        p={2}
+        maxWidth="max-content"
+      >
+        <Grid item xs={2} sm={2} md={2}>
+          <Typography variant="body1">Email Address:</Typography>
+        </Grid>
+
+        <Grid item xs={10} sm={10} md={10}>
+          <Typography variant="h6">{userData?.email}</Typography>
+        </Grid>
+
+        <Grid item xs={2} sm={2} md={2}>
+          <Typography variant="body2">Phone Number:</Typography>
+        </Grid>
+
+        <Grid item xs={10} sm={10} md={10}>
+          <Typography variant="h6">
+            {userData?.mobile !== "None" ? userData?.mobile : "Not Provider"}
+          </Typography>
+        </Grid>
+      </Grid>
+
       <Typography variant="h6" component="h4" sx={{ mt: 5, mb: 3 }}>
         DO You want to update your contact details
       </Typography>
       <Button
-        color="info"
         variant="contained"
-        onClick={(_) => {
+        onClick={() => {
           setDialogOpen(true);
         }}
       >
@@ -86,13 +135,13 @@ const ContactDetails = () => {
       </Button>
       <Dialog
         open={dialogOpen}
-        onClose={(_) => {
+        onClose={() => {
           setDialogOpen(false);
         }}
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>You are Changing Account's Password.</DialogTitle>
+        <DialogTitle>You are Changing Contact Details.</DialogTitle>
         <DialogContent>
           {errorMessage && (
             <Typography
@@ -110,41 +159,111 @@ const ContactDetails = () => {
               {successMessage}
             </Typography>
           )}
+
           <DialogContentText mt={2}>
-            Please Confirm Your identity via old Password.
+            Please Confirm Your identity via Password.
           </DialogContentText>
-          {/* <form method="post" onSubmit={changePasswordHandler}> */}
+          <form method="post" onSubmit={updateContactDetailHandler}>
             <TextField
               name="password"
               label="Password"
               fullWidth
               required
               sx={{ mt: 1, mb: 2 }}
+              type={passVisible ? "text" : "password"}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              value={password}
+              InputProps={{
+                endAdornment: passVisible ? (
+                  <Visibility
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
+                ) : (
+                  <VisibilityOff
+                    color="primary"
+                    onClick={passVisibleClickHandler}
+                  />
+                ),
+              }}
             />
 
             <Divider />
 
             <DialogContentText mt={2}>Edit Detail.</DialogContentText>
+
             <TextField
-              name="password"
-              label="New Password"
+              type="email"
+              name="email"
+              label="Email"
               fullWidth
-              required
               sx={{ mt: 1 }}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              value={email}
+              disabled={emailEdit}
+              InputProps={{
+                endAdornment: emailEdit ? (
+                  <EditOff
+                    color="primary"
+                    onClick={() => {
+                      setEmailEdit(!emailEdit);
+                    }}
+                  />
+                ) : (
+                  <Edit
+                    color="primary"
+                    onClick={() => {
+                      setEmailEdit(!emailEdit);
+                    }}
+                  />
+                ),
+              }}
             />
 
             <TextField
-              name="password2"
-              label="Confirm New Password"
+              type="mobile"
+              name="mobile"
+              label="Mobile"
               fullWidth
-              required
               sx={{ mt: 1, mb: 2 }}
+              onChange={(e) => {
+                const mobileValue =
+                  e.target.value === "" ? "None" : e.target.value;
+                setMobile(mobileValue);
+              }}
+              value={mobile == "None" ? "" : mobile}
+              disabled={mobileEdit}
+              InputProps={{
+                endAdornment: mobileEdit ? (
+                  <EditOff
+                    color="primary"
+                    onClick={() => {
+                      setMobileEdit(!mobileEdit);
+                    }}
+                  />
+                ) : (
+                  <Edit
+                    color="primary"
+                    onClick={() => {
+                      setMobileEdit(!mobileEdit);
+                    }}
+                  />
+                ),
+              }}
             />
 
-            <Button type="submit" color="info" variant="contained">
-              Change Details Now
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={preventChange || isLoading}
+            >
+              {isLoading ? "Loading..." : "Change Details"}
             </Button>
-          {/* </form> */}
+          </form>
         </DialogContent>
       </Dialog>
     </>

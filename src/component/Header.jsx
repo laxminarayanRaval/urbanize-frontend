@@ -85,7 +85,7 @@ const ResponsiveAppBar = () => {
   if (userData && userData.role === "user") {
     settings.push({
       name: "Became a Professional",
-      link: "start_professional",
+      link: "start_as_professional",
       icon: <AppRegistration sx={userMenuIconStyle} />,
     });
   }

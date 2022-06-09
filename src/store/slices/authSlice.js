@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import jwtDecode from "jwt-decode";
 import authService from "../services/auth.service";
+import userService from "../services/user.service";
 import { setMessage } from "./messageSlice";
 
 const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
@@ -8,9 +9,7 @@ const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
 const checkAuth = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user?.access) {
-    const { token_type, iat, jti, exp, ...rest } = jwtDecode(
-      user.access
-    );
+    const { token_type, iat, jti, exp, ...rest } = jwtDecode(user.access);
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(user.refresh);
       if (is_expired(exp)) {
@@ -23,8 +22,9 @@ const checkAuth = () => {
             localStorage.setItem("user", JSON.stringify(response.data));
 
           const newUserToken = JSON.parse(response.data);
-          const { token_type, iat, jti, exp, ...rest } =
-            jwtDecode(newUserToken.access);
+          const { token_type, iat, jti, exp, ...rest } = jwtDecode(
+            newUserToken.access
+          );
           return { ...newUserToken, exp, ...rest };
         });
       } catch (e) {
@@ -78,8 +78,7 @@ export const signin = createAsyncThunk(
       return { user: data };
     } catch (err) {
       // rejected
-      const message =
-      Object.keys(err.response.data).forEach((key) => {
+      const message = Object.keys(err.response.data).forEach((key) => {
         thunkAPI.dispatch(setMessage(`${key} : ${err.response.data[key]}`));
       });
       return thunkAPI.rejectWithValue();
@@ -90,6 +89,37 @@ export const signin = createAsyncThunk(
 export const signout = createAsyncThunk("auth/signout", async () => {
   await authService.signout();
 });
+
+export const updateContacts = createAsyncThunk(
+  "auth/updateContacts",
+  async ({ password, email, mobile }, thunkAPI) => {
+    try {
+      debugger;
+      const response = await userService.updateContactDetails({
+        password,
+        email,
+        mobile,
+      });
+
+      debugger;
+
+      const data = await response.data;
+      // console.log("BD: ", data.message);
+
+      thunkAPI.dispatch(setMessage(data.message));
+
+      return { email, mobile };
+    } catch (err) {
+      const errorMessage = JSON.stringify(err?.response?.data?.message)
+        .replace(/\[|]|{|}/g, " ")
+        // .replaceAll(",", "\n")
+        .split(":")[1];
+        console.log(errorMessage)
+      thunkAPI.dispatch(setMessage(errorMessage));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -115,6 +145,10 @@ const authSlice = createSlice({
     [signout.fulfilled]: (state, action) => {
       state.isAuthenticated = false;
       state.user = null;
+    },
+    [updateContacts.fulfilled]: (state, action) => {
+      state.user.email = action.payload.email;
+      state.user.mobile = action.payload.mobile;
     },
   },
 });
