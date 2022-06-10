@@ -1,6 +1,6 @@
 export const makeSlug = (strr) => strr?.replaceAll(" ", "_");
 export const revertSlug = (strr) => strr?.replaceAll("_", " ");
-export const titleCase = (strr) =>
+export const toTitleCase = (strr) =>
   strr
     ?.split(" ")
     ?.map((ele) => ele[0].toUpperCase() + ele.slice(1))

@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Chip,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Grid, TextField, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { HighlightOffOutlined } from "@mui/icons-material";
+
+import { toTitleCase } from "../utils/Helpers";
 
 const StartProfessionalPage = () => {
   const userData = useSelector((state) => state.auth.user);
@@ -18,25 +13,39 @@ const StartProfessionalPage = () => {
   const updateCitiesList = (event) => {
     // event.preventDefault();
     if (event.key === "Enter") {
-      debugger;
-      const data = event.target.value;
-      // setCitiesList(citiesList.splice(citiesList.length, 0, data));
-      setCitiesList(prevState => [...prevState,data]);
-      event.target.value = "";
+      const cityName = event.target.value.toLowerCase();
+      // setCitiesList(citiesList.splice(citiesList.length, 0, cityName));
+      if (citiesList.length < 8) {
+        if (!citiesList.includes(cityName))
+          setCitiesList((prevState) => [...prevState, cityName]);
+        event.target.value = "";
+      }
     }
     console.log(citiesList);
   };
 
+  const citiesInputProps =
+    citiesList.length < 8
+      ? { placeholder: "Add More", onKeyDown: updateCitiesList }
+      : { placeholder: "Limit Reached", disabled: true };
+
   const removeCity = (index) => {
-    debugger;
-    const updateValue = [...citiesList]
-    updateValue.splice(index, 1)
+    const updateValue = [...citiesList];
+    updateValue.splice(index, 1);
     setCitiesList(updateValue);
   };
+  // Availability Time Formatting and Storing
 
-  const [avlHrs, setAvlHrs] = useState({ start_time: "", end_time: "" });
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
-  const avlHrsHandler = () => {};
+  const avalblHrsHandler = (event) => {
+    if (event.target.name === "startTime") setStartTime(event.target.value);
+    else if (event.target.name === "endTime") setEndTime(event.target.value);
+  };
+
+  const formattedTime = `From (${startTime}) To (${endTime})`;
+  console.log("========= Formatted Time =========", formattedTime);
 
   return (
     <Grid
@@ -46,10 +55,15 @@ const StartProfessionalPage = () => {
       textAlign="center"
       alignItems="center"
     >
-      <Typography component="p" variant="body1">
-        Please Provide Few Additional information to process your application
-        for being Professional
-      </Typography>
+      <Grid item xs={12} sm={12} md={12}>
+        <Typography component="h3" variant="h5">
+          {`Mr. ${userData.full_name}`}
+        </Typography>
+        <Typography component="p" variant="body1">
+          Please Provide Few Additional information to process your application
+          for being Professional
+        </Typography>
+      </Grid>
       <Box
         component="form"
         container
@@ -58,59 +72,79 @@ const StartProfessionalPage = () => {
         alignItems="center"
         my={4}
       >
-        <Grid item xs={12} sm={12} md={12}>
-          <Typography component="h3" variant="h4" mb={3}>
-            {`Mr. ${userData.full_name}`}
-          </Typography>
+        <Grid item container xs={12} sm={12} md={12} p={1}>
+          <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+            <Typography variant="h6">Cities List:</Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5}>
+            <TextField
+              name="cities"
+              label="Cities"
+              // fullWidth
+              helperText="Cities where you want to provide Services. (Max 8)"
+              {...citiesInputProps}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
+            {!!citiesList.length &&
+              citiesList.map((ele, index) => (
+                <Chip
+                  color="primary"
+                  sx={{ m: 0.5 }}
+                  deleteIcon={<HighlightOffOutlined />}
+                  label={toTitleCase(ele)}
+                  onDelete={() => removeCity(index)}
+                />
+              ))}
+          </Grid>
         </Grid>
-        {!!citiesList.length && (
-          <Box my={1} maxWidth="max-content" p={1} boxShadow={3}>
-            {citiesList.map((ele, index) => (
-              <Chip label={ele} onDelete={() => removeCity(index)} />
-            ))}
-          </Box>
-        )}
-        <TextField
-          name="cities"
-          label="Cities"
-          fullWidth
-          helperText="Cities where you want to provide Services"
-          placeholder="Add More"
-          onKeyDown={(event) => updateCitiesList(event)}
-        />
-        <TextField
-          name="avl_hrs"
-          label="Availability Hours"
-          disabled
-          fullWidth
-          variant="standard"
-          helperText="Availability Hours : in Which you are able to provide Service"
-        />
-        <Grid item xs={12} sm={12} md={12}>
-          <TextField
-            name="start_time"
-            helperText="Service Start Time"
-            type="time"
-            sx={{ mx: 2 }}
-          />
-          <TextField
-            name="end_time"
-            helperText="Service End Time"
-            type="time"
-            sx={{ mx: 2 }}
-          />
+        <Grid item container xs={12} sm={12} md={12} p={1}>
+          <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+            <Typography variant="h6">Availability Hours:</Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5}>
+            <TextField
+              name="startTime"
+              helperText="Service Start Time"
+              type="time"
+              sx={{ mr: 2 }}
+              onChange={avalblHrsHandler}
+            />
+            <TextField
+              name="endTime"
+              helperText="Service End Time"
+              type="time"
+              sx={{ ml: 2 }}
+              onChange={avalblHrsHandler}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5}>
+            <Typography variant="h4">{formattedTime}</Typography>
+            <Typography variant="body2">
+              Availability Hours : in Which you are able to provide Service
+            </Typography>
+          </Grid>
         </Grid>
-        <TextField
-          multiline
-          fullWidth
-          rows={3}
-          name="address"
-          label="Profession's Address"
-          helperText="If someone wants to meet you."
-        />
-        <Button fullWidth variant="contained" sx={{ mt: 2 }}>
-          Process Further
-        </Button>
+        <Grid item container xs={12} sm={12} md={12} p={1}>
+          <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+            <Typography variant="h6">Professional Address:</Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={10} lg={10}>
+            <TextField
+              multiline
+              fullWidth
+              rows={3}
+              name="address"
+              label="Profession's Address"
+              helperText="If someone wants to meet you."
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} p={1}>
+          <Button variant="contained" sx={{ mt: 2 }}>
+            Process Further
+          </Button>
+        </Grid>
       </Box>
     </Grid>
   );
