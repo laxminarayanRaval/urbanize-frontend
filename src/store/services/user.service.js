@@ -17,7 +17,10 @@ const getSubservicesList = () =>
 // axios.get(API_URL + "private", { headers: authHeader() });
 
 const updateContactDetails = (data) =>
-  axios.put(`${API_URL}/request/update/contact_details/`, data, headers);
+  axios.put(`${API_URL}/user/contact_details/`, data, headers);
+
+const makeUserProfessional = (data, uid) =>
+  axios.post(`${API_URL}/user/professional/${uid}/`, data, headers);
 
 const userService = {
   getServiceList,

@@ -11,8 +11,8 @@ const StartProfessionalPage = () => {
   const [citiesList, setCitiesList] = useState([]);
 
   const updateCitiesList = (event) => {
-    // event.preventDefault();
     if (event.key === "Enter") {
+      event.preventDefault();
       const cityName = event.target.value.toLowerCase();
       // setCitiesList(citiesList.splice(citiesList.length, 0, cityName));
       if (citiesList.length < 8) {
@@ -44,7 +44,7 @@ const StartProfessionalPage = () => {
     else if (event.target.name === "endTime") setEndTime(event.target.value);
   };
 
-  const formattedTime = `From (${startTime}) To (${endTime})`;
+  const formattedTime = `${startTime} to ${endTime}`;
   console.log("========= Formatted Time =========", formattedTime);
 
   return (
@@ -86,6 +86,7 @@ const StartProfessionalPage = () => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
+            {!citiesList.length && <Typography variant="body1">Please Select some Cities.</Typography>}
             {!!citiesList.length &&
               citiesList.map((ele, index) => (
                 <Chip
@@ -119,9 +120,9 @@ const StartProfessionalPage = () => {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5}>
-            <Typography variant="h4">{formattedTime}</Typography>
+            <Typography variant="h5">{formattedTime}</Typography>
             <Typography variant="body2">
-              Availability Hours : in Which you are able to provide Service
+              Availability Hours in Which you are able to provide Service
             </Typography>
           </Grid>
         </Grid>
@@ -129,7 +130,7 @@ const StartProfessionalPage = () => {
           <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
             <Typography variant="h6">Professional Address:</Typography>
           </Grid>
-          <Grid item xs={12} sm={12} md={10} lg={10}>
+          <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
             <TextField
               multiline
               fullWidth
@@ -139,11 +140,16 @@ const StartProfessionalPage = () => {
               helperText="If someone wants to meet you."
             />
           </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} p={1}>
-          <Button variant="contained" sx={{ mt: 2 }}>
-            Process Further
-          </Button>
+        <Grid item container xs={12} sm={12} md={12} p={1}>
+          <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
+          <Grid component={Button} variant="contained" item xs={12} sm={12} md={5} lg={5}>
+            {/* <> */}
+              Process Further
+            {/* </Button> */}
+          </Grid>
+          <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
         </Grid>
       </Box>
     </Grid>
