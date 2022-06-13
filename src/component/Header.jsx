@@ -48,7 +48,7 @@ const pages = [
 ];
 const ResponsiveAppBar = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  
+
   const userData = useSelector((state) => state.auth.user);
   const userMenuIconStyle = {
     fontSize: "large",
@@ -129,7 +129,10 @@ const ResponsiveAppBar = () => {
 
   return (
     <AppBar>
-      <Container maxWidth="xl">
+      <Container
+        maxWidth="xl"
+        sx={{ minHight: "13vh", justifyContent: "center" }}
+      >
         <Toolbar>
           <Avatar
             key="logo"
@@ -243,7 +246,7 @@ const ResponsiveAppBar = () => {
                 onClick={handleOpenUserMenu}
                 sx={{
                   flexDirection: "row",
-                  border: "1px dashed",
+                  border: "0.5px dashed",
                   p: 0.5,
                   borderRadius: 5,
                   ":hover": {
@@ -255,7 +258,7 @@ const ResponsiveAppBar = () => {
                   <Avatar
                     alt={userData.full_name}
                     src={userData.pic_url}
-                    sx={{ height: 25, width: 25 }}
+                    sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
                   />
                 ) : (
                   <AccountCircle sx={{ color: "#ddd", fontSize: "xx-large" }} />
@@ -270,13 +273,15 @@ const ResponsiveAppBar = () => {
             >
               <List>
                 {isAuth && (
-                  <ListItem key="userName">
-                    <Typography variant="h6" ml={2} component="h6">
-                      {toTitleCase(userData.full_name)}
-                    </Typography>
-                  </ListItem>
+                  <>
+                    <ListItem key="userName">
+                      <Typography variant="h6" ml={2} component="h6">
+                        {toTitleCase(userData.full_name)}
+                      </Typography>
+                    </ListItem>
+                    <Divider />
+                  </>
                 )}
-                <Divider />
                 {settings.map((element) => (
                   <ListItem
                     key={element.name}
@@ -292,6 +297,7 @@ const ResponsiveAppBar = () => {
                       sx={{ px: 1 }}
                       component={Link}
                       to={`/${element.link}`}
+                      onClick={handleCloseUserMenu}
                     >
                       <ListItemIcon sx={{ minWidth: 0 }}>
                         {element.icon}{" "}

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   Grid,
   Link,
@@ -74,11 +75,11 @@ const SignupPage = () => {
         .unwrap()
         .then(() => {
           setSuccessful(true);
-          // console.log("dispatch then");
+          console.log("dispatch then");
         })
         .catch(() => {
           setSuccessful(false);
-          // console.log("dispatch catch");
+          console.log("dispatch catch");
         });
     },
   });
@@ -216,7 +217,7 @@ const SignupPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {sucessful ? <CircularProgress color='secondary' /> : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

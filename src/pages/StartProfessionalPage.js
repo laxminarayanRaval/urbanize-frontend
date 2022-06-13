@@ -145,9 +145,7 @@ const StartProfessionalPage = () => {
         <Grid item container xs={12} sm={12} md={12} p={1}>
           <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
           <Grid component={Button} variant="contained" item xs={12} sm={12} md={5} lg={5}>
-            {/* <> */}
               Process Further
-            {/* </Button> */}
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
         </Grid>

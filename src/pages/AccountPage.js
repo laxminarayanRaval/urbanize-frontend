@@ -20,7 +20,7 @@ const TabPanel = (props) => {
       {...rest}
     >
       {value == index && (
-        <Box component={Paper} sx={{ m: 2, p: 3 }}>
+        <Box component={Paper} sx={{ p: 2 }}>
           {children}
         </Box>
       )}
@@ -41,40 +41,64 @@ const AccountPage = () => {
   ];
 
   const userRole = useSelector((state) => state.auth.user.role);
-  if (userRole !== "user") tabs.splice(0, 0, { title: "Manage Professional Acc", component: <DeactivateAccount />});
+  if (userRole !== "user")
+    tabs.splice(0, 0, {
+      title: "Manage Professional Acc",
+      component: <DeactivateAccount />,
+    });
 
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleChangeTabs = (event, value) => {
     setSelectedTab(value);
   };
+
+  const tabsList = () =>
+    tabs.map((ele, index) => (
+      <Tab label={ele.title} key={index} {...tabsProps(index)} />
+    ));
   return (
-    <Grid
-      container spacing={2} px={5}
-      sx={{ display: "flex", minHeight: "70vh", alignItems: "center" }}
-    >
-      <Grid item xs={3} sm={3} md={3} lg={3} textAlign="left">
-        <Tabs
-          orientation="vertical"
-          variant="scrollable"
-          value={selectedTab}
-          onChange={handleChangeTabs}
-          aria-label="account page menu"
-          sx={{ borderRight: 1, borderColor: "divider" }}
-        >
+    <>
+      <Typography component="h3" variant="h4" textAlign="center">
+        Account Settings
+      </Typography>
+      <Grid
+        container
+        // spacing={2}
+        // px={5}
+        sx={{ display: "flex", minHeight: "70vh", alignItems: "center" }}
+      >
+        <Grid item sx={{ display: { xs: "none", md: "flex" } }} md={3} lg={3} pl={8}>
+          <Tabs
+            orientation="vertical"
+            variant="scrollable"
+            value={selectedTab}
+            onChange={handleChangeTabs}
+            aria-label="account page menu"
+            sx={{ borderRight: 1, borderColor: "divider" }}
+          >
+            {tabsList()}
+          </Tabs>
+        </Grid>
+        <Grid item sx={{ display: { xs: "flex", md: "none" }, backgroundColor: (theme) => theme.palette.divider }} xs={12} sm={12} mx={2} >
+          <Tabs
+            variant="scrollable"
+            value={selectedTab}
+            onChange={handleChangeTabs}
+            aria-label="account_page_menu"
+          >
+            {tabsList()}
+          </Tabs>
+        </Grid>
+        <Grid item xs={12} sm={12} md={7}>
           {tabs.map((ele, index) => (
-            <Tab label={ele.title} key={index} {...tabsProps(index)} />
+            <TabPanel value={selectedTab} index={index} key={index}>
+              {ele.component}
+            </TabPanel>
           ))}
-        </Tabs>
+        </Grid>
       </Grid>
-      <Grid item xs={7} sm={7} md={7} lg={9}>
-        {tabs.map((ele, index) => (
-          <TabPanel value={selectedTab} index={index} key={index}>
-            {ele.component}
-          </TabPanel>
-        ))}
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

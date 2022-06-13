@@ -72,7 +72,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Typography variant="h3" component="h2">
+      <Typography variant="h4" component="h3">
         Change Password
       </Typography>
       <Typography variant="h6" component="h4" sx={{ mt: 5, mb: 3 }}>

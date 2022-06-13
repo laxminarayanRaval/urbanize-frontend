@@ -91,39 +91,38 @@ const ContactDetails = () => {
 
   return (
     <>
-      <Typography variant="h3" component="h2">
+      <Typography variant="h4" component="h4">
         Contact Details
       </Typography>
 
       <Grid
         container
         component="address"
-        spacing={3}
-        my={2}
-        p={2}
-        maxWidth="max-content"
+        spacing={1}
+        pl={1}
+        alignItems='baseline'
       >
-        <Grid item xs={2} sm={2} md={2}>
-          <Typography variant="body1">Email Address:</Typography>
+        <Grid item xs={12} sm={12} md={2} mt={2}>
+          <Typography variant="body1" component="p">Email Address:</Typography>
         </Grid>
 
-        <Grid item xs={10} sm={10} md={10}>
-          <Typography variant="h6">{userData?.email}</Typography>
+        <Grid item xs={12} sm={12} md={10}>
+          <Typography variant="h6" component="h6">{userData?.email}</Typography>
         </Grid>
 
-        <Grid item xs={2} sm={2} md={2}>
-          <Typography variant="body2">Phone Number:</Typography>
+        <Grid item xs={12} sm={12} md={2} mt={2}>
+          <Typography variant="body2" component="p">Phone Number:</Typography>
         </Grid>
 
-        <Grid item xs={10} sm={10} md={10}>
-          <Typography variant="h6">
+        <Grid item xs={12} sm={12} md={10}>
+          <Typography variant="h6" component="h6">
             {userData?.mobile !== "None" ? userData?.mobile : "Not Provider"}
           </Typography>
         </Grid>
       </Grid>
 
-      <Typography variant="h6" component="h4" sx={{ mt: 5, mb: 3 }}>
-        DO You want to update your contact details
+      <Typography variant="h6" component="h4" sx={{ mt: 3, mb: 1 }}>
+        Do You want to update your contact details
       </Typography>
       <Button
         variant="contained"
