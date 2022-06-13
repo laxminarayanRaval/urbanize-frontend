@@ -6,7 +6,13 @@ import {
   Button,
   Container,
   Divider,
+  Drawer,
   IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Toolbar,
@@ -31,7 +37,7 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../store/slices/authSlice";
-import { changeThemeMode } from "../store/slices/themeSlice";
+
 import { getService, getSubservice } from "../store/slices/contentSlice";
 import { toTitleCase, makeSlug } from "../utils/Helpers";
 
@@ -42,15 +48,18 @@ const pages = [
 ];
 const ResponsiveAppBar = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const themeMode = useSelector((state) => state.theme.mode);
+  
   const userData = useSelector((state) => state.auth.user);
   const userMenuIconStyle = {
     fontSize: "large",
     mr: 1,
+    border: "0px solid",
+    borderColor: "primary",
     ":hover": {
-      borderLeft: "7px solid primary",
+      borderLeft: "7px solid",
     },
   };
+
   const settings = isAuth
     ? [
         {
@@ -122,7 +131,6 @@ const ResponsiveAppBar = () => {
     <AppBar>
       <Container maxWidth="xl">
         <Toolbar>
-          {/* <BlurOnIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Avatar
             key="logo"
             alt="logo"
@@ -148,7 +156,7 @@ const ResponsiveAppBar = () => {
           </Typography>
 
           <Box
-            key="box1"
+            key="box1-mobileView"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
             <IconButton
@@ -161,44 +169,33 @@ const ResponsiveAppBar = () => {
             >
               <MenuSharp />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+            <Drawer
+              anchor="top"
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  {/* <Typography textAlign="center">{page}</Typography> */}
-                  <Button
-                    sx={{ color: "#222" }}
-                    component={Link}
-                    to={`/${page.link}`}
-                  >
-                    {page.name}
-                  </Button>
-                </MenuItem>
-              ))}
-            </Menu>
+              <Box role="navigation" onClick={handleCloseNavMenu}>
+                <List>
+                  {pages.map((page) => (
+                    <ListItem
+                      key={page.name}
+                      disablePadding
+                      onClick={handleCloseNavMenu}
+                    >
+                      <ListItemButton component={Link} to={`/${page.link}`}>
+                        <ListItemText primary={page.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            </Drawer>
           </Box>
           <Avatar
             alt="logo"
             sx={{ display: { xs: "flex", md: "none" } }}
             src={Logo}
           />
-          {/* <BlurOnIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -218,7 +215,7 @@ const ResponsiveAppBar = () => {
             URBANIZE
           </Typography>
           <Box
-            key="box2"
+            key="box2-deskView"
             sx={{
               flexGrow: 1,
               display: {
@@ -240,8 +237,8 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
 
-          <Box key="box3" display="flex">
-            <Tooltip title="Open settings">
+          <Box key="box3-userDrawer" display="flex">
+            <Tooltip title="Open">
               <IconButton
                 onClick={handleOpenUserMenu}
                 sx={{
@@ -255,91 +252,79 @@ const ResponsiveAppBar = () => {
                 }}
               >
                 {isAuth ? (
-                  <>
-                    <Typography
-                      variant="body1"
-                      component="h6"
-                      color="secondary"
-                    >
-                      {toTitleCase(userData.full_name)}
-                    </Typography>
-                    <Avatar
-                      alt={userData.full_name}
-                      src={userData.pic_url}
-                      sx={{ height: 25, width: 25, ml: 1 }}
-                    />
-                  </>
+                  <Avatar
+                    alt={userData.full_name}
+                    src={userData.pic_url}
+                    sx={{ height: 25, width: 25 }}
+                  />
                 ) : (
                   <AccountCircle sx={{ color: "#ddd", fontSize: "xx-large" }} />
                 )}
               </IconButton>
             </Tooltip>
-            <Tooltip title={`${themeMode} Mode`}>
-              <IconButton
-                sx={{ p: 0 }}
-                onClick={(_) => dispatch(changeThemeMode())}
-              >
-                {themeMode === "light" ? (
-                  <LightMode sx={{ color: "#ddd", fontSize: "xx-large" }} />
-                ) : (
-                  <DarkMode sx={{ color: "#ddd", fontSize: "xx-large" }} />
-                )}
-              </IconButton>
-            </Tooltip>
 
-            <Menu
-              keepMounted
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            <Drawer
+              anchor="right"
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((element) => (
-                <MenuItem
-                  key={element.name}
-                  component={Link}
-                  to={`/${element.link}`}
-                  sx={{
-                    borderLeft: "7px solid #0000",
-                    ":hover": {
-                      borderLeft: "7px solid",
-                      transition: "ease-in-out",
-                    },
-                  }}
-                >
-                  <Divider />
-                  <Button>
-                    {element.icon}
-                    {element.name}
-                  </Button>
-                </MenuItem>
-              ))}
-              <Divider />
-              {isAuth && (
-                <MenuItem
-                  key="signout"
-                  // flexDirection="column"
-                  sx={{
-                    borderLeft: "7px solid #0000",
-                    color: "#700",
-                    ":hover": {
-                      borderLeft: "7px solid #700",
-                    },
-                  }}
-                  onClick={() => {
-                    dispatch(signout());
-                  }}
-                >
-                  <Button color="danger">
-                    <Logout sx={userMenuIconStyle} />
-                    sign out
-                  </Button>
-                </MenuItem>
-              )}
-            </Menu>
+              <List>
+                {isAuth && (
+                  <ListItem key="userName">
+                    <Typography variant="h6" ml={2} component="h6">
+                      {toTitleCase(userData.full_name)}
+                    </Typography>
+                  </ListItem>
+                )}
+                <Divider />
+                {settings.map((element) => (
+                  <ListItem
+                    key={element.name}
+                    sx={{
+                      borderLeft: "5px solid #0000",
+                      ":hover": {
+                        borderLeft: "5px solid",
+                        transition: "ease-in-out",
+                      },
+                    }}
+                  >
+                    <ListItemButton
+                      sx={{ px: 1 }}
+                      component={Link}
+                      to={`/${element.link}`}
+                    >
+                      <ListItemIcon sx={{ minWidth: 0 }}>
+                        {element.icon}{" "}
+                      </ListItemIcon>
+                      <ListItemText primary={element.name} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+                {isAuth && (
+                  <ListItem
+                    key="signout"
+                    sx={{
+                      borderLeft: "5px solid #0000",
+                      color: (theme) => theme.palette.danger.main,
+                      ":hover": {
+                        borderLeft: "5px solid",
+                        borderColor: (theme) => theme.palette.danger.main,
+                      },
+                    }}
+                    onClick={() => {
+                      dispatch(signout());
+                    }}
+                  >
+                    <ListItemButton sx={{ px: 1 }}>
+                      <ListItemIcon sx={{ minWidth: 0 }}>
+                        <Logout sx={userMenuIconStyle} />
+                      </ListItemIcon>
+                      <ListItemText primary={toTitleCase("sign out")} />
+                    </ListItemButton>
+                  </ListItem>
+                )}
+              </List>
+            </Drawer>
           </Box>
         </Toolbar>
       </Container>

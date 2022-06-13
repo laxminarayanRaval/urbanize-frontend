@@ -66,7 +66,7 @@ const MainLayout = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <div style={{ marginTop: "15vh" }}>
+      <div style={{ marginTop: "15vh", minHight: "95vh" }}>
         <Outlet />
       </div>
       <Footer />
