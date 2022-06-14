@@ -241,7 +241,7 @@ const SignupPage = () => {
             </Grid>
           )}
         </Grid>
-        <Grid item xs sm md={6} sx={{ marginLeft: "5%", marginTop: "5%" }}>
+        <Grid item md={6} sx={{ marginLeft: "5%", marginTop: "5%", display: { xs: 'none', md: 'flex'} }}>
           <Lottie
             animationData={SignupAnimation}
             style={{ width: "95%" }}

@@ -1,9 +1,47 @@
 import React, { useState } from "react";
-import { Box, Button, Chip, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import { HighlightOffOutlined } from "@mui/icons-material";
 
 import { toTitleCase } from "../utils/Helpers";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const cityNames = [
+  "Ahmedabad",
+  "Anand",
+  "Gandhinagar",
+  "Panchmahal",
+  "Porbandar",
+  "Rajkot",
+  "Surat",
+  "Vadodara",
+  "Bharuch",
+  "Navsari",
+  "Valsad",
+];
 
 const StartProfessionalPage = () => {
   const userData = useSelector((state) => state.auth.user);
@@ -36,16 +74,45 @@ const StartProfessionalPage = () => {
   };
   // Availability Time Formatting and Storing
 
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [startsTime, setStartTime] = useState("");
+  const [endsTime, setEndTime] = useState("");
 
   const avalblHrsHandler = (event) => {
     if (event.target.name === "startTime") setStartTime(event.target.value);
     else if (event.target.name === "endTime") setEndTime(event.target.value);
   };
 
-  const formattedTime = `${startTime} to ${endTime}`;
-  console.log("========= Formatted Time =========", formattedTime);
+  const formattedTime = `${startsTime} to ${endsTime}`;
+  // console.log("========= Formatted Time =========", formattedTime);
+
+  const [address, setAddress] = useState("");
+
+  const submitDataHandler = () => {
+    const data = { cities: citiesList.split(','), startsTime, endsTime };
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: ", data);
+  };
+
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  function getStyles(name, personName, theme) {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
 
   return (
     <Grid
@@ -57,7 +124,7 @@ const StartProfessionalPage = () => {
     >
       <Grid item xs={12} sm={12} md={12}>
         <Typography component="h3" variant="h5">
-          {`Mr. ${userData.full_name}`}
+          {`Mr/Ms. ${userData.full_name}`}
         </Typography>
         <Typography component="p" variant="body1">
           Please Provide Few Additional information to process your application
@@ -84,9 +151,43 @@ const StartProfessionalPage = () => {
               helperText="Cities where you want to provide Services. (Max 8)"
               {...citiesInputProps}
             />
+            <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+              <Select
+                labelId="demo-multiple-chip-label"
+                id="demo-multiple-chip"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                // renderValue={(selected) => (
+                //   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                //     {selected.map((value) => (
+                //       <Chip key={value} label={value} />
+                //     ))}
+                //   </Box>
+                // )}
+                MenuProps={MenuProps}
+                {...citiesInputProps}
+              >
+                {cityNames.map((name) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
-            {!citiesList.length && <Typography variant="body1">Please Select some Cities.</Typography>}
+            {!citiesList.length && (
+              <Typography variant="body1">
+                Please Select some Cities.
+              </Typography>
+            )}
             {!!citiesList.length &&
               citiesList.map((ele, index) => (
                 <Chip
@@ -135,6 +236,10 @@ const StartProfessionalPage = () => {
               multiline
               fullWidth
               rows={3}
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
               name="address"
               label="Profession's Address"
               helperText="If someone wants to meet you."
@@ -144,8 +249,17 @@ const StartProfessionalPage = () => {
         </Grid>
         <Grid item container xs={12} sm={12} md={12} p={1}>
           <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
-          <Grid component={Button} variant="contained" item xs={12} sm={12} md={5} lg={5}>
-              Process Further
+          <Grid
+            component={Button}
+            onClick={submitDataHandler}
+            variant="contained"
+            item
+            xs={12}
+            sm={12}
+            md={5}
+            lg={5}
+          >
+            Process Further
           </Grid>
           <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
         </Grid>

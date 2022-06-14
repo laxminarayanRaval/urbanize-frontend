@@ -6,7 +6,7 @@ import { Footer, Header } from "../component";
 import { useSelector } from "react-redux";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { teal, orange, red } from "@mui/material/colors";
+import { teal, orange, cyan, red, indigo } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
@@ -20,9 +20,10 @@ const MainLayout = () => {
         black: "#333",
         white: "#ddd",
       },
-      primary: { main: themeMode === "dark" ? teal[500] : teal[800] },
-      secondary: { main: orange[300] },
-      danger: { main: red[500] },
+      // primary: { main: themeMode === "dark" ? teal[500] : teal[800] },
+      primary: { main: indigo[600] },
+      secondary: { main: orange[600] },
+      danger: { main: red[800] },
       action: { hover: "#0002" },
       background: themeMode === "dark" ? {
         paper: '#000',
@@ -40,24 +41,24 @@ const MainLayout = () => {
       borderRadius: 10,
     },
     components: {
-      MuiIcon: {
-        styleOverrides: {
-          root: {
-            color: teal[800],
-          },
-        },
-      },
-      MuiMenuItem: {
-        defaultProps: {
-          hover: {
-            borderLeft: {
-              color: teal[800],
-              width: 2,
-              style: 'solid'
-            }
-          }
-        },
-      },
+      // MuiIcon: {
+        // styleOverrides: {
+          // root: {
+            // color: teal[800],
+          // },
+        // },
+      // },
+      // MuiMenuItem: {
+        // defaultProps: {
+          // hover: {
+            // borderLeft: {
+              // color: teal[800],
+              // width: 2,
+              // style: 'solid'
+            // }
+          // }
+        // },
+      // },
     },
   });
 

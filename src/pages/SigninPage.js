@@ -84,180 +84,169 @@ const SigninPage = (props) => {
     console.log("requestForgetPassword", data.get("email"), data);
     try {
       const response = await authService.forgetPassword(data);
-      
+
       console.log(response, response.data.message);
     } catch (err) {
       console.log(err.response.data.error);
     }
   };
-
-  if (isAuth) return <Navigate to="/" />;
-  if (isForgetPassword)
-    return (
-      <>
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <Grid item xs sm md={6} sx={{ marginLeft: "5%" }}>
-            <Lottie
-              animationData={SigninAnimation}
-              style={{ width: "90%" }}
-              loop={true}
-            />
+  const showForgetPassword = () => (
+    <Grid elevation={3} mx={1} p={2} item xs={12} sm={12} md={4} maxWidth="sm">
+      <Typography component="h3" variant="h4">
+        Please Enter Your Registered Email.
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={requestForgetPassword}
+        method="post"
+        sx={{ mt: 1 }}
+      >
+        <TextField
+          type="email"
+          name="email"
+          margin="normal"
+          helperText="Email Address Which is used to register your account"
+          required
+          fullWidth
+          label="Email Address"
+          autoFocus
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{
+            mt: 3,
+            mb: 2,
+            cursor: "pointer",
+          }}
+        >
+          Send Reset Password Link
+        </Button>
+        <Grid container>
+          <Grid item xs>
+            <Link onClick={changeForgetPassSiginHandler} variant="body2">
+              Rememberred ? Sig In.
+            </Link>
           </Grid>
-          <Grid
-            elevation={3}
-            sx={{ mx: "3%", mt: 5, padding: "3%", minHight: "max-content" }}
-            item
-            xs={12}
-            sm={12}
-            md={4}
-            maxWidth="xs"
-          >
-            <Typography component="h3" variant="h4">
-              Please Enter Your Registered Email.
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={requestForgetPassword}
-              method="post"
-              sx={{ mt: 1 }}
-            >
-              <TextField
-                type="email"
-                name="email"
-                margin="normal"
-                helperText="Email Address Which is used to register your account"
-                required
-                fullWidth
-                label="Email Address"
-                autoFocus
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  cursor: "pointer",
-                }}
-              >
-                Send Reset Password Link
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link onClick={changeForgetPassSiginHandler} variant="body2">
-                    Rememberred ? Sig In.
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link component={RRLink} to="/signup" variant="body2">
-                    Don't have an account? Sign Up
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
+          <Grid item>
+            <Link component={RRLink} to="/signup" variant="body2">
+              Don't have an account? Sign Up
+            </Link>
           </Grid>
         </Grid>
-      </>
-    );
+      </Box>
+    </Grid>
+  );
+  const showSignin = () => (
+    <Grid elevation={3} mx={1} p={2} item xs={12} sm={12} md={4} maxWidth="sm">
+      <Typography component="h3" variant="h1">
+        Sign in
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        method="post"
+        sx={{ mt: 1 }}
+      >
+        <TextField
+          type="email"
+          name="email"
+          margin="normal"
+          required
+          fullWidth
+          label="Email Address"
+          autoFocus
+          helperText={!isFormValid && "Need a proper Email address"}
+          onChange={onChangeFormData}
+          disabled={isLoading}
+        />
+        <TextField
+          type={passVisible ? "text" : "password"}
+          name="password"
+          required
+          margin="normal"
+          fullWidth
+          label="Password"
+          helperText={!isFormValid && "Password must be at least 8 characters"}
+          InputProps={{
+            endAdornment: passVisible ? (
+              <Visibility onClick={passVisibleClickHandler} />
+            ) : (
+              <VisibilityOff onClick={passVisibleClickHandler} />
+            ),
+          }}
+          onChange={onChangeFormData}
+          disabled={isLoading}
+        />
+        <FormControlLabel
+          name="rememberme"
+          control={<Checkbox value="remember" />}
+          label="Remember me"
+          disabled={isLoading}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          disabled={!isFormValid || isLoading}
+          sx={{
+            mt: 3,
+            mb: 2,
+            cursor: isFormValid ? "pointer" : "not-allowed",
+          }}
+        >
+          {isLoading ? <CircularProgress /> : "Sign In"}
+        </Button>
+        <Grid container>
+          <Grid item xs>
+            <Link
+              href=""
+              onClick={changeForgetPassSiginHandler}
+              variant="body2"
+            >
+              Forgot password?
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link component={RRLink} to="/signup" variant="body2">
+              Don't have an account? Sign Up
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Grid>
+  );
+
+  if (isAuth) return <Navigate to="/" />;
+
   return (
     <>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <Grid item xs sm md={6} sx={{ marginLeft: "5%" }}>
+      <Grid
+        container
+        component="main"
+        sx={{
+          height: "90vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Grid
+          item
+          sx={{
+            display: { xs: "none", md: "flex" },
+            // alignItems: "flex-start",
+            // justifyContent: "flex-end",
+          }}
+          md={6}
+        >
           <Lottie
             animationData={SigninAnimation}
-            style={{ width: "90%" }}
+            style={{ width: "95%" }}
             loop={true}
           />
         </Grid>
-        <Grid
-          elevation={3}
-          sx={{ mx: "3%", padding: "3%", minHight: "max-content" }}
-          item
-          xs={12}
-          sm={12}
-          md={4}
-          maxWidth="xs"
-        >
-          <Typography component="h1" variant="h1">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            method="post"
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              type="email"
-              name="email"
-              margin="normal"
-              required
-              fullWidth
-              label="Email Address"
-              autoFocus
-              helperText={!isFormValid && "Need a proper Email address"}
-              onChange={onChangeFormData}
-              disabled={isLoading}
-            />
-            <TextField
-              type={passVisible ? "text" : "password"}
-              name="password"
-              required
-              margin="normal"
-              fullWidth
-              label="Password"
-              helperText={
-                !isFormValid && "Password must be at least 8 characters"
-              }
-              InputProps={{
-                endAdornment: passVisible ? (
-                  <Visibility onClick={passVisibleClickHandler} />
-                ) : (
-                  <VisibilityOff onClick={passVisibleClickHandler} />
-                ),
-              }}
-              onChange={onChangeFormData}
-              disabled={isLoading}
-            />
-            <FormControlLabel
-              name="rememberme"
-              control={<Checkbox value="remember" />}
-              label="Remember me"
-              disabled={isLoading}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disabled={!isFormValid || isLoading}
-              sx={{
-                mt: 3,
-                mb: 2,
-                cursor: isFormValid ? "pointer" : "not-allowed",
-              }}
-            >
-              {isLoading ? <CircularProgress /> : "Sign In"}
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  href=""
-                  onClick={changeForgetPassSiginHandler}
-                  variant="body2"
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link component={RRLink} to="/signup" variant="body2">
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-        <Grid item xs sm md={2} />
+        {isForgetPassword ? showForgetPassword() : showSignin()}
       </Grid>
     </>
   );
