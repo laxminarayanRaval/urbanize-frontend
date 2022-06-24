@@ -26,8 +26,8 @@ import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const { message } = useSelector((state) => state.message);
+  const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
+  const { message } = useSelector((state) => state?.message);
 
   const dispatch = useDispatch();
   const [sucessful, setSuccessful] = React.useState(false);
@@ -91,7 +91,7 @@ const SignupPage = () => {
       <Grid
         container
         component="main"
-        sx={{ height: "100vh", marginBottom: "5%" }}
+        sx={{ height: { xs: "max-content", md: "90vh" }, marginBottom: "5%" }}
       >
         <Grid
           item

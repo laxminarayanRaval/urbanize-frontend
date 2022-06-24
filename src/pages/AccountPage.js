@@ -40,7 +40,7 @@ const AccountPage = () => {
     { title: "Deactivate Account", component: <DeactivateAccount /> },
   ];
 
-  const userRole = useSelector((state) => state.auth.user.role);
+  const userRole = useSelector((state) => state?.auth?.user?.role);
   if (userRole !== "user")
     tabs.splice(0, 0, {
       title: "Manage Professional Acc",
@@ -60,7 +60,7 @@ const AccountPage = () => {
   return (
     <>
       <Typography component="h3" variant="h4" textAlign="center">
-        Account Settings
+        {userRole} Account Settings
       </Typography>
       <Grid
         container
@@ -68,7 +68,13 @@ const AccountPage = () => {
         // px={5}
         sx={{ display: "flex", minHeight: "70vh", alignItems: "center" }}
       >
-        <Grid item sx={{ display: { xs: "none", md: "flex" } }} md={3} lg={3} pl={8}>
+        <Grid
+          item
+          sx={{ display: { xs: "none", md: "flex" } }}
+          md={3}
+          lg={3}
+          pl={8}
+        >
           <Tabs
             orientation="vertical"
             variant="scrollable"
@@ -80,7 +86,16 @@ const AccountPage = () => {
             {tabsList()}
           </Tabs>
         </Grid>
-        <Grid item sx={{ display: { xs: "flex", md: "none" }, backgroundColor: (theme) => theme.palette.divider }} xs={12} sm={12} mx={2} >
+        <Grid
+          item
+          sx={{
+            display: { xs: "flex", md: "none" },
+            backgroundColor: (theme) => theme.palette.divider,
+          }}
+          xs={11}
+          sm={11}
+          mx={2}
+        >
           <Tabs
             variant="scrollable"
             value={selectedTab}

@@ -9,7 +9,7 @@ function TransitionUp(props) {
 const AlertMessage = () => {
   const [open, setOpen] = React.useState(true);
   const [transition, setTransition] = React.useState(undefined);
-  const { message } = useSelector((state) => state.message);
+  const { message } = useSelector((state) => state?.message);
   console.log(message);
 
   // const handleClick = (Transition) => () => {

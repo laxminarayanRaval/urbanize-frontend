@@ -28,7 +28,7 @@ const signin = (email, password) => {
         // JSON.stringify(response.data[key])
         // );
         // });
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("token", JSON.stringify(response.data));
       }
       const { token_type, iat, jti, ...rest } = jwtDecode(response.data.access);
       return { ...rest, ...response.data };

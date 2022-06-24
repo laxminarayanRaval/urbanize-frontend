@@ -27,7 +27,7 @@ const SigninPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isForgetPassword, setIsForgetPassword] = useState(false);
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -226,7 +226,7 @@ const SigninPage = (props) => {
         container
         component="main"
         sx={{
-          height: "90vh",
+          height: { xs: "max-content", md: "90vh" },
           alignItems: "center",
           justifyContent: "center",
         }}

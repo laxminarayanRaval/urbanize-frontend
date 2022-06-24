@@ -12,8 +12,8 @@ import { useSelector } from "react-redux";
 
 const Services = () => {
   const [selectedServiceId, setSelectedServiceId] = useState(0);
-  const services = useSelector((state) => state.content.services);
-  const subservices = useSelector((state) => state.content.subservices);
+  const services = useSelector((state) => state?.content?.services);
+  const subservices = useSelector((state) => state?.content?.subservices);
 
   const clickHandler = (event) => {
     if (event.target.id === selectedServiceId) setSelectedServiceId(0);

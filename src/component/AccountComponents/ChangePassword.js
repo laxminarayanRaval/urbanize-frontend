@@ -54,7 +54,6 @@ const ChangePassword = () => {
         oldpassword: oldPassword,
         ...newPassword,
       });
-      debugger;
       const data = await response.data;
       console.log("8==>", data.message);
       setErrorMessage("");

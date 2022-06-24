@@ -20,7 +20,7 @@ const DeactivateAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const userId = useSelector((state) => state.auth.user.user_id);
+  const userId = useSelector((state) => state.auth?.user?.id);
   const passVisibleClickHandler = () => {
     setPassVisible(!passVisible);
   };
@@ -33,7 +33,7 @@ const DeactivateAccount = () => {
       const response = await authService.deactivateAccount(userId, password);
       const data = await response.data;
       // console.log("8==>", data.message);
-      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       const dispatch = useDispatch();
       dispatch(signout());
     } catch (err) {

@@ -18,7 +18,7 @@ import { updateContacts } from "../../store/slices/authSlice";
 
 const ContactDetails = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const userData = useSelector((state) => state.auth.user);
+  const userData = useSelector((state) => state?.auth?.user);
 
   const [passVisible, setPassVisible] = useState(false);
   const [emailEdit, setEmailEdit] = useState(true);
@@ -52,7 +52,6 @@ const ContactDetails = () => {
     dispatch(updateContacts({ password, email, mobile }))
       .unwrap()
       .then(() => {
-        debugger;
         setPreventChange(true);
         setErrorMessage("");
         setSuccessMessage("Details updated successfully.");
@@ -64,7 +63,6 @@ const ContactDetails = () => {
     setEmailEdit(true);
     setMobileEdit(true);
     // console.log("85: ");
-    // debugger;
 
     // try {
     //   const response = await userService.updateContactDetails({
@@ -116,7 +114,7 @@ const ContactDetails = () => {
 
         <Grid item xs={12} sm={12} md={10}>
           <Typography variant="h6" component="h6">
-            {userData?.mobile !== "None" ? userData?.mobile : "Not Provider"}
+            {userData?.mobile ? userData?.mobile : "Not Provider"}
           </Typography>
         </Grid>
       </Grid>

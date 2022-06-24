@@ -1,33 +1,76 @@
 import React from "react";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, Link as RouterLink, MemoryRouter } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
+import PropTypes from "prop-types";
 
 import { Footer, Header } from "../component";
 import { useSelector } from "react-redux";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  experimental_sx as sx,
+} from "@mui/material/styles";
 import { teal, orange, cyan, red, indigo } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
-  const themeMode = useSelector((state) => state.theme.mode);
+  const themeMode = useSelector((state) => state?.theme?.mode);
   // console.log(themeMode);
+
+  // -------------------------------------------------------------------------------------
+  const LinkBehavior = React.forwardRef((props, ref) => {
+    const { href, ...other } = props;
+    // Map href (MUI) -> to (react-router)
+    return (
+      <RouterLink data-testid="custom-link" ref={ref} to={href} {...other} />
+    );
+  });
+
+  LinkBehavior.propTypes = {
+    href: PropTypes.oneOfType([
+      PropTypes.shape({
+        hash: PropTypes.string,
+        pathname: PropTypes.string,
+        search: PropTypes.string,
+      }),
+      PropTypes.string,
+    ]).isRequired,
+  };
+
+  function Router(props) {
+    const { children } = props;
+    if (typeof window === "undefined") {
+      return <StaticRouter location="/">{children}</StaticRouter>;
+    }
+
+    return <MemoryRouter>{children}</MemoryRouter>;
+  }
+
+  Router.propTypes = {
+    children: PropTypes.node,
+  };
+  // -------------------------------------------------------------------------------------
 
   const theme = createTheme({
     palette: {
       mode: themeMode,
-      common: {
-        black: "#333",
-        white: "#ddd",
-      },
+      // common: {
+      // black: "#333",
+      // white: "#ddd",
+      // },
       // primary: { main: themeMode === "dark" ? teal[500] : teal[800] },
-      primary: { main: indigo[600] },
+      // primary: { main: indigo[600] },
       secondary: { main: orange[600] },
       danger: { main: red[800] },
       action: { hover: "#0002" },
-      background: themeMode === "dark" ? {
-        paper: '#000',
-      } : {},
+      background:
+        themeMode === "dark"
+          ? {
+              paper: "#000",
+            }
+          : {},
     },
     typography: {
       fontWeightLight: 300,
@@ -41,23 +84,61 @@ const MainLayout = () => {
       borderRadius: 10,
     },
     components: {
+      MuiButton: {
+        styleOverrides: {
+          root: ({ ownerState }) => ({
+            ...(ownerState.variant === "contained" &&
+              ownerState.color === "primary" &&
+              {
+                // backgroundColor: '#222',
+                // color: '#fff',
+              }),
+          }),
+        },
+      },
+      MuiLink: {
+        defaultProps: {
+          component: LinkBehavior,
+        },
+      },
+      MuiButtonBase: {
+        defaultProps: {
+          LinkComponent: LinkBehavior,
+        },
+      },
+      // MuiChip: {
+      //   styleOverrides: {
+      //     root: sx({
+      //       px: 1,
+      //       py: 0.25,
+      //       borderRadius: 1,
+      //     }),
+      //     label: {
+      //       padding: 'initial',
+      //     },
+      //     icon: sx({
+      //       mr: 0.5,
+      //       ml: '-2px',
+      //     }),
+      //   },
+      // },
       // MuiIcon: {
-        // styleOverrides: {
-          // root: {
-            // color: teal[800],
-          // },
-        // },
+      // styleOverrides: {
+      // root: {
+      // color: teal[800],
+      // },
+      // },
       // },
       // MuiMenuItem: {
-        // defaultProps: {
-          // hover: {
-            // borderLeft: {
-              // color: teal[800],
-              // width: 2,
-              // style: 'solid'
-            // }
-          // }
-        // },
+      // defaultProps: {
+      // hover: {
+      // borderLeft: {
+      // color: teal[800],
+      // width: 2,
+      // style: 'solid'
+      // }
+      // }
+      // },
       // },
     },
   });

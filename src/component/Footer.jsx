@@ -28,7 +28,7 @@ import { changeThemeMode } from "../store/slices/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Footer() {
-  const themeMode = useSelector((state) => state.theme.mode);
+  const themeMode = useSelector((state) => state?.theme?.mode);
 
   const dispatch = useDispatch();
 
