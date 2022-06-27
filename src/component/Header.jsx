@@ -36,6 +36,7 @@ import { signout } from "../store/slices/authSlice";
 
 import { getService, getSubservice } from "../store/slices/contentSlice";
 import { toTitleCase, makeSlug } from "../utils/Helpers";
+import { getUserDetails } from "../store/slices/authSlice";
 
 const pages = [
   { name: "Products", link: "products" },
@@ -43,9 +44,9 @@ const pages = [
   { name: "Contact Us", link: "contact_us" },
 ];
 const ResponsiveAppBar = (props) => {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
 
-  const userData = useSelector((state) => state.auth.user);
+  const userData = useSelector((state) => state?.auth?.user);
   const userMenuIconStyle = {
     fontSize: "large",
     mr: 1,
@@ -60,7 +61,9 @@ const ResponsiveAppBar = (props) => {
     ? [
         {
           name: "Profile",
-          link: `profile/${makeSlug(userData.full_name)}/${userData.user_id}/`,
+          link: `profile/${makeSlug(userData?.full_name)}/${
+            userData?.user_id
+          }/`,
           icon: <AccountBox sx={{ ...userMenuIconStyle }} />,
         },
         {
@@ -87,7 +90,7 @@ const ResponsiveAppBar = (props) => {
         },
       ];
 
-  if (userData && userData.role === "user") {
+  if (userData && userData?.role === "user") {
     settings.push({
       name: "Became a Professional",
       link: "start_as_professional",
@@ -96,6 +99,18 @@ const ResponsiveAppBar = (props) => {
   }
 
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getService());
+    dispatch(getSubservice());
+    return () => {
+      //   second;
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (isAuth) dispatch(getUserDetails());
+  }, [isAuth]);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -114,14 +129,6 @@ const ResponsiveAppBar = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  React.useEffect(() => {
-    dispatch(getService());
-    dispatch(getSubservice());
-    return () => {
-      //   second;
-    };
-  }, []);
 
   // --------------------------------------------------------------------------------------
   function ElevationScroll(props) {
@@ -279,8 +286,8 @@ const ResponsiveAppBar = (props) => {
                 >
                   {isAuth ? (
                     <Avatar
-                      alt={userData.full_name}
-                      src={userData.pic_url}
+                      alt={userData?.full_name}
+                      src={userData?.pic_url}
                       sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
                     />
                   ) : (
@@ -299,7 +306,7 @@ const ResponsiveAppBar = (props) => {
                     <>
                       <ListItem key="userName">
                         <Typography variant="h6" ml={2} component="h6">
-                          {toTitleCase(userData.full_name)}
+                          {toTitleCase(userData?.full_name)}
                         </Typography>
                       </ListItem>
                       <Divider />

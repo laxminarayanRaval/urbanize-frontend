@@ -46,7 +46,7 @@ const Services = () => {
               />
             </Stack>
           ))}
-        {services.map((service) => (
+        {services?.map((service) => (
           <Grid
             xs={6}
             sm={6}

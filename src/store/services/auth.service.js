@@ -31,7 +31,7 @@ const signin = (email, password) => {
         localStorage.setItem("token", JSON.stringify(response.data));
       }
       const { token_type, iat, jti, ...rest } = jwtDecode(response.data.access);
-      return { ...rest, ...response.data };
+      return { ...rest };
     });
 };
 
@@ -40,9 +40,9 @@ const signout = () => {
   localStorage.removeItem("user");
 };
 
-const changePassword = ({oldpassword, password, password2}) =>{
-  debugger
-  return (axios.post(
+const changePassword = ({ oldpassword, password, password2 }) => {
+  debugger;
+  return axios.post(
     `${API_URL}/auth/change_password/`,
     {
       oldpassword,
@@ -50,9 +50,8 @@ const changePassword = ({oldpassword, password, password2}) =>{
       password2,
     },
     headers
-  ))
-}
-  
+  );
+};
 
 const deactivateAccount = (uid, password) =>
   axios.post(`${API_URL}/auth/deactivate_account`, { uid, password }, headers);

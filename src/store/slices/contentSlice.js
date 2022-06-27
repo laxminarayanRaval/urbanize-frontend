@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userService from "../services/user.service";
 
 export const getService = createAsyncThunk("content/getService", async () => {
-  const response = await userService.getServiceList().then(
+  // const response = await userService.getServiceList().then(
+    const response = await userService.getAllServicesList().then(
     (response) => {
     //   console.log("Redux-ser :", response?.data);
       return response.status == "200" ? response.data : [];

@@ -7,19 +7,22 @@ import { setMessage } from "./messageSlice";
 const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
 
 const checkAuth = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("token"));
   if (user?.access) {
     const { token_type, iat, jti, exp, ...rest } = jwtDecode(user.access);
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(user.refresh);
       if (is_expired(exp)) {
-        localStorage.removeItem("user");
+        localStorage.removeItem("token");
         return null;
       }
       try {
+        debugger;
         return authService.refreshAuthToken(user.refresh).then((response) => {
+          debugger;
+
           if (response.data)
-            localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("token", JSON.stringify(response.data));
 
           const newUserToken = JSON.parse(response.data);
           const { token_type, iat, jti, exp, ...rest } = jwtDecode(
@@ -114,8 +117,40 @@ export const updateContacts = createAsyncThunk(
         .replace(/\[|]|{|}/g, " ")
         // .replaceAll(",", "\n")
         .split(":")[1];
-        console.log(errorMessage)
+      console.log(errorMessage);
       thunkAPI.dispatch(setMessage(errorMessage));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const getUserDetails = createAsyncThunk(
+  "auth/getUserDetails",
+  async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) return user;
+
+    try {
+      const response = await userService.getUserDetails().then((response) => {
+        const data = response.data;
+        return data;
+      });
+      debugger;
+
+      // console.log(JSON.parse(JSON.stringify(response)))
+      const { professionaluser_set, ...userData } = response;
+
+      const jsonData = JSON.stringify({
+        professionaluser_set: { ...professionaluser_set[0] },
+        ...userData,
+      });
+      localStorage.setItem("user", jsonData);
+      // const data = await response.data;
+
+      // return { ...response };
+      return JSON.parse(jsonData);
+    } catch (err) {
+      console.log(err);
       return thunkAPI.rejectWithValue();
     }
   }
@@ -131,24 +166,33 @@ const authSlice = createSlice({
     [signup.rejected]: (state) => {
       state.isAuthenticated = false;
     },
-    [signin.pending]: (state, action) => {
+    [signin.pending]: (state) => {
       state.isAuthenticated = false;
     },
     [signin.fulfilled]: (state, action) => {
       state.isAuthenticated = true;
       state.user = action.payload.user;
     },
-    [signin.rejected]: (state, action) => {
+    [signin.rejected]: (state) => {
       state.isAuthenticated = false;
       state.user = null;
     },
-    [signout.fulfilled]: (state, action) => {
+    [signout.fulfilled]: (state) => {
       state.isAuthenticated = false;
       state.user = null;
     },
     [updateContacts.fulfilled]: (state, action) => {
       state.user.email = action.payload.email;
       state.user.mobile = action.payload.mobile;
+    },
+    [getUserDetails.pending]: (state) => {
+      state.user = null;
+    },
+    [getUserDetails.fulfilled]: (state, action) => {
+      state.user = { ...action.payload };
+    },
+    [getUserDetails.rejected]: (state) => {
+      state.user = null;
     },
   },
 });
