@@ -3,7 +3,7 @@ import { Button, Grid, Paper, Stack, styled, Typography } from "@mui/material";
 import { DoubleArrowSharp } from "@mui/icons-material";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundImage: `linear-gradient(150deg, ${theme.palette.primary.main} 0%, ${theme.palette.danger.main} 100%)`,
   ...theme.typography.body2,
   textAlign: "center",
   height: 5,
@@ -51,6 +51,8 @@ const Carousel = ({ dataArray, duration = 3 }) => {
             md: evenOdd ? "row" : "row-reverse",
           },
           alignItems: "center",
+          mb: 2,
+          mx: 1,
         }}
       >
         {dataArray[activeSlid]?.img && (
@@ -58,8 +60,10 @@ const Carousel = ({ dataArray, duration = 3 }) => {
             item
             xs={12}
             md={6}
-            display="flex"
-            justifyContent={evenOdd ? "flex-end" : "flex-start"}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: evenOdd ? "flex-end" : "flex-start",
+            }}
           >
             <img src={dataArray[activeSlid]?.img} height="75%" />
           </Grid>
@@ -69,7 +73,7 @@ const Carousel = ({ dataArray, duration = 3 }) => {
           xs
           md
           textAlign={evenOdd ? "left" : "right"}
-          sx={{ maxWidth: "35% !important" }}
+          sx={{ maxWidth: {xs:"99% !important", md: "35% !important"} }}
         >
           {dataArray[activeSlid]?.title}
 

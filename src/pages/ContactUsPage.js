@@ -9,7 +9,7 @@ import { Box } from "@mui/system";
 
 const ContactUsPage = () => {
   return (
-    <Grid container justifyContent="space-evenly" alignItems="center">
+    <Grid container justifyContent="space-evenly" alignItems="center" mt={ -8}>
       <Grid item xs={false} md={6}>
         <Lottie animationData={ContactusAnim} loop={true} />
       </Grid>
@@ -28,13 +28,12 @@ const ContactUsPage = () => {
           </Typography>
         </Tooltip>
         <Grid>
-          <Grid container spacing={5}>
+          <Grid container spacing={1} mb={1}>
             <Grid item md={6}>
               <TextField
                 name="first_name"
                 id="first_name"
                 label="First Name"
-                // variant="standard"
               />
             </Grid>
             <Grid item md={6}>
@@ -42,11 +41,10 @@ const ContactUsPage = () => {
                 name="last_name"
                 id="last_name"
                 label="Last Name"
-                // variant="standard"
               />
             </Grid>
           </Grid>
-          <Grid container spacing={5}>
+          <Grid container spacing={1}>
             <Grid item md={6}>
               <TextField
                 name="email_id"

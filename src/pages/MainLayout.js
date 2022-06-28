@@ -4,15 +4,16 @@ import { Outlet, Link as RouterLink, MemoryRouter } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
 import PropTypes from "prop-types";
 
-import { Footer, Header } from "../component";
+import { Footer, Header, ScrollToTop } from "../component";
 import { useSelector } from "react-redux";
 
 import {
   createTheme,
   ThemeProvider,
+  responsiveFontSizes,
   experimental_sx as sx,
 } from "@mui/material/styles";
-import { teal, orange, cyan, red, indigo } from "@mui/material/colors";
+import { orange, red } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 
 const MainLayout = () => {
@@ -53,7 +54,7 @@ const MainLayout = () => {
   };
   // -------------------------------------------------------------------------------------
 
-  const theme = createTheme({
+  let theme = createTheme({
     palette: {
       mode: themeMode,
       // common: {
@@ -68,7 +69,7 @@ const MainLayout = () => {
       background:
         themeMode === "dark"
           ? {
-              paper: "#000",
+              paper: "#111",
             }
           : {},
     },
@@ -87,12 +88,19 @@ const MainLayout = () => {
       MuiButton: {
         styleOverrides: {
           root: ({ ownerState }) => ({
-            ...(ownerState.variant === "contained" &&
-              ownerState.color === "primary" &&
-              {
-                // backgroundColor: '#222',
-                // color: '#fff',
-              }),
+            ...// ownerState.variant === "contained" &&
+            (ownerState.color === "primary" && {
+              backgroundSize: "100% 0.2em",
+              transition: "background-size 0.3s ease-in",
+              backgroundPosition: "0 88%",
+              backgroundRepeat: "no-repeat",
+              "&:hover": {
+                backgroundImage:
+                  "linear-gradient(160deg, #1976d2 0%, #ea4336 100%)",
+                backgroundSize: "100% 100%",
+                color: "#FFF !important",
+              },
+            }),
           }),
         },
       },
@@ -106,42 +114,27 @@ const MainLayout = () => {
           LinkComponent: LinkBehavior,
         },
       },
-      // MuiChip: {
-      //   styleOverrides: {
-      //     root: sx({
-      //       px: 1,
-      //       py: 0.25,
-      //       borderRadius: 1,
-      //     }),
-      //     label: {
-      //       padding: 'initial',
-      //     },
-      //     icon: sx({
-      //       mr: 0.5,
-      //       ml: '-2px',
-      //     }),
-      //   },
-      // },
-      // MuiIcon: {
-      // styleOverrides: {
-      // root: {
-      // color: teal[800],
-      // },
-      // },
-      // },
-      // MuiMenuItem: {
-      // defaultProps: {
-      // hover: {
-      // borderLeft: {
-      // color: teal[800],
-      // width: 2,
-      // style: 'solid'
-      // }
-      // }
-      // },
-      // },
+      /* MuiTextField: {
+        styleOverrides: {
+          root: ({ ownerState }) => ({
+            ...(ownerState.variant === "standard" && {
+              backgroundSize: "100% 0.2em",
+              "&:hover": {
+                backgroundImage:
+                  "linear-gradient(160deg, #1976d2AA 0%, #ea4336AA 100%)",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "0 88%",
+                transition: "background-size 0.3s ease-in",
+                backgroundSize: "100% 100%",
+              },
+            })
+          })
+        }
+      }, */
     },
   });
+
+  theme = responsiveFontSizes(theme);
 
   // const theme = createTheme({ mode: 'light', palette: lightPalette, ...themeOptions });
   return (
@@ -152,6 +145,7 @@ const MainLayout = () => {
         <Outlet />
       </div>
       <Footer />
+      <ScrollToTop />
     </ThemeProvider>
   );
 };

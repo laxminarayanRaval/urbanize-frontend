@@ -33,19 +33,29 @@ const setSubTitle = (subTitle) => (
 );
 
 const setAction = ({ link, text, icon = <DoubleArrowSharp /> }) => (
-  <Button variant="outlined" href={link} endIcon={icon}>
+  <Button
+    variant="outlined"
+    sx={{
+      "&:hover": {
+        borderColor: 'transparent',
+        color: (theme) => theme.palette.secondary.main,
+      },
+    }}
+    href={link}
+    endIcon={icon}
+  >
     {text}
   </Button>
 );
 
-export const CarouselData = [
+export const HeroCarouselData = [
   {
     img: vector1,
     title: setTitle("Planing to Change office location"),
     subTitle: setSubTitle(
       "Packing-Unpacking to Loading-Unloading for every task you can trust on us."
     ),
-    action: setAction({link:'#', text: 'Hire Now'}),
+    action: setAction({ link: "#", text: "Hire Now" }),
   },
   {
     img: vector2,
@@ -53,7 +63,7 @@ export const CarouselData = [
     subTitle: setSubTitle(
       "All kind of electronic repairing service providers are available."
     ),
-    action: setAction({link:'#', text: 'Hire Now'}),
+    action: setAction({ link: "#", text: "Hire Now" }),
   },
   {
     img: vector3,
@@ -61,7 +71,7 @@ export const CarouselData = [
     subTitle: setSubTitle(
       "Stop dusting now and hire some professional cleaning services providers."
     ),
-    action: setAction({link:'#', text: 'Hire Now'}),
+    action: setAction({ link: "#", text: "Hire Now" }),
   },
   {
     img: vector4,
@@ -69,7 +79,7 @@ export const CarouselData = [
     subTitle: setSubTitle(
       "Here we have Bestest plant relocators, who will care your love like baby."
     ),
-    action: setAction({link:'#', text: 'Hire Now'}),
+    action: setAction({ link: "#", text: "Hire Now" }),
   },
   {
     img: vector5,
@@ -77,6 +87,6 @@ export const CarouselData = [
     subTitle: setSubTitle(
       "Looking For Professional Cleaners to cleanup your mess."
     ),
-    action: setAction({link:'#', text: 'Hire Now'}),
+    action: setAction({ link: "#", text: "Hire Now" }),
   },
 ];

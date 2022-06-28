@@ -1,7 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Copyright from "./Copyright";
 import {
   Divider,
@@ -10,8 +8,8 @@ import {
   Link,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
-  Tooltip,
 } from "@mui/material";
 import {
   DarkMode,
@@ -26,6 +24,22 @@ import {
 
 import { changeThemeMode } from "../store/slices/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { makeSlug } from "../utils/Helpers";
+
+const setListLinks = (element) => (
+  <ListItemButton
+    sx={{
+      borderRadius: 10,
+      my: 0,
+      py: 0,
+      maxWidth: "max-content",
+    }}
+    component={Link}
+    href={makeSlug("#" + element)}
+  >
+    <ListItemText>{element}</ListItemText>
+  </ListItemButton>
+);
 
 export default function Footer() {
   const themeMode = useSelector((state) => state?.theme?.mode);
@@ -42,12 +56,17 @@ export default function Footer() {
   ];
 
   const companyTags = [
-    "History",
-    "Story",
+    "About us",
     "Blog",
     "Career",
+    "FAQs",
+    "History",
+    "Sitemap",
+    "Story",
+    "Trust & Safety",
     "Advertise with us",
     "Press & Journal",
+    "Support Center",
     "Terms & Conditions",
   ];
 
@@ -58,7 +77,7 @@ export default function Footer() {
       sx={{
         py: 3,
         px: 2,
-        mt: "auto",
+        mt: 1,
         backgroundColor: (theme) =>
           theme.palette.mode === "light"
             ? theme.palette.grey[200]
@@ -83,42 +102,58 @@ export default function Footer() {
         {/* <Tooltip title={`${themeMode} Mode`}> */}
         <IconButton onClick={(_) => dispatch(changeThemeMode())}>
           {themeMode === "light" ? (
-            <LightMode sx={{ color: "#222", mx: 0.25 }} />
+            <LightMode sx={{ color: "#222" }} />
           ) : (
-            <DarkMode sx={{ color: "#ddd", mx: 0.25 }} />
+            <DarkMode sx={{ color: "#ddd" }} />
           )}
         </IconButton>
         {/* </Tooltip> */}
       </Grid>
       <Grid item container p={2} xs={12} sm={12} md={6} lg={6}>
-        <Grid item xs={6} sm={6}>
+        <Grid item xs={6} sm={6} md>
           <Typography variant="h5">Company</Typography>
           <List>
             {companyTags.map((ele) => (
-              <ListItem key={ele} sx={{ py: 0.5 }}>
-                <ListItemText>{ele}</ListItemText>
+              <ListItem key={ele} sx={{ py: 0 }}>
+                {setListLinks(ele)}
               </ListItem>
             ))}
           </List>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <Typography variant="h5">Services</Typography>
-
-          {["Cleaning", "Repairing", "Re-Location", "Tutoring"].map((ele) => (
-            <ListItem key={ele}>
-              <ListItemText>{ele}</ListItemText>
+        <Grid item xs={6} sm={6} md>
+          <Typography variant="h5">Popular 5 Services</Typography>
+          {[
+            "AC Service & Repair",
+            "Bathroom Cleaning",
+            "Kitchen Cleaning",
+            "Packing & Unpacking",
+            "Plants Relocation",
+            "Sofa Cleaning",
+            "Washing Machine Repair",
+          ].map((ele) => (
+            <ListItem key={ele} sx={{ py: 0.25 }}>
+              {setListLinks(ele)}
             </ListItem>
           ))}
         </Grid>
       </Grid>
       <Grid item xs={12} sm={12} md={3} lg={3} p={2}>
         <Typography variant="h5">Download Our App</Typography>
-        <Typography variant="body2">Do things with ease on tips your fingers.</Typography>
-        <img src="https://res.cloudinary.com/urbanize/image/upload/v1655109450/RCB-Google-Play_dllw9s.png" width='200px' alt="Google Play Store" />
-        <img src="https://res.cloudinary.com/urbanize/image/upload/v1655109550/download-on-the-app-store_kyuqqf.svg" width='200px' alt="Google Play Store" />
-        
+        <Typography variant="body2">
+          Do things with ease on tips your fingers.
+        </Typography>
+        <img
+          src="https://res.cloudinary.com/urbanize/image/upload/v1655109450/RCB-Google-Play_dllw9s.png"
+          width="200px"
+          alt="Google Play Store"
+        />
+        <img
+          src="https://res.cloudinary.com/urbanize/image/upload/v1655109550/download-on-the-app-store_kyuqqf.svg"
+          width="200px"
+          alt="Google Play Store"
+        />
       </Grid>
-      <Grid item xs={12} sm={12} md={12} justifyContent="center" maxWidth="sm" >
+      <Grid item xs={12} sm={12} md={12} justifyContent="center" maxWidth="sm">
         <Typography variant="body1" textAlign="center">
           All you need is to care about yourself 1st.
         </Typography>

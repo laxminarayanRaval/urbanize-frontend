@@ -7,13 +7,18 @@ import {
   Container,
   Divider,
   Drawer,
+  FormControl,
   IconButton,
+  InputLabel,
   Link,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Select,
   Toolbar,
   Tooltip,
   Typography,
@@ -35,8 +40,65 @@ import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../store/slices/authSlice";
 
 import { getService, getSubservice } from "../store/slices/contentSlice";
-import { toTitleCase, makeSlug } from "../utils/Helpers";
+import {
+  toTitleCase,
+  makeSlug,
+  makeAvtarText,
+  citiesNames,
+} from "../utils/Helpers";
 import { getUserDetails } from "../store/slices/authSlice";
+
+/* Underline Magic scss */
+const underlineMagicStyle = {
+  backgroundImage: "linear-gradient(120deg, #1976d2AA 0%, #ea433688 100%)",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "100% 0.2em",
+  backgroundPosition: "0 88%",
+  transition: "background-size 0.25s ease-in",
+  "&:hover": {
+    backgroundSize: "100% 100%",
+    color: "#FFF",
+  },
+};
+/* -------------------- */
+
+// Change City
+const SelectCity = () => {
+  const [city, setCity] = React.useState(5);
+
+  const handleChange = (event) => {
+    setCity(event.target.value);
+  };
+
+  return (
+    <FormControl
+      size="small"
+      variant="standard"
+      sx={{
+        ...underlineMagicStyle,
+        borderColor: "",
+        borderRadius: 3,
+        px: 2,
+        ":hover": { borderColor: "#0000" },
+      }}
+    >
+      <Select
+        labelId="demo-simple-select-autowidth-label"
+        id="demo-simple-select-autowidth"
+        defaultValue={city}
+        onChange={handleChange}
+        autoWidth
+        label="City"
+      >
+        {citiesNames.map((ele, index) => (
+          <MenuItem color="primary" value={index}>
+            {ele}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
 
 const pages = [
   { name: "Products", link: "products" },
@@ -50,21 +112,19 @@ const ResponsiveAppBar = (props) => {
   const userMenuIconStyle = {
     fontSize: "large",
     mr: 1,
-    border: "0px solid",
-    borderColor: "primary",
-    ":hover": {
-      borderLeft: "7px solid",
-    },
+    // border: "0px solid",
+    // borderColor: "primary",
+    // ":hover": {
+    //   borderLeft: "7px solid",
+    // },
   };
 
   const settings = isAuth
     ? [
         {
           name: "Profile",
-          link: `profile/${makeSlug(userData?.full_name)}/${
-            userData?.user_id
-          }/`,
-          icon: <AccountBox sx={{ ...userMenuIconStyle }} />,
+          link: `profile/${makeSlug(userData?.full_name)}/${userData?.id}/`,
+          icon: <AccountBox sx={userMenuIconStyle} />,
         },
         {
           name: "Account",
@@ -216,6 +276,9 @@ const ResponsiveAppBar = (props) => {
                         </ListItemButton>
                       </ListItem>
                     ))}
+                    <ListItem key="changeCity">
+                      <SelectCity />
+                    </ListItem>
                   </List>
                 </Box>
               </Drawer>
@@ -255,20 +318,28 @@ const ResponsiveAppBar = (props) => {
                 display: {
                   xs: "none",
                   md: "flex",
-                  justifyContent: "space-evenly",
+                  justifyContent: "flex-end",
                 },
               }}
             >
               {pages.map((page) => (
                 <Button
                   key={page.name}
-                  sx={{ mx: 1, display: "block" }}
+                  sx={{ mx: 1, display: "block", ...underlineMagicStyle }}
                   href={`/${page.link}`}
                 >
                   {page.name}
                 </Button>
               ))}
+              <SelectCity />
             </Box>
+
+            <Divider
+              orientation="vertical"
+              variant="middle"
+              flexItem
+              sx={{ mx: 1, display: { xs: "none", md: "flex" } }}
+            />
 
             <Box key="box3-userDrawer" display="flex">
               <Tooltip title="Open">
@@ -288,8 +359,15 @@ const ResponsiveAppBar = (props) => {
                     <Avatar
                       alt={userData?.full_name}
                       src={userData?.pic_url}
-                      sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
-                    />
+                      sx={{
+                        background:
+                          "linear-gradient(60deg, #1976d2 0%, #ea4336 100%)",
+                        fontWeight: "bold",
+                      }}
+                      // sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
+                    >
+                      {makeAvtarText(userData?.full_name)}
+                    </Avatar>
                   ) : (
                     <AccountCircle sx={{ fontSize: "xx-large" }} />
                   )}
@@ -305,7 +383,18 @@ const ResponsiveAppBar = (props) => {
                   {isAuth && (
                     <>
                       <ListItem key="userName">
-                        <Typography variant="h6" ml={2} component="h6">
+                        <Typography
+                          variant="h6"
+                          ml={2}
+                          component="h6"
+                          sx={{
+                            background:
+                              "-webkit-linear-gradient(60deg, #1976d2 0%, #ea4336 100%)",
+                            "-webkit-background-clip": "text",
+                            "-webkit-text-fill-color": "transparent",
+                            fontWeight: "bold",
+                          }}
+                        >
                           {toTitleCase(userData?.full_name)}
                         </Typography>
                       </ListItem>
@@ -316,9 +405,11 @@ const ResponsiveAppBar = (props) => {
                     <ListItem
                       key={element.name}
                       sx={{
+                        p: 0,
                         borderLeft: "5px solid #0000",
-                        ":hover": {
-                          borderLeft: "5px solid",
+                        color: (theme) => theme.palette.primary.main,
+                        "&:hover": {
+                          borderColor: (theme) => theme.palette.primary.main,
                           transition: "ease-in-out",
                         },
                       }}
@@ -329,7 +420,12 @@ const ResponsiveAppBar = (props) => {
                         href={`/${element.link}`}
                         onClick={handleCloseUserMenu}
                       >
-                        <ListItemIcon sx={{ minWidth: 0 }}>
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            color: (theme) => theme.palette.primary.main,
+                          }}
+                        >
                           {element.icon}
                         </ListItemIcon>
                         <ListItemText primary={element.name} />
@@ -340,10 +436,10 @@ const ResponsiveAppBar = (props) => {
                     <ListItem
                       key="signout"
                       sx={{
+                        p: 0,
                         borderLeft: "5px solid #0000",
                         color: (theme) => theme.palette.danger.main,
-                        ":hover": {
-                          borderLeft: "5px solid",
+                        "&:hover": {
                           borderColor: (theme) => theme.palette.danger.main,
                         },
                       }}
@@ -352,7 +448,12 @@ const ResponsiveAppBar = (props) => {
                       }}
                     >
                       <ListItemButton sx={{ px: 1 }}>
-                        <ListItemIcon sx={{ minWidth: 0 }}>
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            color: (theme) => theme.palette.danger.main,
+                          }}
+                        >
                           <Logout sx={userMenuIconStyle} />
                         </ListItemIcon>
                         <ListItemText primary={toTitleCase("sign out")} />

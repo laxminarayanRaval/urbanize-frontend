@@ -9,6 +9,12 @@ export const toTitleCase = (strr) =>
 
 export const strArrToStr = (strr) => JSON.parse(strr.replaceAll("'", '"'));
 
+export const makeAvtarText = (strr) =>
+  strr
+    ?.split(" ")
+    ?.map((ele) => ele?.split("")[0])
+    ?.join("");
+
 export const citiesNames = [
   "Ahmedabad",
   "Anand",
