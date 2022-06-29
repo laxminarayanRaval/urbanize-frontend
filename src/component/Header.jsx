@@ -29,6 +29,7 @@ import {
   AccountCircle,
   AppRegistration,
   Dashboard,
+  KeyboardArrowDown,
   Login,
   Logout,
   ManageAccounts,
@@ -47,6 +48,7 @@ import {
   citiesNames,
 } from "../utils/Helpers";
 import { getUserDetails } from "../store/slices/authSlice";
+import { useSearchParams } from "react-router-dom";
 
 /* Underline Magic scss */
 const underlineMagicStyle = {
@@ -62,43 +64,70 @@ const underlineMagicStyle = {
 };
 /* -------------------- */
 
-// Change City
-const SelectCity = () => {
-  const [city, setCity] = React.useState(5);
+// Change City Start --------------------------------------------------------
+const SelectCity = ({ selectedCity = null, ...props }) => {
+  let defaultCity = "";
+
+  if (selectedCity != null)
+    defaultCity = citiesNames.filter((ele) => ele.name == selectedCity)[0]
+      ?.name;
+
+  if (!defaultCity) {
+    defaultCity = citiesNames[0]?.name;
+    props.getSelectedCity(defaultCity);
+  }
+
+  const [city, setCity] = React.useState(defaultCity);
 
   const handleChange = (event) => {
     setCity(event.target.value);
+    props.getSelectedCity(event.target.value);
   };
 
   return (
     <FormControl
       size="small"
-      variant="standard"
       sx={{
-        ...underlineMagicStyle,
-        borderColor: "",
-        borderRadius: 3,
-        px: 2,
-        ":hover": { borderColor: "#0000" },
+        px: { xs: 0, md: 1 },
       }}
     >
       <Select
         labelId="demo-simple-select-autowidth-label"
         id="demo-simple-select-autowidth"
         defaultValue={city}
+        inputProps={{ "aria-label": "Without label" }}
+        sx={{
+          backgroundImage: "linear-gradient(300deg, #1976d2 0%, #ea4336 100%)",
+          color: "#FFF !important",
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          "&:focus-visible": { border: "0px solid #0000" },
+          "& svg": { color: "#FFF !important" },
+        }}
+        IconComponent={KeyboardArrowDown}
         onChange={handleChange}
         autoWidth
-        label="City"
+        // label="City"
       >
-        {citiesNames.map((ele, index) => (
-          <MenuItem color="primary" value={index}>
-            {ele}
+        {citiesNames.map(({ id, name }, index) => (
+          <MenuItem
+            color="primary"
+            key={`${id}-${index}`}
+            sx={{
+              "&:hover": {
+                color: (theme) => theme.palette.primary.main,
+              },
+            }}
+            value={name}
+          >
+            {name}
           </MenuItem>
         ))}
       </Select>
     </FormControl>
   );
 };
+// Change City End --------------------------------------------------------
 
 const pages = [
   { name: "Products", link: "products" },
@@ -159,6 +188,10 @@ const ResponsiveAppBar = (props) => {
   }
 
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const getCityHandler = (city) => {
+    setSearchParams({ city });
+  };
 
   React.useEffect(() => {
     dispatch(getService());
@@ -166,7 +199,7 @@ const ResponsiveAppBar = (props) => {
     return () => {
       //   second;
     };
-  }, []);
+  }, [getCityHandler]);
 
   React.useEffect(() => {
     if (isAuth) dispatch(getUserDetails());
@@ -267,6 +300,7 @@ const ResponsiveAppBar = (props) => {
                   <List>
                     {pages.map((page) => (
                       <ListItem
+                        sx={{ ...underlineMagicStyle }}
                         key={page.name}
                         disablePadding
                         onClick={handleCloseNavMenu}
@@ -277,7 +311,10 @@ const ResponsiveAppBar = (props) => {
                       </ListItem>
                     ))}
                     <ListItem key="changeCity">
-                      <SelectCity />
+                      <SelectCity
+                        selectedCity={searchParams.get("city")}
+                        getSelectedCity={getCityHandler}
+                      />
                     </ListItem>
                   </List>
                 </Box>
@@ -325,13 +362,16 @@ const ResponsiveAppBar = (props) => {
               {pages.map((page) => (
                 <Button
                   key={page.name}
-                  sx={{ mx: 1, display: "block", ...underlineMagicStyle }}
+                  sx={{ mx: 1, ...underlineMagicStyle }}
                   href={`/${page.link}`}
                 >
                   {page.name}
                 </Button>
               ))}
-              <SelectCity />
+              <SelectCity
+                selectedCity={searchParams.get("city")}
+                getSelectedCity={getCityHandler}
+              />
             </Box>
 
             <Divider
@@ -342,17 +382,21 @@ const ResponsiveAppBar = (props) => {
             />
 
             <Box key="box3-userDrawer" display="flex">
-              <Tooltip title="Open">
+              <Tooltip
+                title={`Mr./Ms. ${
+                  !!userData?.full_name ? userData?.full_name : "Signin First"
+                }`}
+              >
                 <IconButton
                   onClick={handleOpenUserMenu}
                   sx={{
                     flexDirection: "row",
-                    border: "0.5px dashed",
-                    p: 0.5,
-                    borderRadius: 5,
-                    ":hover": {
-                      border: "1px solid",
-                    },
+                    p: 0,
+                    // border: "0.5px dashed",
+                    // borderRadius: 5,
+                    // ":hover": {
+                    // border: "px solid",
+                    // },
                   }}
                 >
                   {isAuth ? (
@@ -363,8 +407,9 @@ const ResponsiveAppBar = (props) => {
                         background:
                           "linear-gradient(60deg, #1976d2 0%, #ea4336 100%)",
                         fontWeight: "bold",
+                        color: "#FFF",
+                        textTransform: "uppercase",
                       }}
-                      // sx={{ bgcolor: (theme) => theme.palette.secondary.main }}
                     >
                       {makeAvtarText(userData?.full_name)}
                     </Avatar>
@@ -384,9 +429,9 @@ const ResponsiveAppBar = (props) => {
                     <>
                       <ListItem key="userName">
                         <Typography
-                          variant="h6"
-                          ml={2}
-                          component="h6"
+                          variant="h5"
+                          mx={2}
+                          component="h5"
                           sx={{
                             background:
                               "-webkit-linear-gradient(60deg, #1976d2 0%, #ea4336 100%)",

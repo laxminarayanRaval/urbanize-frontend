@@ -17,9 +17,7 @@ const checkAuth = () => {
         return null;
       }
       try {
-        debugger;
         return authService.refreshAuthToken(user.refresh).then((response) => {
-          debugger;
 
           if (response.data)
             localStorage.setItem("token", JSON.stringify(response.data));
@@ -135,7 +133,6 @@ export const getUserDetails = createAsyncThunk(
         const data = response.data;
         return data;
       });
-      debugger;
 
       // console.log(JSON.parse(JSON.stringify(response)))
       const { professionaluser_set, ...userData } = response;

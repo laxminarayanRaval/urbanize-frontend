@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Box } from "@mui/system";
 import { Edit, EditOff, Visibility, VisibilityOff } from "@mui/icons-material";
 import userService from "../../store/services/user.service";
 import { updateContacts } from "../../store/slices/authSlice";
@@ -49,6 +48,7 @@ const ContactDetails = () => {
   const updateContactDetailHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setPassword("");
     dispatch(updateContacts({ password, email, mobile }))
       .unwrap()
       .then(() => {
@@ -98,18 +98,24 @@ const ContactDetails = () => {
         component="address"
         spacing={1}
         pl={1}
-        alignItems='baseline'
+        alignItems="baseline"
       >
         <Grid item xs={12} sm={12} md={2} mt={2}>
-          <Typography variant="body1" component="p">Email Address:</Typography>
+          <Typography variant="body1" component="p">
+            Email Address:
+          </Typography>
         </Grid>
 
         <Grid item xs={12} sm={12} md={10}>
-          <Typography variant="h6" component="h6">{userData?.email}</Typography>
+          <Typography variant="h6" component="h6">
+            {userData?.email}
+          </Typography>
         </Grid>
 
         <Grid item xs={12} sm={12} md={2} mt={2}>
-          <Typography variant="body2" component="p">Phone Number:</Typography>
+          <Typography variant="body2" component="p">
+            Phone Number:
+          </Typography>
         </Grid>
 
         <Grid item xs={12} sm={12} md={10}>
@@ -222,7 +228,7 @@ const ContactDetails = () => {
             />
 
             <TextField
-              type="mobile"
+              type="number"
               name="mobile"
               label="Mobile"
               fullWidth

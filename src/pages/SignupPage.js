@@ -124,6 +124,7 @@ const SignupPage = () => {
             <TextField
               autoComplete="off"
               name="full_name"
+              required
               fullWidth
               id="full_name"
               label="Full Name"
@@ -141,6 +142,7 @@ const SignupPage = () => {
               type="email"
               autoComplete="off"
               fullWidth
+              required
               id="email"
               label="Email Address"
               name="email"
@@ -152,7 +154,7 @@ const SignupPage = () => {
             />
 
             <TextField
-              // required
+              required
               type={passVisible ? "text" : "password"}
               fullWidth
               name="password"
@@ -180,6 +182,7 @@ const SignupPage = () => {
             />
             <TextField
               type={passVisible ? "text" : "password"}
+              required
               name="password2"
               label="Confirm Password"
               id="password2"

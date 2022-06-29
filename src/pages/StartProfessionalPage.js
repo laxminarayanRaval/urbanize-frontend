@@ -96,7 +96,6 @@ const StartProfessionalPage = () => {
         .then((response) => {
           const data = response.data;
 
-
           console.log("--------------------", data.message);
           setMessage(data.message);
           setIsLoading(false);
@@ -141,7 +140,12 @@ const StartProfessionalPage = () => {
           for being Professional
         </Typography>
         {message && (
-          <Typography component="b" variant="body2" fontWeight="bold" color="success">
+          <Typography
+            component="b"
+            variant="body2"
+            fontWeight="bold"
+            color="success"
+          >
             {message}
           </Typography>
         )}
@@ -170,9 +174,9 @@ const StartProfessionalPage = () => {
                 MenuProps={MenuProps}
                 {...citiesInputProps}
               >
-                {citiesNames.map((name) => (
+                {citiesNames.map(({ id, name }) => (
                   <MenuItem
-                    key={name}
+                    key={id}
                     value={name}
                     style={getStyles(name, citiesList, theme)}
                   >

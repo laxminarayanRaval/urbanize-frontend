@@ -2,7 +2,7 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { Carousel, Services } from "../component/";
+import { Carousel, GradientStepper, Services } from "../component/";
 
 import { HeroCarouselData } from "../utils/HeroCarouselData";
 
@@ -13,9 +13,19 @@ const HomePage = () => {
       sx={{ display: "flex", flexDirection: "column", minHeight: "90vh" }}
     >
       <Carousel dataArray={HeroCarouselData} duration={5} />
-      <Typography component="h1" variant="h1">
-        Welcome to the HomePage
-      </Typography>
+      <Box
+        sx={{
+          minHeight: "calc(35vh + 25px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h3" variant="h3" mb={2}>
+          How things done here?
+        </Typography>
+        <GradientStepper />
+      </Box>
       <Services />
     </Box>
   );

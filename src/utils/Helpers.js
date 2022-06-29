@@ -16,15 +16,14 @@ export const makeAvtarText = (strr) =>
     ?.join("");
 
 export const citiesNames = [
-  "Ahmedabad",
-  "Anand",
-  "Gandhinagar",
-  "Panchmahal",
-  "Porbandar",
-  "Rajkot",
-  "Surat",
-  "Vadodara",
-  "Bharuch",
-  "Navsari",
-  "Valsad",
+  { id: "cty1", name: "Mumbai" },
+  { id: "cty2", name: "New Delhi" },
+  { id: "cty3", name: "Kolkata" },
+  { id: "cty4", name: "Bengaluru" },
+  { id: "cty5", name: "Chennai" },
+  { id: "cty6", name: "Hyderabad" },
+  { id: "cty7", name: "Pune" },
+  { id: "cty8", name: "Ahmedabad" },
+  { id: "cty9", name: "Surat" },
+  { id: "cty10", name: "Visakhapatnam" },
 ];

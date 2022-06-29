@@ -56,7 +56,7 @@ const MainLayout = () => {
 
   let theme = createTheme({
     palette: {
-      mode: themeMode,
+      mode: themeMode === "light" ? themeMode : "dark",
       // common: {
       // black: "#333",
       // white: "#ddd",

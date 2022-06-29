@@ -121,7 +121,7 @@ export default function Footer() {
           </List>
         </Grid>
         <Grid item xs={6} sm={6} md>
-          <Typography variant="h5">Popular 5 Services</Typography>
+          <Typography variant="h5">Popular Services</Typography>
           {[
             "AC Service & Repair",
             "Bathroom Cleaning",
