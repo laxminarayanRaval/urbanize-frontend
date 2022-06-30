@@ -21,6 +21,9 @@ const getAllServicesList = () => axios.get(`${API_URL}/services/list_all/`);
 const updateContactDetails = (data) =>
   axios.put(`${API_URL}/user/contact_details/`, data, headers);
 
+const beingUserProfessional = (data) =>
+  axios.post(`${API_URL}/user/professional/`, data, headers);
+
 const makeUserProfessional = (data, uid) =>
   axios.post(`${API_URL}/user/professional/${uid}/`, data, headers);
 
@@ -30,6 +33,7 @@ const getUserDetails = async () =>
     .then((response) => ({ ...response }));
 
 const userService = {
+  beingUserProfessional,
   getAllServicesList,
   getServiceList,
   getSubservicesList,

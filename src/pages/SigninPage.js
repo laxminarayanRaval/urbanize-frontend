@@ -196,7 +196,7 @@ const SigninPage = (props) => {
             cursor: isFormValid ? "pointer" : "not-allowed",
           }}
         >
-          {isLoading ? <CircularProgress /> : "Sign In"}
+          {isLoading ? <CircularProgress sx={{ color: "#fff" }} /> : "Sign In"}
         </Button>
         <Grid container>
           <Grid item xs>

@@ -90,9 +90,9 @@ const MainLayout = () => {
           root: ({ ownerState }) => ({
             ...// ownerState.variant === "contained" &&
             (ownerState.color === "primary" && {
-              backgroundSize: "100% 0.2em",
-              transition: "background-size 0.3s ease-in",
-              backgroundPosition: "0 88%",
+              backgroundSize: "0% 100%",
+              transition: "all 0.25s ease-in-out",
+              // backgroundPosition: "0 88%",
               backgroundRepeat: "no-repeat",
               "&:hover": {
                 backgroundImage:

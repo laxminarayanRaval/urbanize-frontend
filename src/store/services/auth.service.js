@@ -37,6 +37,7 @@ const signin = (email, password) => {
 
 const signout = () => {
   // someday create token blacklist api and call it then clear the localStorage
+  localStorage.removeItem("token");
   localStorage.removeItem("user");
 };
 

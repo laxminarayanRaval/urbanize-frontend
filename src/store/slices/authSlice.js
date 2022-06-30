@@ -7,32 +7,43 @@ import { setMessage } from "./messageSlice";
 const is_expired = (exp_dt) => new Date() > new Date(exp_dt * 1000);
 
 const checkAuth = () => {
-  const user = JSON.parse(localStorage.getItem("token"));
-  if (user?.access) {
-    const { token_type, iat, jti, exp, ...rest } = jwtDecode(user.access);
+  const token = JSON.parse(localStorage.getItem("token"));
+  if (token?.access) {
+    const { token_type, iat, jti, exp, ...rest } = jwtDecode(token.access);
+    console.log("access token expire : ", (new Date(exp * 1000)));
+
     if (is_expired(exp)) {
-      const { exp, ..._ } = jwtDecode(user.refresh);
+      const { exp, ..._ } = jwtDecode(token.refresh);
+      console.log("refresh token expire : ", (new Date(exp * 1000)));
       if (is_expired(exp)) {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         return null;
       }
       try {
-        return authService.refreshAuthToken(user.refresh).then((response) => {
-
+        return authService.refreshAuthToken(token.refresh).then((response) => {
           if (response.data)
-            localStorage.setItem("token", JSON.stringify(response.data));
+            localStorage.setItem("token", JSON.stringify(response?.data));
 
-          const newUserToken = JSON.parse(response.data);
+          const newUserToken = JSON.parse(response?.data);
           const { token_type, iat, jti, exp, ...rest } = jwtDecode(
             newUserToken.access
           );
           return { ...newUserToken, exp, ...rest };
+        }).catch((e)=>{
+          console.log("Error :", e.message, e)
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          return null;
         });
-      } catch (e) {
+      } catch (e){
+        console.log("Error :", e.message, e)
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         return null;
       }
     }
-    return { ...user, exp, ...rest };
+    return { ...token, exp, ...rest };
   }
   return null;
 };
@@ -95,14 +106,12 @@ export const updateContacts = createAsyncThunk(
   "auth/updateContacts",
   async ({ password, email, mobile }, thunkAPI) => {
     try {
-      debugger;
       const response = await userService.updateContactDetails({
         password,
         email,
         mobile,
       });
 
-      debugger;
 
       const data = await response.data;
       // console.log("BD: ", data.message);
