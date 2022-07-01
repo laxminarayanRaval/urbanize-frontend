@@ -423,6 +423,7 @@ const ResponsiveAppBar = (props) => {
                 anchor="right"
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
+                sx={{minWidth: '35rem'}}
               >
                 <List>
                   {isAuth && (

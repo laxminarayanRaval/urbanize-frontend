@@ -1,4 +1,5 @@
-import {
+import { lazy } from "react";
+/* import {
   AccountPage,
   ContactUsPage,
   DashboardPage,
@@ -8,7 +9,17 @@ import {
   SigninPage,
   SignupPage,
   StartProfessionalPage,
-} from "./pages/";
+} from "./pages/"; */
+
+const AccountPage = lazy(() => import("./pages/AccountPage"))
+const ContactUsPage = lazy(() => import("./pages/ContactUsPage"))
+const DashboardPage = lazy(() => import("./pages/DashboardPage"))
+const HomePage = lazy(() => import("./pages/HomePage"))
+const ProfilePage = lazy(() => import("./pages/ProfilePage"))
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"))
+const SigninPage = lazy(() => import("./pages/SigninPage"))
+const SignupPage = lazy(() => import("./pages/SignupPage"))
+const StartProfessionalPage = lazy(() => import("./pages/StartProfessionalPage"))
 
 export const privateRoutesList = [
   { name: "Account", url: "/account", element: <AccountPage />},
