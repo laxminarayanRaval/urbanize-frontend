@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,6 +7,8 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   LinearProgress,
   MenuItem,
@@ -21,11 +23,19 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { HighlightOffOutlined } from "@mui/icons-material";
+import { FileUploadOutlined, HighlightOffOutlined } from "@mui/icons-material";
 
+import { useDispatch, useSelector } from "react-redux";
 import { citiesNames } from "../utils/Helpers";
 import userService from "../store/services/user.service";
+import { getUserDetails } from "../store/slices/authSlice";
+import FileUpload from "../component/FileUpload";
+
+/* Steps for being professional
+    0. Apply for being Professional
+    1. List Your Services
+    2. Done
+*/
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -38,8 +48,8 @@ const MenuProps = {
   },
 };
 
-// start ------ Apply for being Professional    ----------
-const ProfessionalListing = (props) => {
+// start ------ Apply for being Professional    ----------------------------------------
+const ProfessionalListing = ({ isCompleted, ...props }) => {
   const [citiesList, setCitiesList] = useState([]);
 
   const maxCityLimit = 8;
@@ -85,7 +95,17 @@ const ProfessionalListing = (props) => {
   const [message, setMessage] = useState("");
   const [respStatusCode, setRespStatusCode] = useState();
 
-  const submitDataHandler = async () => {
+  // console.log("respStatusCode:", respStatusCode);
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("after 3s respStatusCode:", respStatusCode);
+      if (respStatusCode >= 200 && respStatusCode < 300)
+        isCompleted("ProfessionalListing");
+    }, 3000);
+  }, [respStatusCode]);
+
+  const submitDataHandler = (event) => {
+    event.preventDefault();
     setIsLoading(true);
     const formData = {
       cities: citiesList.join(","),
@@ -93,28 +113,34 @@ const ProfessionalListing = (props) => {
       endsTime,
       address,
     };
+    console.log("formDataaaaaaaaaaaa: ", formData);
+
+    const response = userService
+      .beingUserProfessional(formData)
+      .then((response) => {
+        const data = response.data;
+
+        console.log("--------------------", data.message);
+        setMessage(JSON.stringify(data.message));
+        setRespStatusCode(response.status);
+        setIsLoading(false);
+        return data;
+      })
+      .catch((err) => {
+        console.log("========error==========", err);
+        const response = err.response;
+        const data = response.data;
+
+        console.log("--------------------", data.message);
+        setMessage(JSON.stringify(data.message));
+        setRespStatusCode(response.status);
+        setIsLoading(false);
+      });
+
     console.log(
-      "formDataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: ",
-      formData
+      "---------------------response---------------------------: ",
+      response
     );
-
-    try {
-      const response = await userService
-        .beingUserProfessional(formData)
-        .then((response) => {
-          const data = response.data;
-
-          console.log("--------------------", data.message);
-          setMessage(data.message);
-          setRespStatusCode(response.status);
-          setIsLoading(false);
-          return data;
-        });
-    } catch (err) {
-      console.log("========================", err);
-      setIsLoading(false);
-    }
-    console.log("------------------------------------------------: ", response);
 
     // setTimeout(() => {
     //   debugger;
@@ -139,16 +165,18 @@ const ProfessionalListing = (props) => {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      onSubmit={submitDataHandler}
       my={2}
     >
       <Grid item container xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
-          <Typography variant="h6">Cities List:</Typography>
+          <Typography variant="h6">Cities List: *</Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}>
           <FormControl sx={{ m: 1, width: "315px" }}>
             <InputLabel id="demo-multiple-chip-label">Cities</InputLabel>
             <Select
+              required
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
@@ -191,10 +219,11 @@ const ProfessionalListing = (props) => {
       </Grid>
       <Grid item container xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
-          <Typography variant="h6">Availability Hours:</Typography>
+          <Typography variant="h6">Availability Hours: *</Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}>
           <TextField
+            required
             name="startTime"
             helperText="Service Start Time"
             type="time"
@@ -202,6 +231,7 @@ const ProfessionalListing = (props) => {
             onChange={avalblHrsHandler}
           />
           <TextField
+            required
             name="endTime"
             helperText="Service End Time"
             type="time"
@@ -218,10 +248,11 @@ const ProfessionalListing = (props) => {
       </Grid>
       <Grid item container xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
-          <Typography variant="h6">Professional Address:</Typography>
+          <Typography variant="h6">Professional Address: *</Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
           <TextField
+            required
             multiline
             fullWidth
             rows={3}
@@ -245,7 +276,8 @@ const ProfessionalListing = (props) => {
         <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
         <Grid
           component={Button}
-          onClick={submitDataHandler}
+          type="submit"
+          // onClick={submitDataHandler}
           variant="contained"
           item
           disabled={isLoading}
@@ -258,71 +290,430 @@ const ProfessionalListing = (props) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
       </Grid>
-      {!message && (
+      {message && (
         <Typography
           component="b"
           variant="h6"
           fontWeight="bold"
           sx={{
             textTransform: "capitalize",
-            color: theme.palette[respStatusCode ? "success" : "danger"].main,
+            color:
+              theme.palette[
+                respStatusCode >= 200 && respStatusCode < 300
+                  ? "success"
+                  : "danger"
+              ].main,
           }}
         >
           <Divider variant="middle" />
-          {message +
-            "data is transmitted to server and will be sent to the administrators office"}
+          {message}
         </Typography>
       )}
     </Box>
   );
 };
-// end   ------ Apply for being Professional    ----------
+// end   ------ Apply for being Professional    ----------------------------------------
 
-// start ------ List Your Services              ----------
-const ServicesListing = (props) => {
-  return <h1>ServicesListing</h1>;
+// start ------ List Your Services              ----------------------------------------
+const ServicesListing = ({ isCompleted, ...props }) => {
+  const Services = useSelector((state) => state?.content?.services);
+
+  const servicesList = [];
+  const [subServiceList, setSubServiceList] = useState([]);
+
+  if (Services?.length) {
+    Services?.forEach((service) => {
+      servicesList.push({
+        id: service.id,
+        name: service.service_name,
+        desc: service.description,
+      });
+    });
+  }
+
+  const [selectedSID, setSelectedSID] = useState(servicesList[0]?.id);
+  const [selectedSSID, setSelectedSSID] = useState([]);
+  const [estimateTime, setEstimateTime] = useState("");
+
+  useEffect(() => {
+    console.log("======= selectedSID: " + selectedSID);
+    setSubServiceList(
+      Services?.filter(
+        (service) => service.id === selectedSID
+      )[0]?.subservice_set?.map((service) => ({
+        id: service.id,
+        name: service.service_name,
+        desc: service.description,
+      })) ?? []
+    );
+  }, [selectedSID]);
+
+  useEffect(() => {
+    console.log("+++++++ selectedSSID: ", selectedSSID);
+  }, [selectedSSID]);
+  console.log("subServiceList:", subServiceList, subServiceList.length);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [respStatusCode, setRespStatusCode] = useState();
+
+  const paymentMethods = ["Cash", "UPI", "Cheque"];
+
+  const [selectedPM, setSelectedPM] = useState([]);
+
+  const submitDataHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const theme = useTheme();
+
+  function getStyles(name, list, theme) {
+    return {
+      fontWeight:
+        list.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightBold,
+    };
+  }
+
+  return (
+    <Box
+      component="form"
+      container
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      onSubmit={submitDataHandler}
+      my={2}
+    >
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Services:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}>
+          <FormControl sx={{ m: 1, width: "315px" }}>
+            <InputLabel id="demo-multiple-chip-label">Services</InputLabel>
+            <Select
+              required
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              value={selectedSID}
+              input={
+                <OutlinedInput id="select-multiple-chip" label="Services" />
+              }
+              MenuProps={MenuProps}
+              onChange={(event) => setSelectedSID(event.target.value)}
+              // {...citiesInputProps}
+            >
+              {servicesList.map((service) => (
+                <MenuItem
+                  key={service.id}
+                  value={service.id}
+                  sx={{
+                    fontWeight: service.id == selectedSID ? "bold" : "regular",
+                  }}
+                >
+                  {service.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Type of Service You provide</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
+          {!selectedSID && (
+            <Typography variant="body1">Please Select one service.</Typography>
+          )}
+          {!!selectedSID && (
+            <Chip
+              color="primary"
+              key={selectedSID}
+              sx={{ m: 0.5 }}
+              deleteIcon={<HighlightOffOutlined />}
+              label={
+                servicesList.filter((ele) => ele.id == selectedSID)[0]?.name
+              }
+            />
+          )}
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Sub Services:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}>
+          <FormControl sx={{ m: 1, width: "315px" }}>
+            <InputLabel id="demo-multiple-chip-label">Sub Services</InputLabel>
+            <Select
+              required
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={selectedSSID}
+              input={
+                <OutlinedInput id="select-multiple-chip" label="Sub Services" />
+              }
+              MenuProps={MenuProps}
+              onChange={(event) => {
+                setSelectedSSID([...event.target.value]);
+              }}
+            >
+              {subServiceList?.length ? (
+                subServiceList?.map((sservice) => (
+                  <MenuItem
+                    key={sservice.id}
+                    value={sservice.id}
+                    sx={{
+                      fontWeight: selectedSSID.includes(sservice.id)
+                        ? "bold"
+                        : "",
+                    }}
+                  >
+                    {sservice.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem>Not available at Moment</MenuItem>
+              )}
+            </Select>
+            <FormHelperText>How Would You like to Paid</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
+          {!selectedSSID.length && (
+            <Typography variant="body1">
+              Please Select at least one method.
+            </Typography>
+          )}
+          {!!selectedSSID.length &&
+            selectedSSID.map((id, index) => (
+              <Chip
+                color="primary"
+                key={index}
+                sx={{ m: 0.5 }}
+                deleteIcon={<HighlightOffOutlined />}
+                label={subServiceList.find((ss) => ss.id === id)?.name}
+                onDelete={() =>
+                  setSelectedSSID((prev) => prev.filter((_, i) => i !== index))
+                }
+              />
+            ))}
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Estimate Time:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
+          <TextField
+            required
+            fullWidth
+            // value={address}
+            // onChange={(e) => {
+            //   setAddress(e.target.value);
+            // }}
+            name="estimate_time"
+            label="Estimated Time"
+            helperText="Estimated Time to Complete the Tasks."
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Charges:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
+          <TextField
+            required
+            fullWidth
+            // value={address}
+            // onChange={(e) => {
+            //   setAddress(e.target.value);
+            // }}
+            name="charges"
+            label="Chargers"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">₹</InputAdornment>
+              ),
+            }}
+            helperText="The Aprox. Amount You charges for these tasks."
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Payment Methods:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}>
+          <FormControl sx={{ m: 1, width: "315px" }}>
+            <InputLabel id="demo-multiple-chip-label">Methods</InputLabel>
+            <Select
+              required
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              multiple
+              value={selectedPM}
+              input={<OutlinedInput id="select-multiple-chip" label="Method" />}
+              MenuProps={MenuProps}
+              onChange={(event) => setSelectedPM(event.target.value)}
+              // {...citiesInputProps}
+            >
+              {paymentMethods.map((method, index) => (
+                <MenuItem
+                  key={index}
+                  value={method}
+                  style={getStyles(method, selectedPM, theme)}
+                >
+                  {method}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>How Would You like to Paid</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
+          {!selectedPM.length && (
+            <Typography variant="body1">
+              Please Select at least one method.
+            </Typography>
+          )}
+          {!!selectedPM.length &&
+            selectedPM.map((ele, index) => (
+              <Chip
+                color="primary"
+                key={index}
+                sx={{ m: 0.5 }}
+                deleteIcon={<HighlightOffOutlined />}
+                label={ele}
+                onDelete={() =>
+                  setSelectedPM((prev) => prev.filter((e, i) => i !== index))
+                }
+              />
+            ))}
+        </Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Feature Image:*</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
+          <FileUpload />
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+      </Grid>
+
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
+        <Grid
+          component={Button}
+          type="submit"
+          variant="contained"
+          item
+          disabled={isLoading}
+          xs={12}
+          sm={12}
+          md={5}
+          lg={5}
+        >
+          List your services
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+        {isLoading && (
+          <Box width="100%">
+            <LinearProgress color="secondary" />
+          </Box>
+        )}
+      </Grid>
+      {message && (
+        <Typography
+          component="b"
+          variant="h6"
+          fontWeight="bold"
+          sx={{
+            textTransform: "capitalize",
+            color:
+              theme.palette[
+                respStatusCode >= 200 && respStatusCode < 300
+                  ? "success"
+                  : "danger"
+              ].main,
+          }}
+        >
+          <Divider variant="middle" />
+          {message}
+        </Typography>
+      )}
+    </Box>
+  );
 };
-// end   ------ List Your Services              ----------
-// start ------ Done Animation                  ----------
-const DoneAnimation = () => {
-  return <h1>DoneAnimation</h1>;
+// end   ------ List Your Services              ----------------------------------------
+// start ------ Done Animation                  ----------------------------------------
+const DoneAnimation = ({ isCompleted, ...props }) => {
+  return <h1>Done Animation</h1>;
 };
-// end   ------ Done Animation                  ----------
+// end   ------ Done Animation                  ----------------------------------------
 
 // Start ====== StartProfessionalPage           =================================================
-const StartProfessionalPage = () => {
+const StartProfessionalPage = (props) => {
   const userData = useSelector((state) => state?.auth?.user);
 
-  /* Steps for being professional
-    0. Apply for being Professional
-    1. List Your Services
-    2. Done
-  */
+  const dispatch = useDispatch();
 
-  // Check for current step
   const [currentStep, setCurrentStep] = useState(0);
-  // if (userData?.professionaluser_set) {
-  if (Object.keys(userData?.professionaluser_set || {}).length)
-    setCurrentStep(1);
-  if (userData?.role == "prof") setCurrentStep(2);
-  // }
+  useEffect(() => {
+    if (Object.keys(userData?.professionaluser_set || {}).length)
+      setCurrentStep(1);
+    if (userData?.role == "prof") setCurrentStep(2);
+  }, [userData?.professionaluser_set]);
+
+  const isCompletedHandler = (stepName) => {
+    const nameViseStep = {
+      ProfessionalListing: 0,
+      ServicesListing: 1,
+      DoneAnimation: 2,
+    };
+    const xyz = nameViseStep[stepName];
+    console.log(
+      "------- isCompletedHandler: " + nameViseStep[stepName],
+      stepName,
+      "xyz",
+      xyz
+    );
+    if (xyz >= 0 && xyz < Object.keys(nameViseStep).length) {
+      console.log("------- xyz: " + xyz);
+      setCurrentStep(xyz + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(userData?.professionaluser_set ?? {}).length)
+      dispatch(getUserDetails());
+  }, []);
+
   const steps = [
     {
       label: "Professional Listing",
       caption: "Your Professional Details to be shown on the listing page",
-      component: <ProfessionalListing />,
+      component: <ProfessionalListing isCompleted={isCompletedHandler} />,
     },
-    { label: "Services Listing", caption: "", component: <ServicesListing /> },
+    {
+      label: "Services Listing",
+      caption: "Each of your services is available on your personal",
+      component: <ServicesListing isCompleted={isCompletedHandler} />,
+    },
     {
       label: "Done",
       caption: "No step Just Relax",
-      component: <DoneAnimation />,
+      component: <DoneAnimation isCompleted={isCompletedHandler} />,
     },
   ];
 
-  const handleNext = () => {
+  /* const handleNext = () => {
     setCurrentStep((prevStep) => prevStep + 1);
-  };
+  }; */
 
   console.log("currentStep:", currentStep);
 
@@ -350,14 +741,13 @@ const StartProfessionalPage = () => {
           for being Professional
         </Typography>
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={12}>
         <Stepper activeStep={currentStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label}>
               <StepLabel
-                StepIconProps={{ color: "red" }}
+                StepIconProps={{ width: 20, height: 20 }}
                 optional={
-                  // index === 2 ? (
                   <Typography
                     variant="caption"
                     sx={{
@@ -367,7 +757,6 @@ const StartProfessionalPage = () => {
                   >
                     {step.caption}
                   </Typography>
-                  // ) : null
                 }
               >
                 <Typography
@@ -384,7 +773,7 @@ const StartProfessionalPage = () => {
                 <Paper elevation={4} sx={{ p: 1, my: 1 }}>
                   {step.component}
                 </Paper>
-                <Box sx={{ mb: 2 }}>
+                {/* <Box sx={{ mb: 2 }}>
                   <Button
                     variant="contained"
                     onClick={handleNext}
@@ -392,7 +781,7 @@ const StartProfessionalPage = () => {
                   >
                     {index === steps.length - 1 ? "Finish" : "Continue"}
                   </Button>
-                </Box>
+                </Box> */}
               </StepContent>
             </Step>
           ))}
