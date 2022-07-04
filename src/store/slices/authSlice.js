@@ -14,6 +14,7 @@ const checkAuth = () => {
 
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(token.refresh);
+      // debugger
       console.log("refresh token expire : ", (new Date(exp * 1000)));
       if (is_expired(exp)) {
         localStorage.removeItem("token");
@@ -134,8 +135,8 @@ export const updateContacts = createAsyncThunk(
 export const getUserDetails = createAsyncThunk(
   "auth/getUserDetails",
   async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) return user;
+    // const user = JSON.parse(localStorage.getItem("user"));
+    // if (user) return user;
 
     try {
       const response = await userService.getUserDetails().then((response) => {
