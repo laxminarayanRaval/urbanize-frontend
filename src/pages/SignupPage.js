@@ -20,9 +20,9 @@ import { useFormik } from "formik";
 import { clearMessage } from "../store/slices/messageSlice";
 import { signup } from "../store/slices/authSlice";
 
-import Lottie from "lottie-react";
-import circle_check from "../assets/lottiefiles/circle_check.json";
-import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
+// import Lottie from "lottie-react";
+// import circle_check from "../assets/lottiefiles/circle_check.json";
+// import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
@@ -233,10 +233,10 @@ const SignupPage = () => {
           {sucessful && (
             <Grid container justifyContent="center">
               <Grid item textAlign="center" mb={5}>
-                <Lottie
+                {/* <Lottie
                   style={{ height: "60%" }}
                   animationData={circle_check}
-                />
+                /> */}
                 <Link component={RRLink} to="/signin" variant="h6">
                   Congratulations! Now You can Sign In.
                 </Link>
@@ -245,11 +245,11 @@ const SignupPage = () => {
           )}
         </Grid>
         <Grid item md={6} sx={{ marginLeft: "5%", marginTop: "5%", display: { xs: 'none', md: 'flex'} }}>
-          <Lottie
+          {/* <Lottie
             animationData={SignupAnimation}
             style={{ width: "95%" }}
             loop={true}
-          />
+          /> */}
         </Grid>
       </Grid>
     </>

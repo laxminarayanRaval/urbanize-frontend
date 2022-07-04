@@ -18,8 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "../store/slices/messageSlice";
 import { signin } from "../store/slices/authSlice";
 
-import SigninAnimation from "../assets/lottiefiles/signin_animation.json";
-import Lottie from "lottie-react";
+// import Lottie from "lottie-react";
+// import SigninAnimation from "../assets/lottiefiles/signin_animation.json";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import authService from "../store/services/auth.service";
 
@@ -240,11 +240,11 @@ const SigninPage = (props) => {
           }}
           md={6}
         >
-          <Lottie
+          {/* <Lottie
             animationData={SigninAnimation}
             style={{ width: "95%" }}
             loop={true}
-          />
+          /> */}
         </Grid>
         {isForgetPassword ? showForgetPassword() : showSignin()}
       </Grid>

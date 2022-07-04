@@ -1,7 +1,7 @@
 import React from "react";
 
-import Lottie from "lottie-react";
-import ContactusAnim from "../assets/lottiefiles/contactus_anim.json";
+// import Lottie from "lottie-react";
+// import ContactusAnim from "../assets/lottiefiles/contactus_anim.json";
 
 import { Button, Grid, TextField, Tooltip, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -11,7 +11,7 @@ const ContactUsPage = () => {
   return (
     <Grid container justifyContent="space-evenly" alignItems="center" mt={ -8}>
       <Grid item xs={false} md={6}>
-        <Lottie animationData={ContactusAnim} loop={true} />
+        {/* <Lottie animationData={ContactusAnim} loop={true} /> */}
       </Grid>
       {/* <Grid item xs={12} md={4} spacing={2}> */}
       <Box
