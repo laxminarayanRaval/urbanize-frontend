@@ -114,23 +114,6 @@ const MainLayout = () => {
           LinkComponent: LinkBehavior,
         },
       },
-      /* MuiTextField: {
-        styleOverrides: {
-          root: ({ ownerState }) => ({
-            ...(ownerState.variant === "standard" && {
-              backgroundSize: "100% 0.2em",
-              "&:hover": {
-                backgroundImage:
-                  "linear-gradient(160deg, #1976d2AA 0%, #ea4336AA 100%)",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "0 88%",
-                transition: "background-size 0.3s ease-in",
-                backgroundSize: "100% 100%",
-              },
-            })
-          })
-        }
-      }, */
     },
   });
 

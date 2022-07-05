@@ -1,10 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { FileUploadOutlined } from "@mui/icons-material";
-import { FormControl, FormHelperText, IconButton } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 
-const FileUpload = () => {
-  const [img, setImg] = useState();
-  const [imgUrl, setImgUrl] = useState("");
+const FileUpload = ({ getImageData, ...props }) => {
+  const initialValue = {
+    name: "",
+    secure_url: "",
+  };
+
+  const [imgData, setImgData] = useState(initialValue);
+
+  useEffect(() => {
+    if (JSON.stringify(imgData) !== JSON.stringify(initialValue)) {
+      console.log(
+        "--------------------------------\n",
+        " Image Name: " + imgData.name,
+        "\n Secure URL: " + imgData.secure_url,
+        "\n--------------------------------"
+      );
+      getImageData(imgData);
+    }
+  }, [imgData]);
+
+  const theme = useTheme();
+
+  const customPalette = {
+    action: theme.palette.secondary.main,
+    complete: theme.palette.success.main,
+    error: theme.palette.error.main,
+    inProgress: theme.palette.primary.main,
+    inactiveTabIcon: theme.palette.primary.dark,
+    link: theme.palette.primary.dark,
+    menuIcons: theme.palette.primary.light,
+    sourceBg: theme.palette.background.default,
+    tabIcon: theme.palette.primary.light,
+    textDark: theme.palette.text.primary,
+    textLight: theme.palette.text.primary,
+    window: theme.palette.background.paper,
+    windowBorder: theme.palette.primary.main,
+  };
 
   const cloudinaryWidget = cloudinary.createUploadWidget(
     {
@@ -12,26 +51,14 @@ const FileUpload = () => {
       uploadPreset: process.env.REACT_APP_UPLOAD_PRESET,
       sources: ["local", "url", "camera"],
       showAdvancedOptions: false,
-      cropping: true,
+      cropping: false,
       multiple: false,
       defaultSource: "local",
       styles: {
-        palette: {
-          window: "#FFFFFF",
-          windowBorder: "#90A0B3",
-          tabIcon: "#0078FF",
-          menuIcons: "#5A616A",
-          textDark: "#000000",
-          textLight: "#FFFFFF",
-          link: "#0078FF",
-          action: "#FF620C",
-          inactiveTabIcon: "#0E2F5A",
-          error: "#F44235",
-          inProgress: "#0078FF",
-          complete: "#20B832",
-          sourceBg: "#E4EBF1",
+        palette: { ...customPalette },
+        frame: {
+          background: theme.palette.mode == "dark" ? "#DDD5" : "#2225",
         },
-        width: '50vw',
         fonts: {
           default: null,
           "'DM Sans', sans-serif": {
@@ -44,12 +71,26 @@ const FileUpload = () => {
     (error, result) => {
       if (!error && result && result.event === "success") {
         console.log("Done! Here is the image info: ", result.info);
+
+        /* console.log(
+          "--------------------------------\n",
+          " Image Name: " +
+            `${result.info.original_filename}.${result.info.format}`,
+          "\n Thumbnail URL: " + `${result.info.thumbnail_url}`,
+          "\n Secure URL: " + `${result.info.secure_url}`,
+          "\n--------------------------------"
+        ); */
+        setImgData({
+          name: `${result.info.original_filename}.${result.info.format}`,
+          secure_url: `${result.info.secure_url}`,
+          thumbnail_url: `${result.info.thumbnail_url}`,
+        });
       }
     }
   );
 
   const cloudinaryUploadHandler = () => {
-    cloudinaryWidget.close({ quiet: true });
+    cloudinaryWidget.close({ quite: true });
     cloudinaryWidget.open();
   };
 
@@ -65,7 +106,7 @@ const FileUpload = () => {
           color: theme.palette.primary.main,
         })}
       >
-        {false ? "File_Name.whatever" : "No File Chosen"}
+        {imgData?.name ? imgData?.name : "No File Chosen"}
         <FileUploadOutlined />
       </IconButton>
       <FormHelperText>

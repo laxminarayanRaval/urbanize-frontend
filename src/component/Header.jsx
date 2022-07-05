@@ -435,8 +435,8 @@ const ResponsiveAppBar = (props) => {
                           sx={{
                             background:
                               "-webkit-linear-gradient(60deg, #1976d2 0%, #ea4336 100%)",
-                            "-webkit-background-clip": "text",
-                            "-webkit-text-fill-color": "transparent",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
                             fontWeight: "bold",
                           }}
                         >

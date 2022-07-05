@@ -3,11 +3,11 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Divider,
   FormControl,
   FormHelperText,
   Grid,
-  IconButton,
   InputAdornment,
   InputLabel,
   LinearProgress,
@@ -23,7 +23,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { FileUploadOutlined, HighlightOffOutlined } from "@mui/icons-material";
+import { HighlightOffOutlined } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { citiesNames } from "../utils/Helpers";
@@ -98,7 +98,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
   // console.log("respStatusCode:", respStatusCode);
   useEffect(() => {
     setTimeout(() => {
-      console.log("after 3s respStatusCode:", respStatusCode);
+      // console.log("after 3s respStatusCode:", respStatusCode);
       if (respStatusCode >= 200 && respStatusCode < 300)
         isCompleted("ProfessionalListing");
     }, 3000);
@@ -113,25 +113,25 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
       endsTime,
       address,
     };
-    console.log("formDataaaaaaaaaaaa: ", formData);
+    // console.log("formDataaaaaaaaaaaa: ", formData);
 
     const response = userService
       .beingUserProfessional(formData)
       .then((response) => {
         const data = response.data;
 
-        console.log("--------------------", data.message);
+        // console.log("--------------------", data.message);
         setMessage(JSON.stringify(data.message));
         setRespStatusCode(response.status);
         setIsLoading(false);
         return data;
       })
       .catch((err) => {
-        console.log("========error==========", err);
+        // console.log("========error==========", err);
         const response = err.response;
         const data = response.data;
 
-        console.log("--------------------", data.message);
+        // console.log("--------------------", data.message);
         setMessage(JSON.stringify(data.message));
         setRespStatusCode(response.status);
         setIsLoading(false);
@@ -180,7 +180,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
-              value={citiesList}
+              value={citiesList ?? ""}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               MenuProps={MenuProps}
               {...citiesInputProps}
@@ -188,7 +188,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
               {citiesNames.map(({ id, name }) => (
                 <MenuItem
                   key={id}
-                  value={name}
+                  value={name ?? ""}
                   style={getStyles(name, citiesList, theme)}
                 >
                   {name}
@@ -256,7 +256,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
             multiline
             fullWidth
             rows={3}
-            value={address}
+            value={address ?? ""}
             onChange={(e) => {
               setAddress(e.target.value);
             }}
@@ -330,13 +330,16 @@ const ServicesListing = ({ isCompleted, ...props }) => {
       });
     });
   }
+  const paymentMethods = ["Cash", "UPI", "Cheque"];
 
   const [selectedSID, setSelectedSID] = useState(servicesList[0]?.id);
   const [selectedSSID, setSelectedSSID] = useState([]);
   const [estimateTime, setEstimateTime] = useState("");
+  const [selectedPayMeth, setSelectedPayMeth] = useState([]);
+  const [charges, setCharges] = useState("");
 
   useEffect(() => {
-    console.log("======= selectedSID: " + selectedSID);
+    // console.log("======= selectedSID: " + selectedSID);
     setSubServiceList(
       Services?.filter(
         (service) => service.id === selectedSID
@@ -348,18 +351,16 @@ const ServicesListing = ({ isCompleted, ...props }) => {
     );
   }, [selectedSID]);
 
-  useEffect(() => {
-    console.log("+++++++ selectedSSID: ", selectedSSID);
-  }, [selectedSSID]);
-  console.log("subServiceList:", subServiceList, subServiceList.length);
+  /* useEffect(() => {
+    // console.log("+++++++ selectedSSID: ", selectedSSID);
+  }, [selectedSSID]); */
+  // console.log("subServiceList:", subServiceList, subServiceList.length);
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [respStatusCode, setRespStatusCode] = useState();
 
-  const paymentMethods = ["Cash", "UPI", "Cheque"];
-
-  const [selectedPM, setSelectedPM] = useState([]);
+  const [imgData, setImgData] = useState({});
 
   const submitDataHandler = (event) => {
     event.preventDefault();
@@ -376,17 +377,22 @@ const ServicesListing = ({ isCompleted, ...props }) => {
     };
   }
 
+  const dataPack = {selectedSID,selectedSSID,estimateTime,charges,selectedPayMeth,imgData};
+  useEffect(()=>{
+    console.log(dataPack);
+  },[dataPack])
+
   return (
     <Box
-      component="form"
       container
+      component="form"
       display="flex"
       flexDirection="column"
       alignItems="center"
       onSubmit={submitDataHandler}
       my={2}
     >
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Services:*</Typography>
         </Grid>
@@ -397,7 +403,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
               required
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
-              value={selectedSID}
+              value={selectedSID ?? ""}
               input={
                 <OutlinedInput id="select-multiple-chip" label="Services" />
               }
@@ -408,7 +414,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
               {servicesList.map((service) => (
                 <MenuItem
                   key={service.id}
-                  value={service.id}
+                  value={service?.id ?? ""}
                   sx={{
                     fontWeight: service.id == selectedSID ? "bold" : "regular",
                   }}
@@ -437,7 +443,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
           )}
         </Grid>
       </Grid>
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Sub Services:*</Typography>
         </Grid>
@@ -449,7 +455,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
-              value={selectedSSID}
+              value={selectedSSID ?? ""}
               input={
                 <OutlinedInput id="select-multiple-chip" label="Sub Services" />
               }
@@ -461,8 +467,8 @@ const ServicesListing = ({ isCompleted, ...props }) => {
               {subServiceList?.length ? (
                 subServiceList?.map((sservice) => (
                   <MenuItem
-                    key={sservice.id}
-                    value={sservice.id}
+                    key={sservice?.id}
+                    value={sservice?.id ?? ""}
                     sx={{
                       fontWeight: selectedSSID.includes(sservice.id)
                         ? "bold"
@@ -476,13 +482,13 @@ const ServicesListing = ({ isCompleted, ...props }) => {
                 <MenuItem>Not available at Moment</MenuItem>
               )}
             </Select>
-            <FormHelperText>How Would You like to Paid</FormHelperText>
+            <FormHelperText>Type of sub Services you offer. </FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
           {!selectedSSID.length && (
             <Typography variant="body1">
-              Please Select at least one method.
+              Select at least one sub service.
             </Typography>
           )}
           {!!selectedSSID.length &&
@@ -500,7 +506,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
             ))}
         </Grid>
       </Grid>
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Estimate Time:*</Typography>
         </Grid>
@@ -508,10 +514,10 @@ const ServicesListing = ({ isCompleted, ...props }) => {
           <TextField
             required
             fullWidth
-            // value={address}
-            // onChange={(e) => {
-            //   setAddress(e.target.value);
-            // }}
+            value={estimateTime ?? ""}
+            onChange={(e) => {
+              setEstimateTime(e.target.value);
+            }}
             name="estimate_time"
             label="Estimated Time"
             helperText="Estimated Time to Complete the Tasks."
@@ -519,7 +525,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
       </Grid>
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Charges:*</Typography>
         </Grid>
@@ -527,10 +533,10 @@ const ServicesListing = ({ isCompleted, ...props }) => {
           <TextField
             required
             fullWidth
-            // value={address}
-            // onChange={(e) => {
-            //   setAddress(e.target.value);
-            // }}
+            value={charges ?? ""}
+            onChange={(e) => {
+              setCharges(e.target.value);
+            }}
             name="charges"
             label="Chargers"
             InputProps={{
@@ -543,7 +549,7 @@ const ServicesListing = ({ isCompleted, ...props }) => {
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
       </Grid>
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Payment Methods:*</Typography>
         </Grid>
@@ -555,17 +561,17 @@ const ServicesListing = ({ isCompleted, ...props }) => {
               labelId="demo-multiple-chip-label"
               id="demo-multiple-chip"
               multiple
-              value={selectedPM}
+              value={selectedPayMeth ?? ""}
               input={<OutlinedInput id="select-multiple-chip" label="Method" />}
               MenuProps={MenuProps}
-              onChange={(event) => setSelectedPM(event.target.value)}
+              onChange={(event) => setSelectedPayMeth(event.target.value)}
               // {...citiesInputProps}
             >
               {paymentMethods.map((method, index) => (
                 <MenuItem
                   key={index}
-                  value={method}
-                  style={getStyles(method, selectedPM, theme)}
+                  value={method ?? ""}
+                  style={getStyles(method, selectedPayMeth, theme)}
                 >
                   {method}
                 </MenuItem>
@@ -575,13 +581,13 @@ const ServicesListing = ({ isCompleted, ...props }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} mb={1} width="350px">
-          {!selectedPM.length && (
+          {!selectedPayMeth.length && (
             <Typography variant="body1">
               Please Select at least one method.
             </Typography>
           )}
-          {!!selectedPM.length &&
-            selectedPM.map((ele, index) => (
+          {!!selectedPayMeth.length &&
+            selectedPayMeth.map((ele, index) => (
               <Chip
                 color="primary"
                 key={index}
@@ -589,20 +595,38 @@ const ServicesListing = ({ isCompleted, ...props }) => {
                 deleteIcon={<HighlightOffOutlined />}
                 label={ele}
                 onDelete={() =>
-                  setSelectedPM((prev) => prev.filter((e, i) => i !== index))
+                  setSelectedPayMeth((prev) =>
+                    prev.filter((e, i) => i !== index)
+                  )
                 }
               />
             ))}
         </Grid>
       </Grid>
-      <Grid item container xs={12} sm={12} md={12} p={1}>
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1} >
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Feature Image:*</Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
-          <FileUpload />
+          <FileUpload
+            getImageData={(data) => {
+              console.log("---------- Image DAta: ", data);
+              setImgData(data);
+            }}
+          />
         </Grid>
-        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} p={2}>
+          <Typography variant="body1">Preview Image</Typography>
+          {Object.keys(imgData).length === 0 && <CircularProgress color="primary" />}
+          {imgData?.secure_url && (
+            <img
+              src={imgData?.secure_url}
+              width="75%"
+              height="100%"
+              alt={imgData?.name}
+            />
+          )}
+        </Grid>
       </Grid>
 
       <Grid item container xs={12} sm={12} md={12} p={1}>
@@ -683,7 +707,7 @@ const StartProfessionalPage = (props) => {
       xyz
     );
     if (xyz >= 0 && xyz < Object.keys(nameViseStep).length) {
-      console.log("------- xyz: " + xyz);
+      // console.log("------- xyz: " + xyz);
       setCurrentStep(xyz + 1);
     }
   };
@@ -715,7 +739,7 @@ const StartProfessionalPage = (props) => {
     setCurrentStep((prevStep) => prevStep + 1);
   }; */
 
-  console.log("currentStep:", currentStep);
+  // console.log("currentStep:", currentStep);
 
   return (
     <Grid
