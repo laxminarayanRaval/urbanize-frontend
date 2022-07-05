@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MainLayout, NotFoundPage } from "./pages/";
 import PrivateRoute from "./utils/PrivateRoute";
 import AlertMessage from "./component/AlertMessage";
@@ -11,7 +11,8 @@ const App = () => {
   return (
     <>
       <AlertMessage />
-      <BrowserRouter>
+      <Router>
+        <Suspense fallback={<LazyLoading />}>
         <Routes>
           <Route key="layout" element={<MainLayout />}>
             <Route key="privates" element={<PrivateRoute />}>
@@ -19,22 +20,22 @@ const App = () => {
                 <Route
                   key={`route-${route.name}`}
                   path={route.url}
-                  element={<Suspense fallback={()=>{<LazyLoading />}}>{route.element}</Suspense>}
+                  element={route.element}
                 />
               ))}
-              {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
             </Route>
             {publicRoutesList.map((route) => (
-              <Route 
+              <Route
                 key={`route-${route.name}`}
                 path={route.url}
-                element={<Suspense fallback={()=>{<LazyLoading />}}>{route.element}</Suspense>}
+                element={route.element}
               />
             ))}
-            <Route key='route-not-found'  path="*" element={<NotFoundPage />} />
+            <Route key="route-not-found" path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+        </Suspense>
+      </Router>
     </>
   );
 };
