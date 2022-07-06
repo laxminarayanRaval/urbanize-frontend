@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 const Services = () => {
   const [selectedServiceId, setSelectedServiceId] = useState(0);
   const services = useSelector((state) => state?.content?.services);
-  const subservices = useSelector((state) => state?.content?.subservices);
+  // const subservices = useSelector((state) => state?.content?.subservices);
 
   const clickHandler = (event) => {
     if (event.target.id === selectedServiceId) setSelectedServiceId(0);
@@ -111,7 +111,7 @@ const Services = () => {
           justifyContent="center"
           flexWrap="wrap"
         >
-          {subservices
+          {/* {subservices
             .filter((ele) => ele.service_id === selectedServiceId)
             .map((service) => (
               <Grid
@@ -126,7 +126,7 @@ const Services = () => {
                   {service.service_name}
                 </Typography>
               </Grid>
-            ))}
+            ))} */}
         </Grid>
       )}
     </Grid>

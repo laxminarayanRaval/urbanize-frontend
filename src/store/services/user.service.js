@@ -27,6 +27,10 @@ const beingUserProfessional = (data) =>
 const makeUserProfessional = (data, uid) =>
   axios.post(`${API_URL}/user/professional/${uid}/`, data, headers);
 
+const professionalServiceListing = (data) => {
+  console.log(data);
+  return axios.post(`${API_URL}/professional/services_list/`, data, headers);
+};
 const getUserDetails = async () =>
   await axios
     .get(`${API_URL}/user/details/`, headers)
@@ -39,6 +43,7 @@ const userService = {
   getSubservicesList,
   getUserDetails,
   updateContactDetails,
+  professionalServiceListing,
 };
 
 export default userService;

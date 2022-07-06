@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-const FileUpload = ({ getImageData, ...props }) => {
+const FileUpload = ({ getImageData, folderName, ...props }) => {
   const initialValue = {
     name: "",
     secure_url: "",
@@ -45,7 +45,7 @@ const FileUpload = ({ getImageData, ...props }) => {
     windowBorder: theme.palette.primary.main,
   };
 
-  const cloudinaryWidget = cloudinary.createUploadWidget(
+  const makeCloudinaryWidget = () => window.cloudinary.createUploadWidget(
     {
       cloudName: process.env.REACT_APP_CLOUD_NAME,
       uploadPreset: process.env.REACT_APP_UPLOAD_PRESET,
@@ -54,10 +54,12 @@ const FileUpload = ({ getImageData, ...props }) => {
       cropping: false,
       multiple: false,
       defaultSource: "local",
+      resourceType: "image",
+      folder: `/id-${folderName}/`,
       styles: {
         palette: { ...customPalette },
         frame: {
-          background: theme.palette.mode == "dark" ? "#DDD5" : "#2225",
+          background: theme.palette.mode == "dark" ? "#EEE5" : "#3335",
         },
         fonts: {
           default: null,
@@ -72,25 +74,17 @@ const FileUpload = ({ getImageData, ...props }) => {
       if (!error && result && result.event === "success") {
         console.log("Done! Here is the image info: ", result.info);
 
-        /* console.log(
-          "--------------------------------\n",
-          " Image Name: " +
-            `${result.info.original_filename}.${result.info.format}`,
-          "\n Thumbnail URL: " + `${result.info.thumbnail_url}`,
-          "\n Secure URL: " + `${result.info.secure_url}`,
-          "\n--------------------------------"
-        ); */
         setImgData({
           name: `${result.info.original_filename}.${result.info.format}`,
           secure_url: `${result.info.secure_url}`,
-          thumbnail_url: `${result.info.thumbnail_url}`,
         });
       }
     }
   );
 
   const cloudinaryUploadHandler = () => {
-    cloudinaryWidget.close({ quite: true });
+    const cloudinaryWidget = makeCloudinaryWidget();
+    // cloudinaryWidget.close({ quite: true });
     cloudinaryWidget.open();
   };
 

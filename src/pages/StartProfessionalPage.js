@@ -31,6 +31,8 @@ import userService from "../store/services/user.service";
 import { getUserDetails } from "../store/slices/authSlice";
 import FileUpload from "../component/FileUpload";
 
+import VectorGif from "../assets/gifs/Enthusiastic.gif";
+
 /* Steps for being professional
     0. Apply for being Professional
     1. List Your Services
@@ -315,7 +317,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
 // end   ------ Apply for being Professional    ----------------------------------------
 
 // start ------ List Your Services              ----------------------------------------
-const ServicesListing = ({ isCompleted, ...props }) => {
+const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
   const Services = useSelector((state) => state?.content?.services);
 
   const servicesList = [];
@@ -359,11 +361,41 @@ const ServicesListing = ({ isCompleted, ...props }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [respStatusCode, setRespStatusCode] = useState();
+  const [isImgLoading, setIsImgLoading] = useState(false);
 
   const [imgData, setImgData] = useState({});
 
+  const dataPack = {
+    prof_id,
+    service_id: selectedSID,
+    subservice_ids: selectedSSID,
+    proof_img_url: imgData?.secure_url ?? "",
+    estimate_time: estimateTime,
+    payment_modes: selectedPayMeth,
+    charges: charges,
+  };
+
   const submitDataHandler = (event) => {
     event.preventDefault();
+
+    console.log("/-----professionalServiceListing-----\\");
+    setIsLoading(true);
+    userService.professionalServiceListing(dataPack)?.then(
+      (response) => {
+        console.log(response.status, " ==+== success", response);
+        setRespStatusCode(response.status);
+        setMessage(response.data.message);
+        setIsLoading(false);
+        isCompleted("ServicesListing");
+      },
+      (error) => {
+        setIsLoading(false);
+        console.log(error?.response?.status, " ==-== error", error);
+        setRespStatusCode(error?.response.status);
+        setMessage(JSON.stringify(error?.response.data));
+      }
+    );
+    console.log("\\-----professionalServiceListing-----/");
   };
 
   const theme = useTheme();
@@ -376,11 +408,6 @@ const ServicesListing = ({ isCompleted, ...props }) => {
           : theme.typography.fontWeightBold,
     };
   }
-
-  const dataPack = {selectedSID,selectedSSID,estimateTime,charges,selectedPayMeth,imgData};
-  useEffect(()=>{
-    console.log(dataPack);
-  },[dataPack])
 
   return (
     <Box
@@ -603,25 +630,30 @@ const ServicesListing = ({ isCompleted, ...props }) => {
             ))}
         </Grid>
       </Grid>
-      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1} >
+      <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
           <Typography variant="h6">Feature Image:*</Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
           <FileUpload
+            folderName={prof_id}
+            onClick={() => {
+              setIsImgLoading(true);
+            }}
             getImageData={(data) => {
-              console.log("---------- Image DAta: ", data);
+              console.log("-=-=-=-=-=- Image DAta: ", data);
               setImgData(data);
+              setIsImgLoading(false);
             }}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={5} lg={5} p={2}>
           <Typography variant="body1">Preview Image</Typography>
-          {Object.keys(imgData).length === 0 && <CircularProgress color="primary" />}
+          {isImgLoading && <CircularProgress color="primary" />}
           {imgData?.secure_url && (
             <img
               src={imgData?.secure_url}
-              width="75%"
+              width="300px"
               height="100%"
               alt={imgData?.name}
             />
@@ -676,7 +708,24 @@ const ServicesListing = ({ isCompleted, ...props }) => {
 // end   ------ List Your Services              ----------------------------------------
 // start ------ Done Animation                  ----------------------------------------
 const DoneAnimation = ({ isCompleted, ...props }) => {
-  return <h1>Done Animation</h1>;
+  return (
+    <Grid
+      display="flex"
+      flexDirection="column"
+      textAlign="center"
+      alignItems="center"
+    >
+      <img src={VectorGif} height="75%" />
+      {/* <Button
+      variant="contained" color="success"
+        onClick={() => {
+          isCompleted("DoneAnimation");
+        }}
+      >
+        Want to List More Service
+      </Button> */}
+    </Grid>
+  );
 };
 // end   ------ Done Animation                  ----------------------------------------
 
@@ -697,7 +746,7 @@ const StartProfessionalPage = (props) => {
     const nameViseStep = {
       ProfessionalListing: 0,
       ServicesListing: 1,
-      DoneAnimation: 2,
+      DoneAnimation: 0,
     };
     const xyz = nameViseStep[stepName];
     console.log(
@@ -706,6 +755,7 @@ const StartProfessionalPage = (props) => {
       "xyz",
       xyz
     );
+    dispatch(getUserDetails());
     if (xyz >= 0 && xyz < Object.keys(nameViseStep).length) {
       // console.log("------- xyz: " + xyz);
       setCurrentStep(xyz + 1);
@@ -713,8 +763,9 @@ const StartProfessionalPage = (props) => {
   };
 
   useEffect(() => {
-    if (Object.keys(userData?.professionaluser_set ?? {}).length)
+    if (Object.keys(userData?.professionaluser_set ?? {}).length) {
       dispatch(getUserDetails());
+    }
   }, []);
 
   const steps = [
@@ -726,7 +777,12 @@ const StartProfessionalPage = (props) => {
     {
       label: "Services Listing",
       caption: "Each of your services is available on your personal",
-      component: <ServicesListing isCompleted={isCompletedHandler} />,
+      component: (
+        <ServicesListing
+          isCompleted={isCompletedHandler}
+          prof_id={userData?.professionaluser_set?.id ?? ""}
+        />
+      ),
     },
     {
       label: "Done",
@@ -770,7 +826,7 @@ const StartProfessionalPage = (props) => {
           {steps.map((step, index) => (
             <Step key={step.label}>
               <StepLabel
-                StepIconProps={{ width: 20, height: 20 }}
+                StepIconProps={{ sx: { width: 45, height: 45, mx: 1 } }}
                 optional={
                   <Typography
                     variant="caption"
@@ -794,7 +850,7 @@ const StartProfessionalPage = (props) => {
                 </Typography>
               </StepLabel>
               <StepContent>
-                <Paper elevation={4} sx={{ p: 1, my: 1 }}>
+                <Paper elevation={4} sx={{ py: 1, my: 1 }}>
                   {step.component}
                 </Paper>
                 {/* <Box sx={{ mb: 2 }}>
