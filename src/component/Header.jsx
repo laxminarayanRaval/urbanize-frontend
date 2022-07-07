@@ -9,14 +9,12 @@ import {
   Drawer,
   FormControl,
   IconButton,
-  InputLabel,
   Link,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Menu,
   MenuItem,
   Select,
   Toolbar,
@@ -152,7 +150,7 @@ const ResponsiveAppBar = (props) => {
     ? [
         {
           name: "Profile",
-          link: `profile/${makeSlug(userData?.full_name)}/${userData?.id}/`,
+          link: `profile/${makeSlug(userData?.id)}/${userData?.full_name}/`,
           icon: <AccountBox sx={userMenuIconStyle} />,
         },
         {

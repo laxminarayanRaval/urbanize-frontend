@@ -7,7 +7,7 @@ export const toTitleCase = (strr) =>
     ?.join(" ");
 // export const shortText = (strr, len) =>
 
-export const strArrToStr = (strr) => JSON.parse(strr.replaceAll("'", '"'));
+export const strArrToStr = (strr) => JSON.parse(strr?.replaceAll("'", '"'));
 
 export const makeAvtarText = (strr) =>
   strr

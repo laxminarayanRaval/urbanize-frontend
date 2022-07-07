@@ -26,7 +26,7 @@ import {
 import { HighlightOffOutlined } from "@mui/icons-material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { citiesNames } from "../utils/Helpers";
+import { citiesNames, makeSlug } from "../utils/Helpers";
 import userService from "../store/services/user.service";
 import { getUserDetails } from "../store/slices/authSlice";
 import FileUpload from "../component/FileUpload";
@@ -110,7 +110,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = {
-      cities: citiesList.join(","),
+      cities: citiesList,
       startsTime,
       endsTime,
       address,
@@ -707,7 +707,12 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
 };
 // end   ------ List Your Services              ----------------------------------------
 // start ------ Done Animation                  ----------------------------------------
-const DoneAnimation = ({ isCompleted, ...props }) => {
+const DoneAnimation = ({
+  isCompleted,
+  user_id = "",
+  user_name = "",
+  ...full_props
+}) => {
   return (
     <Grid
       display="flex"
@@ -715,7 +720,14 @@ const DoneAnimation = ({ isCompleted, ...props }) => {
       textAlign="center"
       alignItems="center"
     >
-      <img src={VectorGif} height="75%" />
+      <img src={VectorGif} style={{ maxWidth: "100%", height: "auto" }} />
+      <Button
+        variant="contained"
+        color="success"
+        href={`/profile/${makeSlug(user_id)}/${makeSlug(user_name)}/`}
+      >
+        Profilefull_ Page
+      </Button>
       {/* <Button
       variant="contained" color="success"
         onClick={() => {
@@ -787,7 +799,13 @@ const StartProfessionalPage = (props) => {
     {
       label: "Done",
       caption: "No step Just Relax",
-      component: <DoneAnimation isCompleted={isCompletedHandler} />,
+      component: (
+        <DoneAnimation
+          isCompleted={isCompletedHandler}
+          user_id={userData?.id ?? ""}
+          user_name={userData?.full_name ?? ""}
+        />
+      ),
     },
   ];
 
