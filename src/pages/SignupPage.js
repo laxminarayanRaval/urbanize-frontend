@@ -23,6 +23,8 @@ import { signup } from "../store/slices/authSlice";
 // import Lottie from "lottie-react";
 // import circle_check from "../assets/lottiefiles/circle_check.json";
 // import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
+import enthusiasGif from "../assets/gifs/Enthusiastic.gif";
+import signupGif from "../assets/gifs/Sign up01.gif";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
@@ -220,11 +222,11 @@ const SignupPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {sucessful ? <CircularProgress color='secondary' /> : "Sign Up"}
+              {sucessful ? <CircularProgress color="secondary" /> : "Sign Up"}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link component={RRLink} to="/signin" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -233,18 +235,28 @@ const SignupPage = () => {
           {sucessful && (
             <Grid container justifyContent="center">
               <Grid item textAlign="center" mb={5}>
+                <img src={enthusiasGif} alt="Done Sign Up" />
                 {/* <Lottie
                   style={{ height: "60%" }}
                   animationData={circle_check}
                 /> */}
-                <Link component={RRLink} to="/signin" variant="h6">
+                <Link href="/signin" variant="h6">
                   Congratulations! Now You can Sign In.
                 </Link>
               </Grid>
             </Grid>
           )}
         </Grid>
-        <Grid item md={6} sx={{ marginLeft: "5%", marginTop: "5%", display: { xs: 'none', md: 'flex'} }}>
+        <Grid
+          item
+          md={6}
+          sx={{
+            marginLeft: "5%",
+            marginTop: "5%",
+            display: { xs: "none", md: "flex" },
+          }}
+        >
+          <img src={signupGif} alt="Sign Up" />
           {/* <Lottie
             animationData={SignupAnimation}
             style={{ width: "95%" }}

@@ -23,6 +23,9 @@ import { signin } from "../store/slices/authSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import authService from "../store/services/auth.service";
 
+import signinGif from "../assets/gifs/Tablet login.gif";
+import forgotPasswordGif from "../assets/gifs/Forgot password.gif";
+
 const SigninPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -125,12 +128,16 @@ const SigninPage = (props) => {
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link onClick={changeForgetPassSiginHandler} variant="body2">
+            <Link
+              href=""
+              onClick={changeForgetPassSiginHandler}
+              variant="body2"
+            >
               Rememberred ? Sig In.
             </Link>
           </Grid>
           <Grid item>
-            <Link component={RRLink} to="/signup" variant="body2">
+            <Link href="/signup" variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Grid>
@@ -209,7 +216,7 @@ const SigninPage = (props) => {
             </Link>
           </Grid>
           <Grid item>
-            <Link component={RRLink} to="/signup" variant="body2">
+            <Link href="/signup" variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Grid>
@@ -240,6 +247,7 @@ const SigninPage = (props) => {
           }}
           md={6}
         >
+          <img src={isForgetPassword ? forgotPasswordGif : signinGif} alt="Sign in" />
           {/* <Lottie
             animationData={SigninAnimation}
             style={{ width: "95%" }}
