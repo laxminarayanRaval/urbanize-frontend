@@ -33,7 +33,7 @@ export const getSubservice = createAsyncThunk(
 );
 const initialState = {
   services: [],
-  subservices: [],
+  // subservices: [],
 };
 
 export const contentSlice = createSlice({

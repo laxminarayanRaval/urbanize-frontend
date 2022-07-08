@@ -150,7 +150,7 @@ const ResponsiveAppBar = (props) => {
     ? [
         {
           name: "Profile",
-          link: `profile/${makeSlug(userData?.id)}/${userData?.full_name}/`,
+          link: `profile/${userData?.id}/${makeSlug(userData?.full_name)}/`,
           icon: <AccountBox sx={userMenuIconStyle} />,
         },
         {
@@ -193,7 +193,7 @@ const ResponsiveAppBar = (props) => {
 
   React.useEffect(() => {
     dispatch(getService());
-    dispatch(getSubservice());
+    // dispatch(getSubservice());
     return () => {
       //   second;
     };
