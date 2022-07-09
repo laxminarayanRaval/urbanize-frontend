@@ -339,6 +339,7 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
   const [estimateTime, setEstimateTime] = useState("");
   const [selectedPayMeth, setSelectedPayMeth] = useState([]);
   const [charges, setCharges] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     // console.log("======= selectedSID: " + selectedSID);
@@ -373,6 +374,7 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
     estimate_time: estimateTime,
     payment_modes: selectedPayMeth,
     charges: charges,
+    description
   };
 
   const submitDataHandler = (event) => {
@@ -629,6 +631,32 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
               />
             ))}
         </Grid>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={12} p={1}>
+        <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>
+          <Typography variant="h6">Service Description: *</Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5} px={2}>
+          <TextField
+            required
+            multiline
+            fullWidth
+            rows={3}
+            value={description ?? ""}
+            onChange={(e) => {
+            setDescription(e.target.value);
+            }}
+            name="Description"
+            label="Service Description"
+            helperText="Some Descriptive Text About Your Service."
+          />
+          {isLoading && (
+            <Box width="100%">
+              <LinearProgress color="secondary" />
+            </Box>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={5}></Grid>
       </Grid>
       <Grid item container alignItems="center" xs={12} sm={12} md={12} p={1}>
         <Grid textAlign="left" item xs={12} sm={12} md={2} lg={2}>

@@ -8,32 +8,43 @@ import LazyLoading from "./component/LazyLoading";
 import { privateRoutesList, publicRoutesList } from "./RoutesList";
 
 const App = () => {
+  console.log(`
+  ██╗░░░██╗██████╗░██████╗░░█████╗░███╗░░██╗██╗███████╗███████╗
+  ██║░░░██║██╔══██╗██╔══██╗██╔══██╗████╗░██║██║╚════██║██╔════╝
+  ██║░░░██║██████╔╝██████╦╝███████║██╔██╗██║██║░░███╔═╝█████╗░░
+  ██║░░░██║██╔══██╗██╔══██╗██╔══██║██║╚████║██║██╔══╝░░██╔══╝░░
+  ╚██████╔╝██║░░██║██████╦╝██║░░██║██║░╚███║██║███████╗███████╗
+  ░╚═════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝╚═╝░░╚══╝╚═╝╚══════╝╚══════╝`);
   return (
     <>
       <AlertMessage />
       <Router>
         <Suspense fallback={<LazyLoading />}>
-        <Routes>
-          <Route key="layout" element={<MainLayout />}>
-            <Route key="privates" element={<PrivateRoute />}>
-              {privateRoutesList.map((route) => (
+          <Routes>
+            <Route key="layout" element={<MainLayout />}>
+              <Route key="privates" element={<PrivateRoute />}>
+                {privateRoutesList.map((route) => (
+                  <Route
+                    key={`route-${route.name}`}
+                    path={route.url}
+                    element={route.element}
+                  />
+                ))}
+              </Route>
+              {publicRoutesList.map((route) => (
                 <Route
                   key={`route-${route.name}`}
                   path={route.url}
                   element={route.element}
                 />
               ))}
-            </Route>
-            {publicRoutesList.map((route) => (
               <Route
-                key={`route-${route.name}`}
-                path={route.url}
-                element={route.element}
+                key="route-not-found"
+                path="*"
+                element={<NotFoundPage />}
               />
-            ))}
-            <Route key="route-not-found" path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
+            </Route>
+          </Routes>
         </Suspense>
       </Router>
     </>
