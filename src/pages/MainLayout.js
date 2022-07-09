@@ -85,6 +85,40 @@ const MainLayout = () => {
       borderRadius: 10,
     },
     components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          '*': {
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#B7B7B7 transparent',
+            '&::-webkit-scrollbar': {
+              width: 6,
+              height: 6,
+              backgroundColor: 'transparent',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'transparent',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              borderRadius: 6,
+              backgroundColor: '#B7B7B7',
+              minHeight: 24,
+              minWidth: 24,
+            },
+            '&::-webkit-scrollbar-thumb:focus': {
+              backgroundColor: '#adadad',
+            },
+            '&::-webkit-scrollbar-thumb:active': {
+              backgroundColor: '#adadad',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#adadad',
+            },
+            '&::-webkit-scrollbar-corner': {
+              backgroundColor: 'transparent',
+            },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: ({ ownerState }) => ({
@@ -122,7 +156,7 @@ const MainLayout = () => {
   // const theme = createTheme({ mode: 'light', palette: lightPalette, ...themeOptions });
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <Header />
       <div style={{ marginTop: "15vh", minHight: "95vh" }}>
         <Outlet />
