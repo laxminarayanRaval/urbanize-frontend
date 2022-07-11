@@ -150,7 +150,9 @@ const ResponsiveAppBar = (props) => {
     ? [
         {
           name: "Profile",
-          link: `profile/${userData?.id}/${makeSlug(userData?.full_name)}/`,
+          link: `profile/${userData?.professionaluser_set?.id}/${makeSlug(
+            userData?.full_name
+          )}/`,
           icon: <AccountBox sx={userMenuIconStyle} />,
         },
         {
