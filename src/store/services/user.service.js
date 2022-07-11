@@ -14,6 +14,12 @@ const getSubservicesList = () =>
 
 const getAllServicesList = () => axios.get(`${API_URL}/services/list_all/`);
 
+const getProfessionalService = (id) =>
+  axios.get(`${API_URL}/user/professional/${id}/`);
+
+const getUserDetailsById = async (id) =>
+  await axios.get(`${API_URL}/user/details/${id}/`);
+
 // to access private APIs
 // const getPrivateContent = () =>
 // axios.get(API_URL + "private", { headers: authHeader() });
@@ -28,7 +34,7 @@ const makeUserProfessional = (data, uid) =>
   axios.post(`${API_URL}/user/professional/${uid}/`, data, headers);
 
 const professionalServiceListing = (data) => {
-  console.log(data);
+  // console.log(data);
   return axios.post(`${API_URL}/professional/services_list/`, data, headers);
 };
 const getUserDetails = async () =>
@@ -39,6 +45,7 @@ const getUserDetails = async () =>
 const userService = {
   beingUserProfessional,
   getAllServicesList,
+  getProfessionalService,
   getServiceList,
   getSubservicesList,
   getUserDetails,

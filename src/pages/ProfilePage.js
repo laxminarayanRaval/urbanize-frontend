@@ -35,8 +35,8 @@ const isAvailable = (startsTime, endsTime) =>
   startsTime < today.format("HH:mm:ss") && endsTime > today.format("HH:mm:ss");
 
 const ProfileLeftSection = ({
-  userName,
-  userId,
+  profName,
+  profId,
   isAuth = false,
   proData = null,
   ...props
@@ -71,7 +71,7 @@ const ProfileLeftSection = ({
     <Grid
       p={1}
       component={Paper}
-      elevation={8}
+      elevation={10}
       sx={{ maxWidth: "90%", minWidth: "60%" }}
     >
       <Grid
@@ -119,6 +119,7 @@ const ProfileLeftSection = ({
         </Typography>
         <Grid container justifyContent="center">
           <IconButton
+            title={`Mail ${proData?.full_name}`}
             color="primary"
             disabled={!proData?.email}
             onClick={(e) => {
@@ -129,6 +130,7 @@ const ProfileLeftSection = ({
             <EmailOutlined />
           </IconButton>
           <IconButton
+            title={`Call ${proData?.full_name}`}
             color="secondary"
             disabled={!proData?.mobile}
             onClick={(e) => {
@@ -138,10 +140,10 @@ const ProfileLeftSection = ({
           >
             <Phone />
           </IconButton>
-          <IconButton color="success">
+          <IconButton title={`Message ${proData?.full_name}`} color="success">
             <Message />
           </IconButton>
-          <IconButton color="danger">
+          <IconButton title={`Report ${proData?.full_name}`} color="danger">
             <Flag />
           </IconButton>
         </Grid>
@@ -226,9 +228,8 @@ const ProfileLeftSection = ({
 };
 
 const ProfileRightSection = ({
-  userName,
-  userId,
-  isAuth = false,
+  profId = null,
+  profName = null,
   proData = null,
   ...props
 }) => {
@@ -243,7 +244,8 @@ const ProfileRightSection = ({
     <Grid container p={1}>
       <Grid item sm={12} md={6}>
         <ServiceListCard
-          title={proData?.full_name}
+          profId={profId}
+          /* title={proData?.full_name}
           status={
             isAvailable(profUserData?.startsTime, profUserData?.endsTime)
               ? "available"
@@ -251,11 +253,11 @@ const ProfileRightSection = ({
           }
           avtarUrl={profilePicUrl}
           serviceId={profUserData?.serviceId}
-          content={profUserData?.professionaluserservice_set[0]}
+          content={profUserData?.professionaluserservice_set[0]} */
         />
       </Grid>
       <Grid item sm={12} md={6}>
-        <ServiceListCard />
+        {/* <ServiceListCard /> */}
       </Grid>
     </Grid>
   );
@@ -266,8 +268,10 @@ const ProfilePage = () => {
 
   const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
   const userData = useSelector((state) => state?.auth?.user);
+  const profId = userData?.professionaluser_set
 
-  if (isAuth && uid === userData?.id) {
+  console.log(profId, "-----", uid);
+  if (isAuth && uid === profId) {
     return (
       <Grid container>
         <Grid
@@ -281,16 +285,16 @@ const ProfilePage = () => {
           }}
         >
           <ProfileLeftSection
-            userId={uid}
-            userName={uname}
+            profId={uid}
+            profName={uname}
             proData={userData}
             isAuth={isAuth}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} bgcolor="#777">
+        <Grid item xs={12} sm={12} md={8}>
           <ProfileRightSection
-            userId={uid}
-            userName={uname}
+            profId={uid}
+            profName={uname}
             proData={userData}
             isAuth={isAuth}
           />
@@ -301,11 +305,20 @@ const ProfilePage = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} sm={12} md={4} mx={2} borderRadius={1}>
-        <ProfileLeftSection />
+      <Grid
+        item
+        xs={12}
+        md={4}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <ProfileLeftSection profId={uid} profName={uname} />
       </Grid>
-      <Grid item xs={12} sm={12} md={8} bgcolor="#B77">
-        <ProfileRightSection />
+      <Grid item xs={12} md={8} bgcolor="#B77">
+        <ProfileRightSection profId={uid} profName={uname} />
       </Grid>
     </Grid>
   );

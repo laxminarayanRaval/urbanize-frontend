@@ -10,35 +10,38 @@ const checkAuth = () => {
   const token = JSON.parse(localStorage.getItem("token"));
   if (token?.access) {
     const { token_type, iat, jti, exp, ...rest } = jwtDecode(token.access);
-    console.log("access token expire : ", (new Date(exp * 1000)));
+    console.log("access token expire : ", new Date(exp * 1000));
 
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(token.refresh);
       // debugger
-      console.log("refresh token expire : ", (new Date(exp * 1000)));
+      console.log("refresh token expire : ", new Date(exp * 1000));
       if (is_expired(exp)) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         return null;
       }
       try {
-        return authService.refreshAuthToken(token.refresh).then((response) => {
-          if (response.data)
-            localStorage.setItem("token", JSON.stringify(response?.data));
+        return authService
+          .refreshAuthToken(token.refresh)
+          .then((response) => {
+            if (response.data)
+              localStorage.setItem("token", JSON.stringify(response?.data));
 
-          const newUserToken = JSON.parse(response?.data);
-          const { token_type, iat, jti, exp, ...rest } = jwtDecode(
-            newUserToken.access
-          );
-          return { ...newUserToken, exp, ...rest };
-        }).catch((e)=>{
-          console.log("Error :", e.message, e)
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          return null;
-        });
-      } catch (e){
-        console.log("Error :", e.message, e)
+            const newUserToken = JSON.parse(response?.data);
+            const { token_type, iat, jti, exp, ...rest } = jwtDecode(
+              newUserToken.access
+            );
+            return { ...newUserToken, exp, ...rest };
+          })
+          .catch((e) => {
+            console.log("Error :", e.message, e);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            return null;
+          });
+      } catch (e) {
+        console.log("Error :", e.message, e);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         return null;
@@ -88,6 +91,7 @@ export const signin = createAsyncThunk(
     try {
       // fulfilled
       const data = await authService.signin(email, password);
+      thunkAPI.dispatch(getUserDetails());
       return { user: data };
     } catch (err) {
       // rejected
@@ -112,7 +116,6 @@ export const updateContacts = createAsyncThunk(
         email,
         mobile,
       });
-
 
       const data = await response.data;
       // console.log("BD: ", data.message);
@@ -148,8 +151,9 @@ export const getUserDetails = createAsyncThunk(
       const { professionaluser_set, ...userData } = response;
 
       const jsonData = JSON.stringify({
-        professionaluser_set: { ...professionaluser_set[0] },
+        professionaluser_set: professionaluser_set[0],
         ...userData,
+        // ...response,
       });
       localStorage.setItem("user", jsonData);
       // const data = await response.data;
@@ -178,7 +182,7 @@ const authSlice = createSlice({
     },
     [signin.fulfilled]: (state, action) => {
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      // state.user = action.payload.user;
     },
     [signin.rejected]: (state) => {
       state.isAuthenticated = false;
