@@ -37,9 +37,9 @@ const professionalServiceListing = (data) => {
   // console.log(data);
   return axios.post(`${API_URL}/professional/services_list/`, data, headers);
 };
-const getUserDetails = async () =>
+const getUserDetails = async (user_id) =>
   await axios
-    .get(`${API_URL}/user/details/`, headers)
+    .get(`${API_URL}/user/details/${user_id ? user_id + '/' : ''}`, headers)
     .then((response) => ({ ...response }));
 
 const userService = {

@@ -14,11 +14,11 @@ const checkAuth = () => {
 
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(token.refresh);
-      // debugger
+      debugger;
       console.log("refresh token expire : ", new Date(exp * 1000));
       if (is_expired(exp)) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("user");
         return null;
       }
       try {
@@ -36,14 +36,14 @@ const checkAuth = () => {
           })
           .catch((e) => {
             console.log("Error :", e.message, e);
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+            // localStorage.removeItem("token");
+            // localStorage.removeItem("user");
             return null;
           });
       } catch (e) {
         console.log("Error :", e.message, e);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("user");
         return null;
       }
     }
@@ -68,10 +68,12 @@ export const signup = createAsyncThunk(
       );
       thunkAPI.dispatch(setMessage(response.data?.message));
       thunkAPI.dispatch(signin({ email, password }));
+      thunkAPI.dispatch(getUserDetails());
+      // console.log(response.data)
 
       return response.data;
     } catch (err) {
-      console.log("err", err);
+      // console.log("signup err", err);
       Object.keys(err.response.data).forEach((key) => {
         thunkAPI.dispatch(setMessage(`${key} : ${err.response.data[key]}`));
       });
@@ -91,7 +93,8 @@ export const signin = createAsyncThunk(
     try {
       // fulfilled
       const data = await authService.signin(email, password);
-      thunkAPI.dispatch(getUserDetails());
+      // console.log("Signin ----data--id--", data.id);
+      thunkAPI.dispatch(getUserDetails(data.id));
       return { user: data };
     } catch (err) {
       // rejected
@@ -128,7 +131,7 @@ export const updateContacts = createAsyncThunk(
         .replace(/\[|]|{|}/g, " ")
         // .replaceAll(",", "\n")
         .split(":")[1];
-      console.log(errorMessage);
+      // console.log(errorMessage);
       thunkAPI.dispatch(setMessage(errorMessage));
       return thunkAPI.rejectWithValue();
     }
@@ -137,15 +140,17 @@ export const updateContacts = createAsyncThunk(
 
 export const getUserDetails = createAsyncThunk(
   "auth/getUserDetails",
-  async () => {
+  async (user_id) => {
     // const user = JSON.parse(localStorage.getItem("user"));
     // if (user) return user;
-
+    // console.log("user_id:::", user_id);
     try {
-      const response = await userService.getUserDetails().then((response) => {
-        const data = response.data;
-        return data;
-      });
+      const response = await userService
+        .getUserDetails(user_id)
+        .then((response) => {
+          const data = response.data;
+          return data;
+        });
 
       // console.log(JSON.parse(JSON.stringify(response)))
       const { professionaluser_set, ...userData } = response;
@@ -161,7 +166,7 @@ export const getUserDetails = createAsyncThunk(
       // return { ...response };
       return JSON.parse(jsonData);
     } catch (err) {
-      console.log(err);
+      // console.log("getUserDetails err", err);
       return thunkAPI.rejectWithValue();
     }
   }

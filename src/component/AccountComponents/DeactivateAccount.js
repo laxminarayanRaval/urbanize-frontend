@@ -33,7 +33,7 @@ const DeactivateAccount = () => {
       const response = await authService.deactivateAccount(userId, password);
       const data = await response.data;
       // console.log("8==>", data.message);
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
       const dispatch = useDispatch();
       dispatch(signout());
     } catch (err) {

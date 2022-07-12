@@ -202,7 +202,7 @@ const ResponsiveAppBar = (props) => {
   }, [getCityHandler]);
 
   React.useEffect(() => {
-    if (isAuth) dispatch(getUserDetails());
+    // if (isAuth) dispatch(getUserDetails());
   }, [isAuth]);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
