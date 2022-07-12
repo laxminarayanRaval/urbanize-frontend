@@ -3,16 +3,16 @@ import userService from "../services/user.service";
 
 export const getService = createAsyncThunk("content/getService", async () => {
   // const response = await userService.getServiceList().then(
-    const response = await userService.getAllServicesList().then(
+  const response = await userService.getAllServicesList().then(
     (response) => {
-    //   console.log("Redux-ser :", response?.data);
+      //   console.log("Redux-ser :", response?.data);
       return response.status == "200" ? response.data : [];
     },
     (error) => {
-      console.log(error);
+      console.log("getService content error", error);
     }
   );
-//   console.log("getSer response:", response);
+  //   console.log("getSer response:", response);
   return response;
 });
 export const getSubservice = createAsyncThunk(
@@ -24,7 +24,7 @@ export const getSubservice = createAsyncThunk(
         return response.status == "200" ? response.data : [];
       },
       (error) => {
-        console.log(error);
+        console.log("getSubservice content error", error);
       }
     );
     // console.log("in try : ", response);

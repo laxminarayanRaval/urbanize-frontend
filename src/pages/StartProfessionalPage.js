@@ -139,10 +139,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
         setIsLoading(false);
       });
 
-    console.log(
-      "---------------------response---------------------------: ",
-      response
-    );
+    // console.log("-----------response-----------: ", response);
 
     // setTimeout(() => {
     //   debugger;
@@ -374,17 +371,17 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
     estimate_time: estimateTime,
     payment_modes: selectedPayMeth,
     charges: charges,
-    description
+    description,
   };
 
   const submitDataHandler = (event) => {
     event.preventDefault();
 
-    console.log("/-----professionalServiceListing-----\\");
+    // console.log("/-----professionalServiceListing-----\\");
     setIsLoading(true);
     userService.professionalServiceListing(dataPack)?.then(
       (response) => {
-        console.log(response.status, " ==+== success", response);
+        // console.log(response.status, " ==+== success", response);
         setRespStatusCode(response.status);
         setMessage(response.data.message);
         setIsLoading(false);
@@ -392,12 +389,12 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
       },
       (error) => {
         setIsLoading(false);
-        console.log(error?.response?.status, " ==-== error", error);
+        // console.log(error?.response?.status, " ==-== error", error);
         setRespStatusCode(error?.response.status);
         setMessage(JSON.stringify(error?.response.data));
       }
     );
-    console.log("\\-----professionalServiceListing-----/");
+    // console.log("\\-----professionalServiceListing-----/");
   };
 
   const theme = useTheme();
@@ -644,7 +641,7 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
             rows={3}
             value={description ?? ""}
             onChange={(e) => {
-            setDescription(e.target.value);
+              setDescription(e.target.value);
             }}
             name="Description"
             label="Service Description"
@@ -669,7 +666,7 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
               setIsImgLoading(true);
             }}
             getImageData={(data) => {
-              console.log("-=-=-=-=-=- Image DAta: ", data);
+              // console.log("-=-=-=-=-=- Image DAta: ", data);
               setImgData(data);
               setIsImgLoading(false);
             }}
@@ -789,12 +786,9 @@ const StartProfessionalPage = (props) => {
       DoneAnimation: 0,
     };
     const xyz = nameViseStep[stepName];
-    console.log(
-      "------- isCompletedHandler: " + nameViseStep[stepName],
-      stepName,
-      "xyz",
-      xyz
-    );
+    /* console.log(
+      `--- isCompletedHandler: ${nameViseStep[stepName]} ${stepName} xyz ${xyz}`
+    ); */
     dispatch(getUserDetails());
     if (xyz >= 0 && xyz < Object.keys(nameViseStep).length) {
       // console.log("------- xyz: " + xyz);

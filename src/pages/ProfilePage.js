@@ -270,7 +270,7 @@ const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user);
   const profId = userData?.professionaluser_set
 
-  console.log(profId, "-----", uid);
+  // console.log(profId, "-----", uid);
   if (isAuth && uid === profId) {
     return (
       <Grid container>

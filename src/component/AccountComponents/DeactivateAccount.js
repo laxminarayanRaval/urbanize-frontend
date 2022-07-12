@@ -28,7 +28,7 @@ const DeactivateAccount = () => {
     e.preventDefault();
     setIsLoading(true);
     if (password.length >= 8) e.disabled = true;
-    console.log(":-->", password, userId);
+    // console.log(":-->", password, userId);
     try {
       const response = await authService.deactivateAccount(userId, password);
       const data = await response.data;

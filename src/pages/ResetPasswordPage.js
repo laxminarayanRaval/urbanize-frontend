@@ -9,7 +9,7 @@ const ResetPasswordPage = () => {
 
   const [passVisible, setPassVisible] = useState(false);
 
-  console.log(uid, token);
+  // console.log(uid, token);
   return (
     <Grid
       container
