@@ -24,6 +24,7 @@ import {
 } from "@mui/icons-material";
 import moment from "moment";
 import ServiceListCard from "../component/ServiceListCard";
+import userService from "../store/services/user.service";
 
 const avtarMale =
   "https://res.cloudinary.com/urbanize/image/upload/v1657176333/user-profile-my-account-avatar-login-icon-man-male-face-smile-symbol-flat-vector-human-person-member-sign-user-profile-182815734_v2q12a.jpg";
@@ -227,37 +228,14 @@ const ProfileLeftSection = ({
   );
 };
 
-const ProfileRightSection = ({
-  profId = null,
-  profName = null,
-  proData = null,
-  ...props
-}) => {
-  const profilePicUrl = !!proData?.profile_pic_url
-    ? proData?.profile_pic_url
-    : proData?.gender === "female"
-    ? avtarFemale
-    : avtarMale;
-
-  const { professionaluser_set: profUserData } = proData ?? {};
+const ProfileRightSection = ({ profId = null, ...props }) => {
   return (
     <Grid container p={1}>
       <Grid item sm={12} md={6}>
-        <ServiceListCard
-          profId={profId}
-          /* title={proData?.full_name}
-          status={
-            isAvailable(profUserData?.startsTime, profUserData?.endsTime)
-              ? "available"
-              : `unavailable (timing ${profUserData?.startsTime} ${profUserData?.endsTime})`
-          }
-          avtarUrl={profilePicUrl}
-          serviceId={profUserData?.serviceId}
-          content={profUserData?.professionaluserservice_set[0]} */
-        />
+        <ServiceListCard profId={profId} />
       </Grid>
       <Grid item sm={12} md={6}>
-        {/* <ServiceListCard /> */}
+        <ServiceListCard />
       </Grid>
     </Grid>
   );
@@ -266,12 +244,41 @@ const ProfileRightSection = ({
 const ProfilePage = () => {
   const { uid, uname } = useParams();
 
-  const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
-  const userData = useSelector((state) => state?.auth?.user);
-  const profId = userData?.professionaluser_set
+  const [profUserData, setProfUserData] = useState({});
+  const [profUSData, setProfUSData] = useState({});
+  const [userData, setUserData] = useState({});
 
-  // console.log(profId, "-----", uid);
-  if (isAuth && uid === profId) {
+  useEffect(() => {
+    if (uid ?? false) {
+      const data = userService.getProfessionalService(uid).then((response) => {
+        const data = response.data;
+        setProfUserData(data);
+      });
+      console.log(`ProfUserData(${uid}): ${data}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    const { user_id, professionaluserservice_set } = profUserData;
+    setProfUSData(
+      professionaluserservice_set && professionaluserservice_set[0]
+    );
+
+    if (user_id ?? false) {
+      const data = userService.getUserDetailsById(user_id).then((response) => {
+        const data = response.data;
+        setUserData(data);
+      });
+      console.log(`UserData(${user_id}): ${data}`);
+    }
+  }, [profUserData?.user_id]);
+
+  const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
+  const currUser = useSelector((state) => state?.auth?.user);
+  const profId = currUser?.professionaluser_set;
+
+  console.log(profId, "-----", uid);
+  if (uid === profId) {
     return (
       <Grid container>
         <Grid
@@ -292,12 +299,7 @@ const ProfilePage = () => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={8}>
-          <ProfileRightSection
-            profId={uid}
-            profName={uname}
-            proData={userData}
-            isAuth={isAuth}
-          />
+          <ProfileRightSection profId={uid} />
         </Grid>
       </Grid>
     );
@@ -318,7 +320,7 @@ const ProfilePage = () => {
         <ProfileLeftSection profId={uid} profName={uname} />
       </Grid>
       <Grid item xs={12} md={8} bgcolor="#B77">
-        <ProfileRightSection profId={uid} profName={uname} />
+        <ProfileRightSection profId={uid} />
       </Grid>
     </Grid>
   );

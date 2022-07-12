@@ -16,9 +16,12 @@ const getAllServicesList = () => axios.get(`${API_URL}/services/list_all/`);
 
 const getProfessionalService = (id) =>
   axios.get(`${API_URL}/user/professional/${id}/`);
+// .then((response) => ({ ...response }));
 
 const getUserDetailsById = async (id) =>
-  await axios.get(`${API_URL}/user/details/${id}/`);
+  await axios
+    .get(`${API_URL}/user/details/${id}/`)
+    .then((response) => ({ ...response }));
 
 // to access private APIs
 // const getPrivateContent = () =>
@@ -39,7 +42,7 @@ const professionalServiceListing = (data) => {
 };
 const getUserDetails = async (user_id) =>
   await axios
-    .get(`${API_URL}/user/details/${user_id ? user_id + '/' : ''}`, headers)
+    .get(`${API_URL}/user/details/${user_id ? user_id + "/" : ""}`, headers)
     .then((response) => ({ ...response }));
 
 const userService = {
@@ -49,6 +52,7 @@ const userService = {
   getServiceList,
   getSubservicesList,
   getUserDetails,
+  getUserDetailsById,
   updateContactDetails,
   professionalServiceListing,
 };
