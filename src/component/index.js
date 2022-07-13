@@ -1,3 +1,4 @@
+export { default as AboutUs } from "./AboutUs";
 export { default as Carousel } from "./Carousel";
 export { default as Copyright } from "./Copyright";
 export { default as FAQs } from "./FAQs";

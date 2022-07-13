@@ -9,3 +9,4 @@ export { default as ResetPasswordPage } from "./ResetPasswordPage";
 export { default as SigninPage } from "./SigninPage";
 export { default as SignupPage } from "./SignupPage";
 export { default as StartProfessionalPage } from "./StartProfessionalPage";
+export { default as TermAndConditionPage } from "./TermAndConditionPage";

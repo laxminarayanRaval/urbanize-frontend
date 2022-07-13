@@ -190,6 +190,7 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const getCityHandler = (city) => {
+    console.log("searchParams", searchParams);
     setSearchParams({ city });
   };
 

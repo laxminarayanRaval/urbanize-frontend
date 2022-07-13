@@ -41,7 +41,7 @@ const setHashLinks = (element) => (
   </ListItemButton>
 );
 
-const setListLinks = (element) => (
+const setListLinks = (prefix = "", element) => (
   <ListItemButton
     sx={{
       borderRadius: 10,
@@ -50,7 +50,7 @@ const setListLinks = (element) => (
       maxWidth: "max-content",
     }}
     component={Link}
-    href={makeSlug("/services/?subservice=" + element)}
+    href={makeSlug(prefix + element)}
   >
     <ListItemText>{element}</ListItemText>
   </ListItemButton>
@@ -78,11 +78,13 @@ export default function Footer() {
     "History",
     // "Sitemap",
     "Story",
-    // "Trust & Safety",
-    // "Advertise with us",
-    // "Press & Journal",
-    // "Support Center",
-    // "Terms & Conditions",
+  ];
+  const companyLinks = [
+    "Trust & Safety",
+    "Advertise with us",
+    "Press & Journal",
+    "Support Center",
+    "Terms And Conditions",
   ];
 
   return (
@@ -135,7 +137,17 @@ export default function Footer() {
             ))}
           </List>
         </Grid>
-        <Grid item xs={6} sm={6} md>
+        <Grid item xs sm md>
+          <Typography variant="h5">Links</Typography>
+          <List>
+            {companyLinks.map((ele) => (
+              <ListItem key={ele} sx={{ py: 0 }}>
+                {setListLinks("/", ele)}
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+        <Grid item xs sm={6} md>
           <Typography variant="h5">Popular Services</Typography>
           {[
             "AC Service & Repair",
@@ -147,7 +159,7 @@ export default function Footer() {
             "Washing Machine Repair",
           ].map((ele) => (
             <ListItem key={ele} sx={{ py: 0.25 }}>
-              {setListLinks(ele)}
+              {setListLinks("/services/?subservice=", ele)}
             </ListItem>
           ))}
         </Grid>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { Carousel, FAQs, GradientStepper } from "../component/";
+import { AboutUs, Carousel, FAQs, GradientStepper } from "../component/";
 
 import { HeroCarouselData } from "../utils/HeroCarouselData";
 import { useLocation } from "react-router-dom";
@@ -30,38 +30,40 @@ const HomePage = () => {
         flexDirection: "column",
         alignItems: "center",
         minHeight: "90vh",
-      }}
-    >
-      <Carousel dataArray={HeroCarouselData} duration={5} />
-      <Box
-        sx={{
-          minHeight: "calc(35vh + 25px)",
-          width: "80%",
+        "& > div": {
+          minHeight: { xs: "calc(20vh + 30px)", md: "calc(35vh + 25px)" },
+          width: { xs: "90%", md: "75%" },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        }}
-      >
-        <Typography component="h3" variant="h3" mb={2}>
+          mt: 3
+        },
+      }}
+    >
+      <Carousel dataArray={HeroCarouselData} duration={5} />
+      <Box>
+        <Typography component="h2" variant="h2" mb={2}>
           How things done here?
         </Typography>
         <GradientStepper />
       </Box>
-      <Box
-        id="FAQs"
-        sx={{
-          minHeight: "calc(35vh + 25px)",
-          // pt: "15vh",
-          width: "80%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h3" variant="h3" mb={2}>
+      <Box id="FAQs">
+        <Typography component="h2" variant="h2" mb={2}>
           FAQs
         </Typography>
         <FAQs />
+      </Box>
+      <Box id="History">
+        <Typography component="h2" variant="h2" mb={2}>
+          History of Urbanize
+        </Typography>
+        <AboutUs />
+      </Box>
+      <Box id="About_us">
+        <Typography component="h2" variant="h2" mb={2}>
+          About Us
+        </Typography>
+        <AboutUs />
       </Box>
     </Box>
   );
