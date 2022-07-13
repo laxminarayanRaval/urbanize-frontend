@@ -52,6 +52,14 @@ const ResetPasswordPage = () => {
             // onChange={formik.handleChange}
             // error={formik.touched.password && Boolean(formik.errors.password)}
             // helperText={formik.touched.password && formik.errors.password}
+            onPaste={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+              return false;
+            }}
             InputProps={{
               endAdornment: passVisible ? (
                 <Visibility color="primary" onClick={passVisibleClickHandler} />
@@ -75,6 +83,14 @@ const ResetPasswordPage = () => {
             // onChange={formik.handleChange}
             // error={formik.touched.password2 && Boolean(formik.errors.password2)}
             // helperText={formik.touched.password2 && formik.errors.password2}
+            onPaste={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+              return false;
+            }}
             InputProps={{
               endAdornment: passVisible ? (
                 <Visibility color="primary" onClick={passVisibleClickHandler} />

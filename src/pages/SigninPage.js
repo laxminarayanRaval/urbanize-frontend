@@ -176,6 +176,14 @@ const SigninPage = (props) => {
           fullWidth
           label="Password"
           helperText={!isFormValid && "Password must be at least 8 characters"}
+          onPaste={(e) => {
+            e.preventDefault();
+            return false;
+          }}
+          onCopy={(e) => {
+            e.preventDefault();
+            return false;
+          }}
           InputProps={{
             endAdornment: passVisible ? (
               <Visibility onClick={passVisibleClickHandler} />

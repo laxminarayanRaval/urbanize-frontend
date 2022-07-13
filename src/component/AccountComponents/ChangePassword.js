@@ -128,6 +128,14 @@ const ChangePassword = () => {
               onChange={(event) => {
                 setOldPassword(event.target.value);
               }}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
+              }}
               InputProps={{
                 endAdornment: oldPassVisible ? (
                   <Visibility
@@ -160,6 +168,14 @@ const ChangePassword = () => {
                   ...prevState,
                   password: event.target.value,
                 }));
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
               }}
               InputProps={{
                 endAdornment: newPassVisible ? (
@@ -195,6 +211,14 @@ const ChangePassword = () => {
                   ...prevState,
                   password2: event.target.value,
                 }));
+              }}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
               }}
               InputProps={{
                 endAdornment: newPassVisible ? (

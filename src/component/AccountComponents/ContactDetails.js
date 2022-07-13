@@ -177,6 +177,14 @@ const ContactDetails = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
+              }}
               value={password}
               InputProps={{
                 endAdornment: passVisible ? (

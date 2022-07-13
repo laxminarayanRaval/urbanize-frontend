@@ -90,6 +90,14 @@ const DeactivateAccount = () => {
               // event.target.style.setProperty("background", "#7003")
               setPassword(event.target.value);
             }}
+            onPaste={(e) => {
+              e.preventDefault();
+              return false;
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+              return false;
+            }}
             InputProps={{
               endAdornment: passVisible ? (
                 <Visibility color="danger" onClick={passVisibleClickHandler} />

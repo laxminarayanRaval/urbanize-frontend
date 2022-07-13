@@ -166,6 +166,14 @@ const SignupPage = () => {
               autoComplete="new-password"
               value={formik.values.password}
               onChange={formik.handleChange}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
+              }}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
               InputProps={{
@@ -193,6 +201,14 @@ const SignupPage = () => {
               margin="dense"
               value={formik.values.password2}
               onChange={formik.handleChange}
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              onCopy={(e) => {
+                e.preventDefault();
+                return false;
+              }}
               error={
                 formik.touched.password2 && Boolean(formik.errors.password2)
               }
