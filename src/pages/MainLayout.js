@@ -91,18 +91,19 @@ const MainLayout = () => {
             scrollbarWidth: 'thin',
             scrollbarColor: '#B7B7B7 transparent',
             '&::-webkit-scrollbar': {
-              width: 6,
-              height: 6,
+              width: 5,
+              height: 5,
               backgroundColor: 'transparent',
+              zIndex: 100,
             },
             '&::-webkit-scrollbar-track': {
               backgroundColor: 'transparent',
             },
             '&::-webkit-scrollbar-thumb': {
-              borderRadius: 6,
+              borderRadius: 5,
               backgroundColor: '#B7B7B7',
-              minHeight: 24,
-              minWidth: 24,
+              minHeight: 20,
+              minWidth: 20,
             },
             '&::-webkit-scrollbar-thumb:focus': {
               backgroundColor: '#adadad',

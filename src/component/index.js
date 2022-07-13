@@ -1,9 +1,10 @@
 export { default as Carousel } from "./Carousel";
 export { default as Copyright } from "./Copyright";
+export { default as FAQs } from "./FAQs";
 export { default as FileUpload } from "./FileUpload";
 export { default as Footer } from "./Footer";
 export { default as GradientStepper } from "./GradientStepper";
 export { default as Header } from "./Header";
-export { default as Services } from "./Services";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as ServiceListCard } from "./ServiceListCard";
+export { default as Services } from "./Services";
