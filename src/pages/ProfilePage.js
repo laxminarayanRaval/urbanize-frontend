@@ -39,10 +39,12 @@ const ProfileLeftSection = ({
   profName,
   profId,
   isAuth = false,
-  proData = null,
+  profUserData = null,
+  profUserServiceData = null,
   ...props
 }) => {
-  if (!proData)
+  console.log("profUserData :", profUserData);
+  if (!profUserData)
     return (
       <Grid p={1} component={Paper}>
         <Grid
@@ -60,13 +62,14 @@ const ProfileLeftSection = ({
       </Grid>
     );
 
-  const profilePicUrl = !!proData?.profile_pic_url
-    ? proData?.profile_pic_url
-    : proData?.gender === "female"
+  const profilePicUrl = !!profUserData?.profile_pic_url
+    ? profUserData?.profile_pic_url
+    : profUserData?.gender === "female"
     ? avtarFemale
     : avtarMale;
 
-  const { professionaluser_set: profUserData } = proData;
+  // const { professionaluser_set: profUserServiceData } = profUserData;
+  console.log("profUserServiceData: ", profUserServiceData);
 
   return (
     <Grid
@@ -86,12 +89,18 @@ const ProfileLeftSection = ({
         <Badge
           overlap="circular"
           badgeContent={
-            isAvailable(profUserData?.startsTime, profUserData?.endsTime)
+            isAvailable(
+              profUserServiceData?.startsTime,
+              profUserServiceData?.endsTime
+            )
               ? "available"
               : "unavailable"
           }
           color={
-            isAvailable(profUserData?.startsTime, profUserData?.endsTime)
+            isAvailable(
+              profUserServiceData?.startsTime,
+              profUserServiceData?.endsTime
+            )
               ? "success"
               : "warning"
           }
@@ -105,7 +114,7 @@ const ProfileLeftSection = ({
         >
           <img
             src={profilePicUrl}
-            alt={proData?.full_name}
+            alt={profUserData?.full_name}
             style={{
               maxWidth: "30%",
               minWidth: "25% !important",
@@ -115,46 +124,52 @@ const ProfileLeftSection = ({
           />
         </Badge>
         <Typography variant="h5" fontStyle="italic" fontWeight="bold">
-          {proData?.full_name}
-          {proData?.is_verified && <Verified color="primary" />}
+          {profUserData?.full_name}
+          {profUserData?.is_verified && <Verified color="primary" />}
         </Typography>
         <Grid container justifyContent="center">
           <IconButton
-            title={`Mail ${proData?.full_name}`}
+            title={`Mail ${profUserData?.full_name}`}
             color="primary"
-            disabled={!proData?.email}
+            disabled={!profUserData?.email}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = `mailto:${proData?.email}?BCC=lx.raval01+admin@gmail.com&Subject=Hello%20Justin%2C%20I%20Found%20You%20on%20Urbanize&Body=I%20want%20to%20hire%20you`;
+              window.location.href = `mailto:${profUserData?.email}?BCC=lx.raval01+admin@gmail.com&Subject=Hello%20Justin%2C%20I%20Found%20You%20on%20Urbanize&Body=I%20want%20to%20hire%20you`;
             }}
           >
             <EmailOutlined />
           </IconButton>
           <IconButton
-            title={`Call ${proData?.full_name}`}
+            title={`Call ${profUserData?.full_name}`}
             color="secondary"
-            disabled={!proData?.mobile}
+            disabled={!profUserData?.mobile}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = `tel:${proData?.mobile}`;
+              window.location.href = `tel:${profUserData?.mobile}`;
             }}
           >
             <Phone />
           </IconButton>
-          <IconButton title={`Message ${proData?.full_name}`} color="success">
+          <IconButton
+            title={`Message ${profUserData?.full_name}`}
+            color="success"
+          >
             <Message />
           </IconButton>
-          <IconButton title={`Report ${proData?.full_name}`} color="danger">
+          <IconButton
+            title={`Report ${profUserData?.full_name}`}
+            color="danger"
+          >
             <Flag />
           </IconButton>
         </Grid>
       </Grid>
       <Divider>
-        <Chip label={proData?.role === "prof" ? "Professional" : "User"} />
+        <Chip label={profUserData?.role === "prof" ? "Professional" : "User"} />
       </Divider>
       <Table px={1}>
         <TableBody>
-          {!!proData?.date_of_birth && (
+          {!!profUserData?.date_of_birth && (
             <TableRow>
               <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Age :</Typography>
@@ -163,30 +178,30 @@ const ProfileLeftSection = ({
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                >{`${proData?.date_of_birth}`}</Typography>
+                >{`${profUserData?.date_of_birth}`}</Typography>
               </TableCell>
             </TableRow>
           )}
-          {!!proData?.email && (
+          {!!profUserData?.email && (
             <TableRow>
               <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Email :</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1" fontWeight="bold">
-                  {proData?.email}
+                  {profUserData?.email}
                 </Typography>
               </TableCell>
             </TableRow>
           )}
-          {!!proData?.mobile && (
+          {!!profUserData?.mobile && (
             <TableRow>
               <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Mobile :</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1" fontWeight="bold">
-                  {proData?.mobile}
+                  {profUserData?.mobile}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -199,7 +214,7 @@ const ProfileLeftSection = ({
               <Typography
                 variant="body1"
                 fontWeight="bold"
-              >{`${profUserData?.startsTime} - ${profUserData?.endsTime}`}</Typography>
+              >{`${profUserServiceData?.startsTime} - ${profUserServiceData?.endsTime}`}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
@@ -208,7 +223,7 @@ const ProfileLeftSection = ({
             </TableCell>
             <TableCell>
               <Typography variant="body1" fontWeight="bold">
-                {profUserData?.address}
+                {profUserServiceData?.address}
               </Typography>
             </TableCell>
           </TableRow>
@@ -218,7 +233,7 @@ const ProfileLeftSection = ({
             </TableCell>
             <TableCell>
               <Typography variant="body1" fontWeight="bold">
-                {profUserData?.cities?.join(", ")}
+                {profUserServiceData?.cities?.join(", ")}
               </Typography>
             </TableCell>
           </TableRow>
@@ -229,16 +244,14 @@ const ProfileLeftSection = ({
 };
 
 const ProfileRightSection = ({ profId = null, ...props }) => {
-  return (
-    <Grid container p={1}>
+  return <ServiceListCard profId={profId} />;
+  /*     <Grid container p={1}>
       <Grid item sm={12} md={6}>
-        <ServiceListCard profId={profId} />
       </Grid>
       <Grid item sm={12} md={6}>
         <ServiceListCard />
       </Grid>
-    </Grid>
-  );
+    </Grid> */
 };
 
 const ProfilePage = () => {
@@ -277,7 +290,7 @@ const ProfilePage = () => {
   const currUser = useSelector((state) => state?.auth?.user);
   const profId = currUser?.professionaluser_set;
 
-  console.log(profId, "-----", uid);
+  // console.log(profId, "-----", uid);
   if (uid === profId) {
     return (
       <Grid container>
@@ -294,7 +307,8 @@ const ProfilePage = () => {
           <ProfileLeftSection
             profId={uid}
             profName={uname}
-            proData={userData}
+            profUserData={userData}
+            profUserServiceData={profUserData}
             isAuth={isAuth}
           />
         </Grid>

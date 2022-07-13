@@ -147,7 +147,7 @@ const ServiceListCard = ({ profId = null, ...props }) => {
             src={userData?.profile_pic_url}
             sx={{ bgcolor: (theme) => theme.palette.primary.main }}
           >
-            {makeAvtarText(userData?.full_name).slice(0, 2)}
+            {makeAvtarText(userData?.full_name)?.slice(0, 2)}
           </Avatar>
         }
         action={
