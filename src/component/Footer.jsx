@@ -26,7 +26,7 @@ import { changeThemeMode } from "../store/slices/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { makeSlug } from "../utils/Helpers";
 
-const setListLinks = (element) => (
+const setHashLinks = (element) => (
   <ListItemButton
     sx={{
       borderRadius: 10,
@@ -36,6 +36,21 @@ const setListLinks = (element) => (
     }}
     component={Link}
     href={makeSlug("#" + element)}
+  >
+    <ListItemText>{element}</ListItemText>
+  </ListItemButton>
+);
+
+const setListLinks = (element) => (
+  <ListItemButton
+    sx={{
+      borderRadius: 10,
+      my: 0,
+      py: 0,
+      maxWidth: "max-content",
+    }}
+    component={Link}
+    href={makeSlug("/services/?subservice=" + element)}
   >
     <ListItemText>{element}</ListItemText>
   </ListItemButton>
@@ -58,16 +73,16 @@ export default function Footer() {
   const companyTags = [
     "About us",
     "Blog",
-    "Career",
+    // "Career",
     "FAQs",
     "History",
-    "Sitemap",
+    // "Sitemap",
     "Story",
-    "Trust & Safety",
-    "Advertise with us",
-    "Press & Journal",
-    "Support Center",
-    "Terms & Conditions",
+    // "Trust & Safety",
+    // "Advertise with us",
+    // "Press & Journal",
+    // "Support Center",
+    // "Terms & Conditions",
   ];
 
   return (
@@ -115,7 +130,7 @@ export default function Footer() {
           <List>
             {companyTags.map((ele) => (
               <ListItem key={ele} sx={{ py: 0 }}>
-                {setListLinks(ele)}
+                {setHashLinks(ele)}
               </ListItem>
             ))}
           </List>
