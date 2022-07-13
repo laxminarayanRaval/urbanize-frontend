@@ -23,8 +23,8 @@ import { signin } from "../store/slices/authSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import authService from "../store/services/auth.service";
 
-import signinGif from "../assets/gifs/Tablet login.gif";
-import forgotPasswordGif from "../assets/gifs/Forgot password.gif";
+import signinGif from "../assets/gifs/Tablet_login.gif";
+import forgotPasswordGif from "../assets/gifs/Forgot_password.gif";
 
 const SigninPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);

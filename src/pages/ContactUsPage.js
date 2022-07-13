@@ -2,6 +2,7 @@ import React from "react";
 
 // import Lottie from "lottie-react";
 // import ContactusAnim from "../assets/lottiefiles/contactus_anim.json";
+import ContactusGif from "../assets/gifs/Contact_us.gif";
 
 import { Button, Grid, TextField, Tooltip, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -9,9 +10,10 @@ import { Box } from "@mui/system";
 
 const ContactUsPage = () => {
   return (
-    <Grid container justifyContent="space-evenly" alignItems="center" mt={ -8}>
+    <Grid container justifyContent="space-evenly" alignItems="center">
       <Grid item xs={false} md={6}>
         {/* <Lottie animationData={ContactusAnim} loop={true} /> */}
+        <img src={ContactusGif} alt="Contact Us" />
       </Grid>
       {/* <Grid item xs={12} md={4} spacing={2}> */}
       <Box
@@ -30,18 +32,10 @@ const ContactUsPage = () => {
         <Grid>
           <Grid container spacing={1} mb={1}>
             <Grid item md={6}>
-              <TextField
-                name="first_name"
-                id="first_name"
-                label="First Name"
-              />
+              <TextField name="first_name" id="first_name" label="First Name" />
             </Grid>
             <Grid item md={6}>
-              <TextField
-                name="last_name"
-                id="last_name"
-                label="Last Name"
-              />
+              <TextField name="last_name" id="last_name" label="Last Name" />
             </Grid>
           </Grid>
           <Grid container spacing={1}>

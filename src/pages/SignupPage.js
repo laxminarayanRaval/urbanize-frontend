@@ -24,7 +24,7 @@ import { signup } from "../store/slices/authSlice";
 // import circle_check from "../assets/lottiefiles/circle_check.json";
 // import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
 import enthusiasGif from "../assets/gifs/Enthusiastic.gif";
-import signupGif from "../assets/gifs/Sign up01.gif";
+import signupGif from "../assets/gifs/Sign_up01.gif";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {

@@ -128,7 +128,7 @@ const SelectCity = ({ selectedCity = null, ...props }) => {
 // Change City End --------------------------------------------------------
 
 const pages = [
-  { name: "Products", link: "products" },
+  { name: "Services", link: "services" },
   { name: "Pricing", link: "pricing" },
   { name: "Contact Us", link: "contact_us" },
 ];

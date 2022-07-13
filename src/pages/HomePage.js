@@ -26,7 +26,6 @@ const HomePage = () => {
         </Typography>
         <GradientStepper />
       </Box>
-      <Services />
     </Box>
   );
 };

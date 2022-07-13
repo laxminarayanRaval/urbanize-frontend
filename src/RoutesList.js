@@ -1,15 +1,5 @@
 import { lazy } from "react";
-/* import {
-  AccountPage,
-  ContactUsPage,
-  DashboardPage,
-  HomePage,
-  ProfilePage,
-  ResetPasswordPage,
-  SigninPage,
-  SignupPage,
-  StartProfessionalPage,
-} from "./pages/"; */
+import { Services } from "./component";
 
 const AccountPage = lazy(() => import("./pages/AccountPage"))
 const ContactUsPage = lazy(() => import("./pages/ContactUsPage"))
@@ -31,6 +21,7 @@ export const publicRoutesList = [
   { name: "Contact Us", url: "/contact_us", element: <ContactUsPage /> },
   { name: "Profile", url: "/profile/:uid/:uname/", element: <ProfilePage />},
   { name: "Reset Password", url: "/reset_password/:uid/:token/", element: <ResetPasswordPage />, },
+  { name: "Service", url: "/services", element: <Services />},
   { name: "Sign In", url: "/signin", element: <SigninPage /> },
   { name: "Sign Up", url: "/signup", element: <SignupPage /> },
   // { url: "*", element: <NotFoundPage /> },
