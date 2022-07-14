@@ -35,7 +35,7 @@ const setHashLinks = (element) => (
       maxWidth: "max-content",
     }}
     component={Link}
-    href={makeSlug("#" + element)}
+    href={makeSlug("/#" + element)}
   >
     <ListItemText>{element}</ListItemText>
   </ListItemButton>

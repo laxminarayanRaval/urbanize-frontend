@@ -20,7 +20,7 @@ const HomePage = () => {
           behavior: "smooth",
         });
       }
-    }, 100);
+    }, 500);
   }, [hash]);
   return (
     <Box

@@ -10,6 +10,8 @@ const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"))
 const SigninPage = lazy(() => import("./pages/SigninPage"))
 const SignupPage = lazy(() => import("./pages/SignupPage"))
 const StartProfessionalPage = lazy(() => import("./pages/StartProfessionalPage"))
+const TermAndConditionPage = lazy(() => import("./pages/TermAndConditionPage"))
+
 
 export const privateRoutesList = [
   { name: "Account", url: "/account", element: <AccountPage />},
@@ -22,6 +24,7 @@ export const publicRoutesList = [
   { name: "Profile", url: "/profile/:uid/:uname/", element: <ProfilePage />},
   { name: "Reset Password", url: "/reset_password/:uid/:token/", element: <ResetPasswordPage />, },
   { name: "Service", url: "/services", element: <Services />},
+  { name: "Term And ConditionPage", url: "/terms_and_conditions", element: <TermAndConditionPage />},
   { name: "Sign In", url: "/signin", element: <SigninPage /> },
   { name: "Sign Up", url: "/signup", element: <SignupPage /> },
   // { url: "*", element: <NotFoundPage /> },
