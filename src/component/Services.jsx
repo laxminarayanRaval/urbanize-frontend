@@ -53,21 +53,20 @@ const Services = () => {
             md={6}
             item
             key={service.id}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              borderRadius: 2,
+              border: isSelected(service.id)
+                ? "1px solid #555"
+                : "1px solid #0000",
+              padding: 1,
+              cursor: "pointer",
+            }}
             onClick={clickHandler}
           >
-            <Box
-              sx={{
-                border: isSelected(service.id)
-                  ? "1px solid #555"
-                  : "1px solid #0000",
-                borderRadius: 10,
-                padding: 1,
-                cursor: "pointer",
-              }}
-            >
+            <Box>
               <Box
                 sx={{
                   backgroundImage: `url(${service.img_url})`,
@@ -85,15 +84,15 @@ const Services = () => {
               variant="h6"
               id={service.id}
               sx={{
-                borderRadius: 2,
-                margin: 1,
-                px: 1,
-                border: isSelected(service.id)
-                  ? "1px solid #555"
-                  : "1px solid #5550",
-                cursor: "pointer",
+                // borderRadius: 2,
+                // margin: 1,
+                // px: 1,
+                // border: isSelected(service.id)
+                // ? "1px solid #555"
+                // : "1px solid #5550",
+                // cursor: "pointer",
                 ":hover": {
-                  border: "1px solid",
+                  // border: "1px solid",
                 },
               }}
             >

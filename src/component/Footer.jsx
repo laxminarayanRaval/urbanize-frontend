@@ -50,7 +50,7 @@ const setListLinks = (prefix = "", element) => (
       maxWidth: "max-content",
     }}
     component={Link}
-    href={makeSlug(prefix + element)}
+    href={makeSlug(prefix + element + '/')}
   >
     <ListItemText>{element}</ListItemText>
   </ListItemButton>
@@ -159,7 +159,7 @@ export default function Footer() {
             "Washing Machine Repair",
           ].map((ele) => (
             <ListItem key={ele} sx={{ py: 0.25 }}>
-              {setListLinks("/services/?subservice=", ele)}
+              {setListLinks("/services/", ele)}
             </ListItem>
           ))}
         </Grid>

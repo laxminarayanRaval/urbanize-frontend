@@ -23,7 +23,7 @@ export const publicRoutesList = [
   { name: "Contact Us", url: "/contact_us", element: <ContactUsPage /> },
   { name: "Profile", url: "/profile/:uid/:uname/", element: <ProfilePage />},
   { name: "Reset Password", url: "/reset_password/:uid/:token/", element: <ResetPasswordPage />, },
-  { name: "Service", url: "/services", element: <Services />},
+  { name: "Service", url: "/services/:service_name/:subservice_name?/", element: <Services />},
   { name: "Term And ConditionPage", url: "/terms_and_conditions", element: <TermAndConditionPage />},
   { name: "Sign In", url: "/signin", element: <SigninPage /> },
   { name: "Sign Up", url: "/signup", element: <SignupPage /> },

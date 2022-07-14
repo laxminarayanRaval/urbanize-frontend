@@ -46,13 +46,13 @@ import {
   citiesNames,
 } from "../utils/Helpers";
 import { getUserDetails } from "../store/slices/authSlice";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 /* Underline Magic scss */
 const underlineMagicStyle = {
   backgroundImage: "linear-gradient(120deg, #1976d2AA 0%, #ea433688 100%)",
   backgroundRepeat: "no-repeat",
-  backgroundSize: "100% 0.2em",
+  // backgroundSize: "100% 0em",
   backgroundPosition: "0 88%",
   transition: "background-size 0.25s ease-in",
   "&:hover": {
@@ -127,8 +127,58 @@ const SelectCity = ({ selectedCity = null, ...props }) => {
 };
 // Change City End --------------------------------------------------------
 
+// Change Service Start --------------------------------------------------------
+const ServiceDropdown = ({ selectedCity = null, ...props }) => {
+  const servicesData = useSelector((state) => state?.content?.services);
+  console.log("servicesData", servicesData);
+  return (
+    <FormControl
+      size="small"
+      sx={{
+        px: { xs: 0, md: 1 },
+      }}
+    >
+      <Select
+        labelId="demo-simple-select-autowidth-label"
+        id="demo-simple-select-autowidth"
+        defaultValue="Service"
+        inputProps={{ "aria-label": "Without label" }}
+        sx={{
+          backgroundImage: "linear-gradient(300deg, #1976d2 0%, #ea4336 100%)",
+          color: "#FFF !important",
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          zIndex: 0,
+          "&:focus-visible": { border: "0px solid #0000" },
+          "& svg": { color: "#FFF !important" },
+        }}
+        IconComponent={KeyboardArrowDown}
+        // onChange={handleChange}
+        autoWidth
+        // label="City"
+      >
+        {servicesData &&
+          servicesData?.map(({ id, service_name }, index) => (
+            <MenuItem
+              color="primary"
+              key={`${id}-${index}`}
+              sx={{
+                "&:hover": {
+                  color: (theme) => theme.palette.primary.main,
+                },
+              }}
+              value={service_name}
+            >
+              {service_name}
+            </MenuItem>
+          ))}
+      </Select>
+    </FormControl>
+  );
+};
+// Change Service End   --------------------------------------------------------
 const pages = [
-  { name: "Services", link: "services" },
+  // { name: "Services", link: "services" },
   { name: "Pricing", link: "pricing" },
   { name: "Contact Us", link: "contact_us" },
 ];
@@ -189,6 +239,8 @@ const ResponsiveAppBar = (props) => {
 
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { pathname, ...location } = useLocation();
+  console.log("location: ", location);
   const getCityHandler = (city) => {
     console.log("searchParams", searchParams);
     setSearchParams({ city });
@@ -312,10 +364,15 @@ const ResponsiveAppBar = (props) => {
                       </ListItem>
                     ))}
                     <ListItem key="changeCity">
-                      <SelectCity
-                        selectedCity={searchParams.get("city")}
-                        getSelectedCity={getCityHandler}
-                      />
+                      {pathname.startsWith("/services") && (
+                        <SelectCity
+                          selectedCity={searchParams.get("city")}
+                          getSelectedCity={getCityHandler}
+                        />
+                      )}
+                    </ListItem>
+                    <ListItem key="ServiceDropdown">
+                      <ServiceDropdown />
                     </ListItem>
                   </List>
                 </Box>
@@ -360,19 +417,28 @@ const ResponsiveAppBar = (props) => {
                 },
               }}
             >
+              {pathname.startsWith("/services") && (
+                <SelectCity
+                  selectedCity={searchParams.get("city")}
+                  getSelectedCity={getCityHandler}
+                />
+              )}
+              <ServiceDropdown />
               {pages.map((page) => (
                 <Button
                   key={page.name}
-                  sx={{ mx: 1, ...underlineMagicStyle }}
+                  sx={{
+                    mx: 1,
+                    ...underlineMagicStyle,
+                    backgroundSize: pathname.startsWith(`/${page.link}`)
+                      ? "100% 0.2em"
+                      : "100% 0em",
+                  }}
                   href={`/${page.link}`}
                 >
                   {page.name}
                 </Button>
               ))}
-              <SelectCity
-                selectedCity={searchParams.get("city")}
-                getSelectedCity={getCityHandler}
-              />
             </Box>
 
             <Divider
