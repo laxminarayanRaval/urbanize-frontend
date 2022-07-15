@@ -15,6 +15,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
   MenuItem,
   Select,
   Toolbar,
@@ -128,52 +129,170 @@ const SelectCity = ({ selectedCity = null, ...props }) => {
 // Change City End --------------------------------------------------------
 
 // Change Service Start --------------------------------------------------------
-const ServiceDropdown = ({ selectedCity = null, ...props }) => {
+const ServiceDropdown = ({ sx, ...props }) => {
+  const [anchorElServices, setAnchorElServices] = React.useState(null);
+  const openService = Boolean(anchorElServices);
+  const handleClickServices = (event) => {
+    setAnchorElServices(event.currentTarget);
+  };
+  const handleCloseServices = () => {
+    setAnchorElServices(null);
+  };
+
+  const [selectedServiceId, setSelectedServiceId] = React.useState(null);
+  const [anchorElSubServices, setAnchorElSubServices] = React.useState(null);
+  const openSubServices = Boolean(anchorElSubServices);
+  const handleClickSubServices = (event, sid) => {
+    setAnchorElSubServices(event.currentTarget);
+    setSelectedServiceId(sid);
+  };
+  const handleCloseSubServices = () => {
+    setAnchorElSubServices(null);
+  };
+
   const servicesData = useSelector((state) => state?.content?.services);
-  console.log("servicesData", servicesData);
+  // console.log("servicesData", servicesData);
+  // console.log("serviceIndex: ", selectedServiceId);
   return (
-    <FormControl
-      size="small"
-      sx={{
-        px: { xs: 0, md: 1 },
-      }}
-    >
-      <Select
-        labelId="demo-simple-select-autowidth-label"
-        id="demo-simple-select-autowidth"
-        defaultValue="Service"
-        inputProps={{ "aria-label": "Without label" }}
-        sx={{
-          backgroundImage: "linear-gradient(300deg, #1976d2 0%, #ea4336 100%)",
-          color: "#FFF !important",
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          zIndex: 0,
-          "&:focus-visible": { border: "0px solid #0000" },
-          "& svg": { color: "#FFF !important" },
+    <>
+      <Button
+        onClick={handleClickServices}
+        sx={{ ...sx }}
+        aria-controls={openService ? "services-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={openService ? "true" : undefined}
+      >
+        Services
+      </Button>
+      <Menu
+        anchorEl={anchorElServices}
+        id="services-menu"
+        open={openService}
+        onClose={handleCloseServices}
+        // onClick={handleCloseServices}
+        PaperProps={{
+          elevation: 2,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            // mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 20,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
         }}
-        IconComponent={KeyboardArrowDown}
-        // onChange={handleChange}
-        autoWidth
-        // label="City"
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {servicesData &&
-          servicesData?.map(({ id, service_name }, index) => (
+          servicesData?.map(({ id, service_name, subservice_set }, index) => (
             <MenuItem
               color="primary"
               key={`${id}-${index}`}
               sx={{
+                // color: (theme) => theme.palette.primary.main,
+                fontWeight: id === selectedServiceId ? "bold" : "regular",
                 "&:hover": {
                   color: (theme) => theme.palette.primary.main,
+                  fontWeight: "bold",
                 },
               }}
-              value={service_name}
+              onClick={(event) => {
+                handleClickSubServices(event, id);
+              }}
+              aria-controls={
+                openSubServices ? `${makeSlug(service_name)}` : undefined
+              }
+              aria-haspopup="true"
+              aria-expanded={openSubServices ? "true" : undefined}
+              disabled={!Boolean(subservice_set.length)}
+              title={
+                !Boolean(subservice_set.length)
+                  ? "Sub Services Not Available"
+                  : `${subservice_set.length} SubServices Available`
+              }
             >
               {service_name}
             </MenuItem>
           ))}
-      </Select>
-    </FormControl>
+      </Menu>
+      {servicesData
+        ?.filter(({ id }) => id === selectedServiceId)
+        ?.map(({ service_name, subservice_set }) => (
+          <Menu
+            anchorEl={anchorElSubServices}
+            id={`${makeSlug(service_name)}`}
+            open={openSubServices}
+            onClose={handleCloseSubServices}
+            onClick={handleCloseSubServices}
+            PaperProps={{
+              elevation: 4,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.52))",
+                // mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&:before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 20,
+                  left: -5,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "end", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          >
+            {subservice_set.length &&
+              subservice_set?.map(
+                ({ id: ssid, service_name: sservice_name }, ssindex) => (
+                  <MenuItem
+                    component={Link}
+                    href={
+                      "/services/" + makeSlug(service_name) + "/" + makeSlug(sservice_name) + "/"
+                    }
+                    color="primary"
+                    key={`${ssid}-${ssindex}`}
+                    sx={{
+                      "&:hover": {
+                        color: (theme) => theme.palette.primary.main,
+                        fontWeight: "bold",
+                      },
+                    }}
+                  >
+                    {sservice_name}
+                  </MenuItem>
+                )
+              )}
+          </Menu>
+        ))}
+    </>
   );
 };
 // Change Service End   --------------------------------------------------------
@@ -240,7 +359,7 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pathname, ...location } = useLocation();
-  console.log("location: ", location);
+  // console.log("pathname: ", pathname,"location: ", location);
   const getCityHandler = (city) => {
     console.log("searchParams", searchParams);
     setSearchParams({ city });
@@ -423,7 +542,14 @@ const ResponsiveAppBar = (props) => {
                   getSelectedCity={getCityHandler}
                 />
               )}
-              <ServiceDropdown />
+              <ServiceDropdown
+                sx={{
+                  ...underlineMagicStyle,
+                  backgroundSize: pathname.startsWith("/services")
+                    ? "100% 0.2em"
+                    : "100% 0em",
+                }}
+              />
               {pages.map((page) => (
                 <Button
                   key={page.name}

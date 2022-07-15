@@ -1,5 +1,5 @@
-export const makeSlug = (strr) => strr?.replaceAll(" ", "_");
-export const revertSlug = (strr) => strr?.replaceAll("_", " ");
+export const makeSlug = (strr) => strr?.replaceAll(" ", "_")?.replaceAll("/", ":");
+export const revertSlug = (strr) => strr?.replaceAll(":", "/")?.replaceAll("_", " ");
 export const toTitleCase = (strr) =>
   strr
     ?.split(" ")
