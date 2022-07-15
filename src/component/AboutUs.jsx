@@ -10,7 +10,7 @@ const AboutUs = () => {
         and was a tech genius.
       </Typography>
 
-      <Typography variant="subheader">
+      <Typography variant="subtitle2">
         He was in school when he was introduced to tech and used to learn coding
         by himself at night. He started working on an app which was more or less
         a cross between Foresquare and Flickr.

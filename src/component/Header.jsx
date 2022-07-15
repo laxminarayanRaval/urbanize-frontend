@@ -27,6 +27,8 @@ import {
   AccountBox,
   AccountCircle,
   AppRegistration,
+  ArrowCircleRight,
+  ArrowRight,
   Dashboard,
   KeyboardArrowDown,
   Login,
@@ -148,6 +150,7 @@ const ServiceDropdown = ({ sx, ...props }) => {
   };
   const handleCloseSubServices = () => {
     setAnchorElSubServices(null);
+    setSelectedServiceId(null);
   };
 
   const servicesData = useSelector((state) => state?.content?.services);
@@ -204,14 +207,6 @@ const ServiceDropdown = ({ sx, ...props }) => {
             <MenuItem
               color="primary"
               key={`${id}-${index}`}
-              sx={{
-                // color: (theme) => theme.palette.primary.main,
-                fontWeight: id === selectedServiceId ? "bold" : "regular",
-                "&:hover": {
-                  color: (theme) => theme.palette.primary.main,
-                  fontWeight: "bold",
-                },
-              }}
               onClick={(event) => {
                 handleClickSubServices(event, id);
               }}
@@ -227,7 +222,26 @@ const ServiceDropdown = ({ sx, ...props }) => {
                   : `${subservice_set.length} SubServices Available`
               }
             >
-              {service_name}
+              <ListItemText>
+                <Typography
+                  sx={{
+                    color:
+                      id === selectedServiceId
+                        ? (theme) => theme.palette.primary.main
+                        : "",
+                    fontWeight: id === selectedServiceId ? "bold" : "",
+                    "&:hover": {
+                      color: (theme) => theme.palette.primary.main,
+                      fontWeight: "bold",
+                    },
+                  }}
+                >
+                  {service_name}
+                </Typography>
+              </ListItemText>
+              <ListItemIcon>
+                <ArrowRight color={id === selectedServiceId ? "primary" : ""} />
+              </ListItemIcon>
             </MenuItem>
           ))}
       </Menu>
@@ -275,7 +289,11 @@ const ServiceDropdown = ({ sx, ...props }) => {
                   <MenuItem
                     component={Link}
                     href={
-                      "/services/" + makeSlug(service_name) + "/" + makeSlug(sservice_name) + "/"
+                      "/services/" +
+                      makeSlug(service_name) +
+                      "/" +
+                      makeSlug(sservice_name) +
+                      "/"
                     }
                     color="primary"
                     key={`${ssid}-${ssindex}`}
