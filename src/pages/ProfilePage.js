@@ -312,7 +312,7 @@ const ProfilePage = () => {
             isAuth={isAuth}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={8}>
+        <Grid item xs={12} sm={12} md={8} bgcolor="#DDD5">
           <ProfileRightSection profId={uid} />
         </Grid>
       </Grid>
@@ -331,9 +331,15 @@ const ProfilePage = () => {
           alignItems: "center",
         }}
       >
-        <ProfileLeftSection profId={uid} profName={uname} />
+        <ProfileLeftSection
+          profId={uid}
+          profName={uname}
+          profUserData={userData}
+          profUserServiceData={profUserData}
+          isAuth={isAuth}
+        />
       </Grid>
-      <Grid item xs={12} md={8} bgcolor="#B77">
+      <Grid item xs={12} md={8}>
         <ProfileRightSection profId={uid} />
       </Grid>
     </Grid>

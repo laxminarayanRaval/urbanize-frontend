@@ -7,11 +7,13 @@ import {
   Stack,
   Typography,
   Skeleton,
+  Link,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { revertSlug } from "../utils/Helpers";
+import { makeSlug, revertSlug } from "../utils/Helpers";
 import { useEffect } from "react";
+import ServiceListCard from "./ServiceListCard";
 
 const Services = () => {
   const [selectedSubServiceId, setSelectedSubServiceId] = useState(0);
@@ -23,20 +25,29 @@ const Services = () => {
     (ele) => ele.service_name === revertSlug(service_name)
   );
 
+  console.log("service_name", service_name, "subservice_name", subservice_name);
+
   const CurrentSubService = CurrentService?.subservice_set?.find(
     (ele) => ele.service_name === revertSlug(subservice_name)
   );
+
+  const AvailableProfessionals =
+    CurrentService?.professionaluserservice_set?.filter((ele) =>
+      ele?.subservice_ids?.includes(CurrentSubService?.id)
+    );
 
   useEffect(() => {
     setSelectedSubServiceId(CurrentSubService?.id);
   }, [CurrentService]);
 
-  console.log(
+  /* console.log(
     "CurrentService: ",
     CurrentService ?? "Finding...",
     "CurrentSubService: ",
-    CurrentSubService ?? "Finding..."
-  );
+    CurrentSubService ?? "Finding...",
+    "AvailableProfessionals: ",
+    AvailableProfessionals ?? "Finding..."
+  ); */
 
   useEffect(() => {
     if (selectedSubServiceId) {
@@ -45,11 +56,6 @@ const Services = () => {
   }, [CurrentSubService]);
 
   const clickHandler = (event) => {
-    // event.preventDefault();
-    window.location.href(
-      CurrentService?.subservice_set?.find((ele) => ele.id === event.target.id)
-        ?.service_name
-    );
     if (event.target.id === selectedSubServiceId) setSelectedSubServiceId(0);
     else setSelectedSubServiceId(event.target.id);
   };
@@ -64,6 +70,8 @@ const Services = () => {
           display: "flex",
           overflowX: "auto",
           justifyContent: "flex-start",
+          p: 1,
+          mt: "-3vh",
         }}
       >
         {!CurrentService &&
@@ -82,10 +90,12 @@ const Services = () => {
           ))}
         {CurrentService?.subservice_set?.map((service) => (
           <Grid
-            className={service.id}
+            className={makeSlug(service.service_name)}
             id={service.id}
             component={Paper}
-            elevation={isSelected(service.id) ? 8 : 2}
+            // component={Link}
+            // href={`/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(service.service_name)}/`}
+            elevation={isSelected(service.id) ? 10 : 2}
             xs={12}
             sm={12}
             md={12}
@@ -100,9 +110,17 @@ const Services = () => {
               padding: 1,
               margin: 1,
               cursor: "pointer",
-              zIndex: 10,
             }}
-            onClick={clickHandler}
+            onClick={(event) => {
+              clickHandler(event);
+              window.history.pushState(
+                null,
+                `${service.service_name} | ${CurrentService?.service_name}`,
+                `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(
+                  service.service_name
+                )}/`
+              );
+            }}
           >
             <Box
               id={service.id}
@@ -123,8 +141,10 @@ const Services = () => {
         ))}
       </Grid>
       {!selectedSubServiceId == 0 && (
-        <Grid width="85%" mt={2} item>
+        <Grid container sx={{ width: "85%", mt: 2 }} item>
           <Box
+            item
+            xs={12}
             sx={{
               backgroundImage: `url('${CurrentSubService?.img_url}')`,
               height: "35vh",
@@ -151,11 +171,34 @@ const Services = () => {
               <Typography variant="h2" fontWeight="bold" component="h1">
                 {CurrentSubService?.service_name}
               </Typography>
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography
+                sx={{
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: "vertical",
+                }}
+                variant="subtitle1"
+                fontWeight="bold"
+              >
                 {CurrentSubService?.description}
               </Typography>
             </Box>
           </Box>
+          {AvailableProfessionals?.length !== 0 ? (
+            AvailableProfessionals?.map((ele) => (
+              <Grid item xs={12} md={6} mt={2}>
+                <ServiceListCard
+                  profId={ele?.prof_id}
+                  servId={CurrentSubService?.id}
+                />
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="subtitle">
+              Not Found Any Professional
+            </Typography>
+          )}
         </Grid>
       )}
     </Grid>

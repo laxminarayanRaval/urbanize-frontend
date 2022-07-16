@@ -126,7 +126,7 @@ const MainLayout = () => {
             ...// ownerState.variant === "contained" &&
             (ownerState.color === "primary" && {
               backgroundSize: "0% 100%",
-              transition: "all 0.25s ease-in-out",
+              transition: "all 0.35s ease-in-out",
               // backgroundPosition: "0 88%",
               backgroundRepeat: "no-repeat",
               "&:hover": {

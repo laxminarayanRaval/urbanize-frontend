@@ -160,7 +160,7 @@ const ServiceDropdown = ({ sx, ...props }) => {
     <>
       <Button
         onClick={handleClickServices}
-        sx={{ ...sx }}
+        sx={{ ...sx, mx:1 }}
         aria-controls={openService ? "services-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={openService ? "true" : undefined}
@@ -377,7 +377,7 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pathname, ...location } = useLocation();
-  // console.log("pathname: ", pathname,"location: ", location);
+  console.log("pathname: ", pathname,"location: ", location);
   const getCityHandler = (city) => {
     console.log("searchParams", searchParams);
     setSearchParams({ city });

@@ -598,7 +598,7 @@ const TermAndConditionPage = () => {
           behavior: "smooth",
         });
       }
-    }, 100);
+    }, 200);
   }, [hash]);
   return (
     <Box

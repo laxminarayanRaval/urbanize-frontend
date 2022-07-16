@@ -31,7 +31,7 @@ const today = moment();
 const isAvailable = (startsTime, endsTime) =>
   startsTime < today.format("HH:mm:ss") && endsTime > today.format("HH:mm:ss");
 
-const ServiceListCard = ({ profId = null, ...props }) => {
+const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
   const [isLoading, setIsLoading] = useState(profId == null); // loading = false,
   const [isBookmarked, setIsBookmarked] = useState(false); // bookmarked = false,
   const [profUserData, setProfUserData] = useState({});
@@ -42,11 +42,23 @@ const ServiceListCard = ({ profId = null, ...props }) => {
     state?.content?.services?.find((ele) => ele.id === profUSData?.service_id)
   );
 
-  const sserviceData = serviceData?.subservice_set?.filter((ele) =>
-    profUSData?.subservice_ids?.includes(ele.id)
+  const subServiceData =
+    serviceData?.subservice_set?.filter((ele) =>
+      profUSData?.subservice_ids?.includes(ele.id)
+    ) ?? [];
+
+  const highlightedSubService = subServiceData?.filter(
+    (ele) => ele.id === (servId ?? "")
   );
 
-  // console.log("sserviceData:", sserviceData);
+  // highlightedSubService?.concat(subServiceData)
+  //   ?.filter((ele, index) => self.indexOf(value) === index);
+  // console.log(
+  //   "highlightedSubService:",
+  //   highlightedSubService?.concat(subServiceData)?.filter(
+  //     (value, index, self) => self.indexOf(value) === index
+  //   )
+  // );
 
   useEffect(() => {
     setIsLoading(true);
@@ -181,22 +193,26 @@ const ServiceListCard = ({ profId = null, ...props }) => {
         {/* <Tooltip title={serviceData?.description ?? "No Description"} arrow>
           <Typography variant="h6">{serviceData?.service_name}</Typography>
         </Tooltip> */}
-        {sserviceData?.map((ele, index) => (
-          <Tooltip
-            key={`${ele.service_name}-${index}`}
-            title={ele?.description ?? "No Description"}
-            arrow
-          >
-            <Chip
-              sx={{ cursor: "zoom-in", my: 0.25, mx: 0.1 }}
-              icon={<Tag size="small" />}
-              color="primary"
-              variant="outlined"
-              size="small"
-              label={ele?.service_name}
-            />
-          </Tooltip>
-        ))}
+        {highlightedSubService
+          ?.concat(subServiceData)
+          ?.filter((value, index, self) => self.indexOf(value) === index)
+          ?.filter((_, index) => index < 3)
+          ?.map((ele, index) => (
+            <Tooltip
+              key={`${ele.service_name}-${index}`}
+              title={ele?.description ?? "No Description"}
+              arrow
+            >
+              <Chip
+                sx={{ cursor: "zoom-in", my: 0.25, mx: 0.1 }}
+                icon={<Tag size="small" />}
+                color="primary"
+                variant={ele?.id === (servId ?? "") ? "" : "outlined"}
+                size="small"
+                label={ele?.service_name}
+              />
+            </Tooltip>
+          ))}
       </CardContent>
       <CardMedia
         component="img"
