@@ -112,14 +112,13 @@ const Services = () => {
               cursor: "pointer",
             }}
             onClick={(event) => {
-              clickHandler(event);
+              // clickHandler(event);
               window.history.pushState(
                 null,
                 `${service.service_name} | ${CurrentService?.service_name}`,
-                `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(
-                  service.service_name
-                )}/`
+                `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(service.service_name)}/`
               );
+              window.location.href = `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(service.service_name)}/`
             }}
           >
             <Box

@@ -151,7 +151,22 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
     <Card
       component={Paper}
       elevation={4}
-      sx={{ m: 0.25, "& > div": { p: "10px" } }}
+      sx={{
+        m: 0.25,
+        backgroundImage: `url('${
+          profUSData?.proof_img_url ?? serviceData?.img_url
+        }')`,
+        backgroundAttachment: "fixed",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        "& > div": {
+          p: "10px",
+          height: "100%",
+          backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#000C' : '#FFFC',
+          backgroundAttachment: "scroll",
+        },
+      }}
     >
       <CardHeader
         avatar={
@@ -214,12 +229,12 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
             </Tooltip>
           ))}
       </CardContent>
-      <CardMedia
+      {/* <CardMedia
         component="img"
         height="200"
         image={profUSData?.proof_img_url ?? serviceData?.img_url}
         alt={userData?.full_name}
-      />
+      /> */}
       <CardContent sx={{ pb: "10px !important" }}>
         <Grid container flex alignItems="center" textAlign="center">
           <Grid item xs={3}>
