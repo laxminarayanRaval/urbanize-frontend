@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Bookmark, BookmarkBorder, Message, Tag } from "@mui/icons-material";
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -21,6 +20,7 @@ import { makeAvtarText, makeSlug } from "../utils/Helpers";
 import moment from "moment";
 import userService from "../store/services/user.service";
 import { useSelector } from "react-redux";
+import HireProfessionalModel from "./HireProfessionalModel";
 
 const avtarMale =
   "https://res.cloudinary.com/urbanize/image/upload/v1657176333/user-profile-my-account-avatar-login-icon-man-male-face-smile-symbol-flat-vector-human-person-member-sign-user-profile-182815734_v2q12a.jpg";
@@ -71,7 +71,7 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
         });
       // console.log(`ProfUserData(${profId}): ${data}`);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -88,13 +88,13 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
       });
       // console.log(`UserData(${user_id}): ${data}`);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   }, [profUserData?.user_id]);
 
   const status = isAvailable(profUserData?.startsTime, profUserData?.endsTime)
     ? "available"
     : "unavailable " +
-      `${profUserData?.startsTime} - ${profUserData?.endsTime}`;
+      `${profUserData?.startsTime ?? ""} - ${profUserData?.endsTime ?? ""}`;
 
   // console.log("profId:", profId);
 
@@ -150,20 +150,21 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
   return (
     <Card
       component={Paper}
-      elevation={4}
+      elevation={8}
       sx={{
-        m: 0.25,
+        mx: 0.75,
         backgroundImage: `url('${
           profUSData?.proof_img_url ?? serviceData?.img_url
         }')`,
-        backgroundAttachment: "fixed",
+        // backgroundAttachment: "fixed",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         "& > div": {
           p: "10px",
           height: "100%",
-          backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#000C' : '#FFFC',
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#000C" : "#FFFC",
           backgroundAttachment: "scroll",
         },
       }}
@@ -265,7 +266,12 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Button variant="outlined">Hire Now</Button>
+            <HireProfessionalModel
+              profName={userData?.full_name}
+              profId={userData?.id}
+              subServiceName={highlightedSubService[0]?.service_name}
+              subServiceId={highlightedSubService[0]?.id}
+            />
           </Grid>
         </Grid>
         <Tooltip title={profUSData?.description ?? "No Description"} arrow>

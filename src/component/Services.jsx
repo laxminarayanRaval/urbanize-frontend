@@ -25,7 +25,7 @@ const Services = () => {
     (ele) => ele.service_name === revertSlug(service_name)
   );
 
-  console.log("service_name", service_name, "subservice_name", subservice_name);
+  // console.log("service_name", service_name, "subservice_name", subservice_name);
 
   const CurrentSubService = CurrentService?.subservice_set?.find(
     (ele) => ele.service_name === revertSlug(subservice_name)
@@ -35,6 +35,19 @@ const Services = () => {
     CurrentService?.professionaluserservice_set?.filter((ele) =>
       ele?.subservice_ids?.includes(CurrentSubService?.id)
     );
+
+  useEffect(() => {
+    setTimeout(() => {
+      const element = document.querySelector("#" + CurrentSubService?.id);
+      if (CurrentSubService?.id) {
+        element?.scrollIntoView({
+          block: "center",
+          inline: "center",
+          behavior: "smooth",
+        });
+      }
+    }, 500);
+  }, [CurrentSubService?.id]);
 
   useEffect(() => {
     setSelectedSubServiceId(CurrentSubService?.id);
@@ -116,9 +129,13 @@ const Services = () => {
               window.history.pushState(
                 null,
                 `${service.service_name} | ${CurrentService?.service_name}`,
-                `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(service.service_name)}/`
+                `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(
+                  service.service_name
+                )}/`
               );
-              window.location.href = `/services/${makeSlug(CurrentService?.service_name)}/${makeSlug(service.service_name)}/`
+              window.location.href = `/services/${makeSlug(
+                CurrentService?.service_name
+              )}/${makeSlug(service.service_name)}/`;
             }}
           >
             <Box

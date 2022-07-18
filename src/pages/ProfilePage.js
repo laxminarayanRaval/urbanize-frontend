@@ -43,7 +43,7 @@ const ProfileLeftSection = ({
   profUserServiceData = null,
   ...props
 }) => {
-  console.log("profUserData :", profUserData);
+  // console.log("profUserData :", profUserData);
   if (!profUserData)
     return (
       <Grid p={1} component={Paper}>
@@ -206,37 +206,43 @@ const ProfileLeftSection = ({
               </TableCell>
             </TableRow>
           )}
-          <TableRow>
-            <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
-              <Typography variant="body1">Timing :</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                variant="body1"
-                fontWeight="bold"
-              >{`${profUserServiceData?.startsTime} - ${profUserServiceData?.endsTime}`}</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
-              <Typography variant="body1">Address :</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="body1" fontWeight="bold">
-                {profUserServiceData?.address}
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
-              <Typography variant="body1">Cities :</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="body1" fontWeight="bold">
-                {profUserServiceData?.cities?.join(", ")}
-              </Typography>
-            </TableCell>
-          </TableRow>
+          {profUserServiceData?.startsTime && profUserServiceData?.endsTime && (
+            <TableRow>
+              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+                <Typography variant="body1">Timing :</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                >{`${profUserServiceData?.startsTime} - ${profUserServiceData?.endsTime}`}</Typography>
+              </TableCell>
+            </TableRow>
+          )}
+          {profUserServiceData?.address && (
+            <TableRow>
+              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+                <Typography variant="body1">Address :</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body1" fontWeight="bold">
+                  {profUserServiceData?.address}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          )}
+          {profUserServiceData?.cities && (
+            <TableRow>
+              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+                <Typography variant="body1">Cities :</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body1" fontWeight="bold">
+                  {profUserServiceData?.cities?.join(", ")}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </Grid>
@@ -312,7 +318,7 @@ const ProfilePage = () => {
             isAuth={isAuth}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} bgcolor="#DDD5">
+        <Grid item xs={12} sm={12} md={8} px={2} bgcolor="#DDD5">
           <ProfileRightSection profId={uid} />
         </Grid>
       </Grid>
@@ -339,7 +345,7 @@ const ProfilePage = () => {
           isAuth={isAuth}
         />
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={8} px={2}>
         <ProfileRightSection profId={uid} />
       </Grid>
     </Grid>
