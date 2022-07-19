@@ -2,7 +2,13 @@ import React, { useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { AboutUs, Carousel, FAQs, GradientStepper } from "../component/";
+import {
+  AboutUs,
+  Carousel,
+  FAQs,
+  GradientStepper,
+  History,
+} from "../component/";
 
 import { HeroCarouselData } from "../utils/HeroCarouselData";
 import { useLocation } from "react-router-dom";
@@ -36,7 +42,7 @@ const HomePage = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          mt: 3
+          mt: 3,
         },
       }}
     >
@@ -47,20 +53,20 @@ const HomePage = () => {
         </Typography>
         <GradientStepper />
       </Box>
-      <Box id="FAQs">
-        <Typography component="h2" variant="h2" mb={2}>
+      <Box>
+        <Typography id="FAQs" component="h2" variant="h2" mb={2}>
           FAQs
         </Typography>
         <FAQs />
       </Box>
-      <Box id="History">
-        <Typography component="h2" variant="h2" mb={2}>
-          History of Urbanize
+      <Box>
+        <Typography id="History" component="h2" variant="h2" mb={2}>
+          History
         </Typography>
-        <AboutUs />
+        <History />
       </Box>
-      <Box id="About_us">
-        <Typography component="h2" variant="h2" mb={2}>
+      <Box>
+        <Typography id="About_us" component="h2" variant="h2" mb={2}>
           About Us
         </Typography>
         <AboutUs />

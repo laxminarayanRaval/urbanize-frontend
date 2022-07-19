@@ -7,6 +7,7 @@ export { default as Footer } from "./Footer";
 export { default as GradientStepper } from "./GradientStepper";
 export { default as Header } from "./Header";
 export { default as HireProfessionalModel } from "./HireProfessionalModel";
+export { default as History } from "./History";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as ServiceListCard } from "./ServiceListCard";
 export { default as Services } from "./Services";

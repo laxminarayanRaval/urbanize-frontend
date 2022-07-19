@@ -99,6 +99,7 @@ export default function Footer() {
           theme.palette.mode === "light"
             ? theme.palette.grey[200]
             : theme.palette.grey[800],
+        textAlign: "center",
       }}
     >
       <Grid item p={2} xs={12} sm={12} md={3} lg={3}>
@@ -125,10 +126,15 @@ export default function Footer() {
           )}
         </IconButton>
         {/* </Tooltip> */}
+        <Divider light sx={{ mb: 1 }} />
+        <Typography variant="body2">
+          All illustrations are picked from{" "}
+          <a href="https://storyset.com/profile">Storyset</a>
+        </Typography>
       </Grid>
       <Grid item container p={2} xs={12} sm={12} md={6} lg={6}>
-        <Grid item xs={6} sm={6} md>
-          <Typography variant="h5">Company</Typography>
+        <Grid item xs={6} sm={4} md>
+          <Typography variant="h5">Company Tags</Typography>
           <List>
             {companyTags.map((ele) => (
               <ListItem key={ele} sx={{ py: 0 }}>
@@ -138,7 +144,7 @@ export default function Footer() {
           </List>
         </Grid>
         <Grid item xs sm md>
-          <Typography variant="h5">Links</Typography>
+          <Typography variant="h5">Internal Links</Typography>
           <List>
             {companyLinks.map((ele) => (
               <ListItem key={ele} sx={{ py: 0 }}>
@@ -147,16 +153,28 @@ export default function Footer() {
             ))}
           </List>
         </Grid>
-        <Grid item xs sm={6} md>
+        <Grid item xs={12} sm={4} md>
           <Typography variant="h5">Popular Services</Typography>
           {[
-            {service: "Appliance_&_Electronic_Repairs",subservice: "AC Service & Repair",},
-            {service: "Cleaning_Services",subservice: "Bathroom Cleaning",},
-            {service: "Cleaning_Services",subservice: "Kitchen Cleaning",},
-            {service: "Re-location_Services",subservice: "Packing & Unpacking",},
-            {service: "Re-location_Services",subservice: "Plants Relocation",},
-            {service: "Cleaning_Services",subservice: "Sofa Cleaning",},
-            {service: "Appliance_&_Electronic_Repairs",subservice: "Washing Machine Repair",},
+            {
+              service: "Appliance_&_Electronic_Repairs",
+              subservice: "AC Service & Repair",
+            },
+            { service: "Cleaning_Services", subservice: "Bathroom Cleaning" },
+            { service: "Cleaning_Services", subservice: "Kitchen Cleaning" },
+            {
+              service: "Re-location_Services",
+              subservice: "Packing & Unpacking",
+            },
+            {
+              service: "Re-location_Services",
+              subservice: "Plants Relocation",
+            },
+            { service: "Cleaning_Services", subservice: "Sofa Cleaning" },
+            {
+              service: "Appliance_&_Electronic_Repairs",
+              subservice: "Washing Machine Repair",
+            },
           ].map((ele) => (
             <ListItem key={ele} sx={{ py: 0.25 }}>
               {setListLinks(`/services/${ele.service}/`, ele.subservice)}
