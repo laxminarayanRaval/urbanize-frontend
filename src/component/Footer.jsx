@@ -197,6 +197,7 @@ export default function Footer() {
           width="200px"
           alt="Google Play Store"
         />
+        <Typography variant="body2">All illustrations are picked from <a href="https://storyset.com/profile">Storyset</a></Typography>
       </Grid>
       <Grid item xs={12} sm={12} md={12} justifyContent="center" maxWidth="sm">
         <Typography variant="body1" textAlign="center">
