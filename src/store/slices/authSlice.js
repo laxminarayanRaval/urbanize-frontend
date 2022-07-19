@@ -17,8 +17,8 @@ const checkAuth = () => {
       debugger;
       console.log("refresh token expire : ", new Date(exp * 1000));
       if (is_expired(exp)) {
-        // localStorage.removeItem("token");
-        // localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         return null;
       }
       try {

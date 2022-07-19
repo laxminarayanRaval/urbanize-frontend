@@ -10,12 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Cancel, Close } from "@mui/icons-material";
+import userService from "../store/services/user.service";
+import { setMessage } from "../store/slices/messageSlice";
 
 const HireProfessionalModel = ({
   profName = "Professional",
   profId = null,
+  pus_id = null,
   subServiceName = "Sub Service",
   subServiceId = null,
   ...props
@@ -34,25 +37,39 @@ const HireProfessionalModel = ({
   };
 
   const [desc, setDesc] = React.useState("");
-  const userName = useSelector((state) => state?.auth?.user?.full_name);
+  const authUser = useSelector((state) => state?.auth?.user);
 
   React.useEffect(() => {
     const [Y, M, D] = hireDate.split("-");
     setDesc(
-      `Hello '${profName}', i saw your listings for "${subServiceName}", i would like to hire you on ${D}-${M}-${Y}. \n-'${userName}'\n`
+      `Hello '${profName}', i saw your listings for "${subServiceName}", i would like to hire you on "${D}-${M}-${Y}". 
+- '${authUser?.full_name}'
+Contact on: ${authUser?.mobile_no ?? authUser?.email} `
     );
-  }, [profName, subServiceName, hireDate, userName]);
+  }, [profName, subServiceName, hireDate, authUser]);
+
+  const dispatch = useDispatch();
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
-      profId: formData.get("profId"),
-      subServiceId: formData.get("subServiceId"),
-      hireDate: formData.get("hireDate"),
-      descMsg: formData.get("descMsg"),
+      // prof_id: formData.get("profId"),
+      sub_service_id: formData.get("subServiceId"),
+      prof_id: pus_id,
+      hire_date: formData.get("hireDate"),
+      descriptive_msg: formData.get("descMsg"),
     };
-    console.log("Data: ", data);
+    userService?.hireProfessionalService(data).then(
+      (response) => {
+        console.log("Resolve Response: ", response);
+        dispatch(setMessage(response));
+      },
+      ({ response, ...error }) => {
+        console.log("Rejected Response: ", response, "\n==error==\n :", error);
+      }
+    );
+    // console.log("Data: ", data);
   };
 
   return (

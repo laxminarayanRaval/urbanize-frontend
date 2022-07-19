@@ -45,6 +45,11 @@ const getUserDetails = async (user_id) =>
     .get(`${API_URL}/user/details/${user_id ? user_id + "/" : ""}`, headers)
     .then((response) => ({ ...response }));
 
+const hireProfessionalService = (data) => {
+  console.log(data);
+  return axios.post(`${API_URL}/hire/professional/`, data, headers);
+};
+
 const userService = {
   beingUserProfessional,
   getAllServicesList,
@@ -53,8 +58,9 @@ const userService = {
   getSubservicesList,
   getUserDetails,
   getUserDetailsById,
-  updateContactDetails,
+  hireProfessionalService,
   professionalServiceListing,
+  updateContactDetails,
 };
 
 export default userService;

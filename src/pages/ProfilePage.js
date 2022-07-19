@@ -273,7 +273,7 @@ const ProfilePage = () => {
         const data = response.data;
         setProfUserData(data);
       });
-      console.log(`ProfUserData(${uid}): ${data}`);
+      // console.log(`ProfUserData(${uid}): ${data}`);
     }
   }, []);
 
@@ -288,7 +288,7 @@ const ProfilePage = () => {
         const data = response.data;
         setUserData(data);
       });
-      console.log(`UserData(${user_id}): ${data}`);
+      // console.log(`UserData(${user_id}): ${data}`);
     }
   }, [profUserData?.user_id]);
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Bookmark, BookmarkBorder, Message, Tag } from "@mui/icons-material";
 import {
   Avatar,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -37,6 +38,8 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
   const [profUserData, setProfUserData] = useState({});
   const [profUSData, setProfUSData] = useState({});
   const [userData, setUserData] = useState({});
+
+  const authUser = useSelector((state) => state?.auth?.user);
 
   const serviceData = useSelector((state) =>
     state?.content?.services?.find((ele) => ele.id === profUSData?.service_id)
@@ -96,7 +99,7 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
     : "unavailable " +
       `${profUserData?.startsTime ?? ""} - ${profUserData?.endsTime ?? ""}`;
 
-  // console.log("profId:", profId);
+  console.log("profId:", profId, "profUSData:", profUSData);
 
   if (profId == null) {
     return (
@@ -164,7 +167,7 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
           p: "10px",
           height: "100%",
           backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#000C" : "#FFFC",
+            theme.palette.mode === "dark" ? "#000C" : "#FFFD",
           backgroundAttachment: "scroll",
         },
       }}
@@ -266,12 +269,21 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <HireProfessionalModel
-              profName={userData?.full_name}
-              profId={userData?.id}
-              subServiceName={highlightedSubService[0]?.service_name}
-              subServiceId={highlightedSubService[0]?.id}
-            />
+            {authUser ? (
+              authUser?.id != userData?.id && (
+                <HireProfessionalModel
+                  profName={userData?.full_name}
+                  profId={userData?.id}
+                  pus_id={profUSData?.id}
+                  subServiceName={highlightedSubService[0]?.service_name}
+                  subServiceId={highlightedSubService[0]?.id}
+                />
+              )
+            ) : (
+              <Button component={Link} href="/signin">
+                Signin To Hire
+              </Button>
+            )}
           </Grid>
         </Grid>
         <Tooltip title={profUSData?.description ?? "No Description"} arrow>
