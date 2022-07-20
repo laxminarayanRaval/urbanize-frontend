@@ -142,10 +142,10 @@ const ProfileLeftSection = ({
           <IconButton
             title={`Call ${profUserData?.full_name}`}
             color="secondary"
-            disabled={!profUserData?.mobile}
+            disabled={!profuserData?.mobile_no}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = `tel:${profUserData?.mobile}`;
+              window.location.href = `tel:${profuserData?.mobile_no}`;
             }}
           >
             <Phone />
@@ -194,14 +194,14 @@ const ProfileLeftSection = ({
               </TableCell>
             </TableRow>
           )}
-          {!!profUserData?.mobile && (
+          {!!profuserData?.mobile_no && (
             <TableRow>
               <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Mobile :</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1" fontWeight="bold">
-                  {profUserData?.mobile}
+                  {profuserData?.mobile_no}
                 </Typography>
               </TableCell>
             </TableRow>

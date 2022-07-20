@@ -25,7 +25,7 @@ const ContactDetails = () => {
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(userData?.email);
-  const [mobile, setMobile] = useState(userData?.mobile);
+  const [mobile, setMobile] = useState(userData?.mobile_no);
 
   const [preventChange, setPreventChange] = useState(true);
 
@@ -34,7 +34,7 @@ const ContactDetails = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    if (userData?.mobile === mobile && userData?.email === email) {
+    if (userData?.mobile_no === mobile && userData?.email === email) {
       setPreventChange(true);
     } else setPreventChange(false);
   }, [email, mobile]);
@@ -120,7 +120,7 @@ const ContactDetails = () => {
 
         <Grid item xs={12} sm={12} md={10}>
           <Typography variant="h6" component="h6">
-            {userData?.mobile ? userData?.mobile : "Not Provider"}
+            {userData?.mobile_no ? userData?.mobile_no : "Not Provider"}
           </Typography>
         </Grid>
       </Grid>

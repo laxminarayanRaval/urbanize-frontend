@@ -20,7 +20,7 @@ const TabPanel = (props) => {
       {...rest}
     >
       {value == index && (
-        <Box component={Paper} sx={{ p: 2 }}>
+        <Box component={Paper} elevation={3} minHeight="80%" sx={{ p: 2 }}>
           {children}
         </Box>
       )}
@@ -29,6 +29,7 @@ const TabPanel = (props) => {
 };
 
 const tabsProps = (index) => ({
+  value: index,
   id: `vertical-tab-${index}`,
   "aria-controls": `vertical-tabpanel-${index}`,
 });
@@ -42,7 +43,7 @@ const AccountPage = () => {
 
   const userRole = useSelector((state) => state?.auth?.user?.role);
   if (userRole !== "user")
-    tabs.splice(0, 0, {
+    tabs.splice(2, 0, {
       title: "Manage Professional Acc",
       component: <DeactivateAccount />,
     });
@@ -59,8 +60,8 @@ const AccountPage = () => {
     ));
   return (
     <>
-      <Typography component="h3" variant="h4" textAlign="center">
-        {userRole} Account Settings
+      <Typography component="h3" variant="h3" textAlign="center">
+        {userRole === 'prof' ? "Professional" : "User"} Account Settings
       </Typography>
       <Grid
         container
@@ -81,7 +82,7 @@ const AccountPage = () => {
             value={selectedTab}
             onChange={handleChangeTabs}
             aria-label="account page menu"
-            sx={{ borderRight: 1, borderColor: "divider" }}
+            sx={{ borderRight: 2, borderColor: "divider" }}
           >
             {tabsList()}
           </Tabs>
