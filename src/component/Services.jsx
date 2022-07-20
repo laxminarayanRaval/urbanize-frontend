@@ -15,6 +15,8 @@ import { makeSlug, revertSlug } from "../utils/Helpers";
 import { useEffect } from "react";
 import ServiceListCard from "./ServiceListCard";
 
+import NoDataGif from "../assets/gifs/No_data.gif";
+
 const Services = () => {
   const [selectedSubServiceId, setSelectedSubServiceId] = useState(0);
   const services = useSelector((state) => state?.content?.services);
@@ -158,9 +160,10 @@ const Services = () => {
       </Grid>
       {!selectedSubServiceId == 0 && (
         <Grid container sx={{ width: "85%", mt: 2 }} item>
-          <Box
+          <Grid
             item
             xs={12}
+            md={12}
             sx={{
               backgroundImage: `url('${CurrentSubService?.img_url}')`,
               height: "35vh",
@@ -181,6 +184,7 @@ const Services = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
+                width: "100%",
                 p: 2,
               }}
             >
@@ -191,16 +195,16 @@ const Services = () => {
                 sx={{
                   overflow: "hidden",
                   display: "-webkit-box",
-                  WebkitLineClamp: 4,
+                  WebkitLineClamp: { xs: 4, md: 2 },
                   WebkitBoxOrient: "vertical",
+                  fontWeight: "bold",
                 }}
                 variant="subtitle1"
-                fontWeight="bold"
               >
                 {CurrentSubService?.description}
               </Typography>
             </Box>
-          </Box>
+          </Grid>
           {AvailableProfessionals?.length !== 0 ? (
             AvailableProfessionals?.map((ele) => (
               <Grid item xs={12} md={6} mt={2}>
@@ -211,9 +215,15 @@ const Services = () => {
               </Grid>
             ))
           ) : (
-            <Typography variant="subtitle">
-              Not Found Any Professional
-            </Typography>
+            <Grid item xs={12} md={8} textAlign="center" mt={2}>
+              <Typography variant="h4">Not Found Any Professional</Typography>
+              <img
+                src={NoDataGif}
+                alt="No Data Available for this sub-service"
+                width="100%"
+                height="auto"
+              />
+            </Grid>
           )}
         </Grid>
       )}

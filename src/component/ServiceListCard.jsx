@@ -172,43 +172,78 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
         },
       }}
     >
-      <CardHeader
-        avatar={
-          <Avatar
-            src={userData?.profile_pic_url}
-            sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-          >
-            {makeAvtarText(userData?.full_name)?.slice(0, 2)}
-          </Avatar>
-        }
-        action={
-          <>
-            <IconButton>
-              <Message />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                setIsBookmarked((prev) => !prev);
-              }}
+      {userData?.full_name ? (
+        <CardHeader
+          avatar={
+            <Avatar
+              src={userData?.profile_pic_url}
+              sx={{ bgcolor: (theme) => theme.palette.primary.main }}
             >
-              {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
-            </IconButton>
-          </>
-        }
-        title={
-          <Typography
-            component={Link}
-            href={`/profile/${profUserData.id}/${makeSlug(
-              userData?.full_name
-            )}/`}
-            fontWeight="bold"
-          >
-            {userData?.full_name}
-          </Typography>
-        }
-        subheader={status}
-      />
-      <CardContent sx={{ pt: "0px !important" }}>
+              {makeAvtarText(userData?.full_name)?.slice(0, 2)}
+            </Avatar>
+          }
+          action={
+            <>
+              <IconButton>
+                <Message />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  setIsBookmarked((prev) => !prev);
+                }}
+              >
+                {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+              </IconButton>
+            </>
+          }
+          title={
+            <Typography
+              component={Link}
+              href={`/profile/${profUserData.id}/${makeSlug(
+                userData?.full_name
+              )}/`}
+              fontWeight="bold"
+            >
+              {userData?.full_name}
+            </Typography>
+          }
+          subheader={status}
+        />
+      ) : (
+        <CardHeader
+          avatar={
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              height={40}
+              width={40}
+            />
+          }
+          action={
+            <Grid sx={{ display: "flex", m: 1 }}>
+              <Skeleton
+                animation="wave"
+                variant="circular"
+                sx={{ ml: 1 }}
+                height={25}
+                width={25}
+              />
+              <Skeleton
+                animation="wave"
+                variant="circular"
+                sx={{ ml: 1 }}
+                height={25}
+                width={25}
+              />
+            </Grid>
+          }
+          title={<Skeleton animation="wave" />}
+          subheader={<Skeleton animation="wave" height={10} width="75%" />}
+        />
+      )}
+      <CardContent
+        sx={{ pt: "0px !important", display: { xs: "none", md: "flex" } }}
+      >
         {/* <Tooltip title={serviceData?.description ?? "No Description"} arrow>
           <Typography variant="h6">{serviceData?.service_name}</Typography>
         </Tooltip> */}
@@ -239,9 +274,10 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
         image={profUSData?.proof_img_url ?? serviceData?.img_url}
         alt={userData?.full_name}
       /> */}
+      {/* {profUSData?.charges && ( */}
       <CardContent sx={{ pb: "10px !important" }}>
         <Grid container flex alignItems="center" textAlign="center">
-          <Grid item xs={3}>
+          <Grid item xs>
             <Tooltip title="Minimum Charges" arrow>
               <Typography variant="body1" fontWeight="bold">
                 ₹{profUSData?.charges}
@@ -258,7 +294,7 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
               </Tooltip>
             ))}
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs>
             <Tooltip title="Estimated Time to complete Task" arrow>
               <Typography variant="body1">
                 {profUSData?.estimate_time}
@@ -268,9 +304,9 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
               Estimate Time
             </Typography>
           </Grid>
-          <Grid item xs={3}>
-            {authUser ? (
-              authUser?.id != userData?.id && (
+          {authUser ? (
+            authUser?.id != userData?.id && (
+              <Grid item xs>
                 <HireProfessionalModel
                   profName={userData?.full_name}
                   profId={userData?.id}
@@ -278,29 +314,39 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
                   subServiceName={highlightedSubService[0]?.service_name}
                   subServiceId={highlightedSubService[0]?.id}
                 />
-              )
-            ) : (
+              </Grid>
+            )
+          ) : (
+            <Grid item xs>
               <Button component={Link} href="/signin">
                 Signin To Hire
               </Button>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Grid>
-        <Tooltip title={profUSData?.description ?? "No Description"} arrow>
-          <Typography
-            variant="caption"
-            sx={{
-              overflow: "hidden",
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-            color="text.secondary"
-          >
-            {profUSData?.description ?? serviceData?.description}
-          </Typography>
-        </Tooltip>
+        {profUSData?.description ?? serviceData?.description ? (
+          <Tooltip title={profUSData?.description ?? "No Description"} arrow>
+            <Typography
+              variant="caption"
+              sx={{
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+              color="text.secondary"
+            >
+              {profUSData?.description ?? serviceData?.description}
+            </Typography>
+          </Tooltip>
+        ) : (
+          <CardContent>
+            <Skeleton animation="wave" height={15} />
+            <Skeleton animation="wave" height={15} width="75%" />
+          </CardContent>
+        )}
       </CardContent>
+      {/* )} */}
     </Card>
   );
 };

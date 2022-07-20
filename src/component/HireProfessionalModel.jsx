@@ -55,7 +55,7 @@ Contact on: ${authUser?.mobile_no ?? authUser?.email} `
     const formData = new FormData(event.target);
     const data = {
       // prof_id: formData.get("profId"),
-      sub_service_id: formData.get("subServiceId"),
+      subservice_id: formData.get("subServiceId"),
       prof_id: pus_id,
       hire_date: formData.get("hireDate"),
       descriptive_msg: formData.get("descMsg"),
