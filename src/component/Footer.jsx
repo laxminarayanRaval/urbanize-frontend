@@ -133,8 +133,10 @@ export default function Footer() {
         </Typography>
       </Grid>
       <Grid item container p={2} xs={12} sm={12} md={6} lg={6}>
-        <Grid item xs={6} sm={4} md>
-          <Typography variant="h5">Company Tags</Typography>
+        <Grid item xs={12} sm={4} md>
+          <Divider>
+            <Typography variant="h5">Company Tags</Typography>
+          </Divider>
           <List>
             {companyTags.map((ele) => (
               <ListItem key={ele} sx={{ py: 0 }}>
@@ -143,8 +145,10 @@ export default function Footer() {
             ))}
           </List>
         </Grid>
-        <Grid item xs sm md>
-          <Typography variant="h5">Internal Links</Typography>
+        <Grid item xs sm={4} md>
+          <Divider>
+            <Typography variant="h5">Internal Links</Typography>
+          </Divider>
           <List>
             {companyLinks.map((ele) => (
               <ListItem key={ele} sx={{ py: 0 }}>
@@ -154,7 +158,9 @@ export default function Footer() {
           </List>
         </Grid>
         <Grid item xs={12} sm={4} md>
-          <Typography variant="h5">Popular Services</Typography>
+          <Divider>
+            <Typography variant="h5">Popular Services</Typography>
+          </Divider>
           {[
             {
               service: "Appliance_&_Electronic_Repairs",
@@ -197,7 +203,10 @@ export default function Footer() {
           width="200px"
           alt="Google Play Store"
         />
-        <Typography variant="body2">All illustrations are picked from <a href="https://storyset.com/profile">Storyset</a></Typography>
+        <Typography variant="body2">
+          All illustrations are picked from{" "}
+          <a href="https://storyset.com/profile">Storyset</a>
+        </Typography>
       </Grid>
       <Grid item xs={12} sm={12} md={12} justifyContent="center" maxWidth="sm">
         <Typography variant="body1" textAlign="center">
