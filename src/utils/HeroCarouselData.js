@@ -55,7 +55,7 @@ export const HeroCarouselData = [
     subTitle: setSubTitle(
       "Packing-Unpacking to Loading-Unloading for every task you can trust on us."
     ),
-    action: setAction({ link: "#", text: "Hire Now" }),
+    action: setAction({ link: "/services/Re-location_Services/Office_Relocation/", text: "Look for Professionals" }),
   },
   {
     img: vector2,
@@ -63,7 +63,7 @@ export const HeroCarouselData = [
     subTitle: setSubTitle(
       "All kind of electronic repairing service providers are available."
     ),
-    action: setAction({ link: "#", text: "Hire Now" }),
+    action: setAction({ link: "/services/Appliance_&_Electronic_Repairs/AC_Service_&_Repair/", text: "Look for Professionals" }),
   },
   {
     img: vector3,
@@ -71,7 +71,7 @@ export const HeroCarouselData = [
     subTitle: setSubTitle(
       "Stop dusting now and hire some professional cleaning services providers."
     ),
-    action: setAction({ link: "#", text: "Hire Now" }),
+    action: setAction({ link: "/services/Cleaning_Services/Home_Cleaning/", text: "Look for Professionals" }),
   },
   {
     img: vector4,
@@ -79,7 +79,7 @@ export const HeroCarouselData = [
     subTitle: setSubTitle(
       "Here we have Bestest plant relocators, who will care your love like baby."
     ),
-    action: setAction({ link: "#", text: "Hire Now" }),
+    action: setAction({ link: "/services/Re-location_Services/Plants_Relocation/", text: "Look for Professionals" }),
   },
   {
     img: vector5,
@@ -87,6 +87,6 @@ export const HeroCarouselData = [
     subTitle: setSubTitle(
       "Looking For Professional Cleaners to cleanup your mess."
     ),
-    action: setAction({ link: "#", text: "Hire Now" }),
+    action: setAction({ link: "/services/Cleaning_Services/Deep_Cleaning/", text: "Look for Professionals" }),
   },
 ];

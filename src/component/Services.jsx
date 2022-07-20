@@ -1,16 +1,7 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  Skeleton,
-  Link,
-} from "@mui/material";
+import { Box, Grid, Paper, Stack, Typography, Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { makeSlug, revertSlug } from "../utils/Helpers";
 import { useEffect } from "react";
 import ServiceListCard from "./ServiceListCard";
@@ -71,11 +62,8 @@ const SubServicesTabs = ({
           className={makeSlug(subService.service_name)}
           id={subService.id}
           component={Paper}
-          // component={Link}
-          // href={`/services/${makeSlug(currServices?.service_name)}/${makeSlug(service.service_name)}/`}
           elevation={isSelected(subService.id) ? 10 : 2}
           xs={12}
-          sm={12}
           md={12}
           item
           key={subService.id + "" + makeSlug(subService.service_name)}
@@ -88,16 +76,17 @@ const SubServicesTabs = ({
             padding: 1,
             margin: 1,
             cursor: "pointer",
+            textAlign: "center",
           }}
           onClick={(event) => {
             // clickHandler(event);
-            window.history.pushState(
-              null,
-              `${subService.service_name} | ${currServices?.service_name}`,
-              `/services/${makeSlug(currServices?.service_name)}/${makeSlug(
-                subService.service_name
-              )}/`
-            );
+            // window.history.pushState(
+            //   null,
+            //   `${subService.service_name} | ${currServices?.service_name}`,
+            //   `/services/${makeSlug(currServices?.service_name)}/${makeSlug(
+            //     subService.service_name
+            //   )}/`
+            // );
             window.location.href = `/services/${makeSlug(
               currServices?.service_name
             )}/${makeSlug(subService.service_name)}/`;
@@ -128,7 +117,7 @@ const Services = () => {
   const [selectedSubServiceId, setSelectedSubServiceId] = useState(0);
   const services = useSelector((state) => state?.content?.services);
   // const subservices = useSelector((state) => state?.content?.subservices);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const { service_name, subservice_name } = useParams();
   const CurrentService =
     services?.find((ele) => ele.service_name === revertSlug(service_name)) ??
@@ -230,6 +219,7 @@ const Services = () => {
                 <ServiceListCard
                   profId={ele?.prof_id}
                   servId={CurrentSubService?.id}
+                  cityFilter={searchParams?.get('city')}
                 />
               </Grid>
             ))

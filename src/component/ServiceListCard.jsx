@@ -32,7 +32,12 @@ const today = moment();
 const isAvailable = (startsTime, endsTime) =>
   startsTime < today.format("HH:mm:ss") && endsTime > today.format("HH:mm:ss");
 
-const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
+const ServiceListCard = ({
+  profId = null,
+  servId = null,
+  cityFilter = null,
+  ...props
+}) => {
   const [isLoading, setIsLoading] = useState(profId == null); // loading = false,
   const [isBookmarked, setIsBookmarked] = useState(false); // bookmarked = false,
   const [profUserData, setProfUserData] = useState({});
@@ -94,12 +99,27 @@ const ServiceListCard = ({ profId = null, servId = null, ...props }) => {
     // setIsLoading(false);
   }, [profUserData?.user_id]);
 
-  const status = isAvailable(profUserData?.startsTime, profUserData?.endsTime)
-    ? "available"
-    : "unavailable " +
-      `${profUserData?.startsTime ?? ""} - ${profUserData?.endsTime ?? ""}`;
+  const status =
+    (isAvailable(profUserData?.startsTime, profUserData?.endsTime)
+      ? "online"
+      : "offline " +
+        `${profUserData?.startsTime ?? ""} - ${profUserData?.endsTime ?? ""}`) +
+    (cityFilter !== null
+      ? ` | ${
+          profUserData?.cities?.includes(cityFilter)
+            ? "available"
+            : "not available"
+        } in ${cityFilter}`
+      : "");
 
-  console.log("profId:", profId, "profUSData:", profUSData);
+  console.log(
+    "profId:",
+    profId,
+    "profUserData:",
+    profUserData,
+    "cityFilter:",
+    cityFilter
+  );
 
   if (profId == null) {
     return (
