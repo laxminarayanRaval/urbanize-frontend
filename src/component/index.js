@@ -11,3 +11,4 @@ export { default as History } from "./History";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as ServiceListCard } from "./ServiceListCard";
 export { default as Services } from "./Services";
+export { default as UserRequirement } from "./UserRequirement";

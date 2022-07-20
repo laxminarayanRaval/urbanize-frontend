@@ -11,13 +11,15 @@ const SigninPage = lazy(() => import("./pages/SigninPage"))
 const SignupPage = lazy(() => import("./pages/SignupPage"))
 const StartProfessionalPage = lazy(() => import("./pages/StartProfessionalPage"))
 const TermAndConditionPage = lazy(() => import("./pages/TermAndConditionPage"))
-
+const PostServiceRequirementPage = lazy(() => import("./pages/PostServiceRequirementPage"))
 
 export const privateRoutesList = [
   { name: "Account", url: "/account", element: <AccountPage />},
   { name: "Dashboard", url: "/dashboard", element: <DashboardPage /> },
   { name: "Start as Professional", url: "/start_as_professional", element: <StartProfessionalPage />, },
+  { name: "Post Service Requirement", url: "/service_requirement", element: <PostServiceRequirementPage />, },
 ];
+
 export const publicRoutesList = [
   { name: "Home", url: "/", element: <HomePage /> },
   { name: "Contact Us", url: "/contact_us", element: <ContactUsPage /> },
