@@ -85,7 +85,7 @@ const ServiceListCard = ({
           const data = response.data;
           setProfUserData(data);
         });
-      // console.log(`ProfUserData(${profId}): ${data}`);
+      console.log(`ProfUserData(${profId}): ${data}`);
     }
     // setIsLoading(false);
   }, []);
@@ -102,7 +102,7 @@ const ServiceListCard = ({
         const data = response.data;
         setUserData(data);
       });
-      // console.log(`UserData(${user_id}): ${data}`);
+      console.log(`UserData(${user_id}): ${data}`);
     }
     // setIsLoading(false);
   }, [profUserData?.user_id]);
