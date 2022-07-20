@@ -27,7 +27,6 @@ import {
   AccountBox,
   AccountCircle,
   AppRegistration,
-  ArrowCircleRight,
   ArrowRight,
   Dashboard,
   KeyboardArrowDown,
@@ -314,11 +313,12 @@ const ServiceDropdown = ({ sx, ...props }) => {
   );
 };
 // Change Service End   --------------------------------------------------------
+
 const pages = [
-  // { name: "Services", link: "services" },
-  { name: "Pricing", link: "pricing" },
-  { name: "Contact_Us", link: "contact_us" },
+  { name: "Post Service Requirement", link: "service_requirement" },
+  { name: "Contact Us", link: "contact_us" },
 ];
+
 const ResponsiveAppBar = (props) => {
   const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
 
@@ -495,7 +495,7 @@ const ResponsiveAppBar = (props) => {
                         disablePadding
                         onClick={handleCloseNavMenu}
                       >
-                        <ListItemButton href={`/${page.link}`}>
+                        <ListItemButton component={Link} href={`/${page.link}`}>
                           <ListItemText primary={page.name} />
                         </ListItemButton>
                       </ListItem>

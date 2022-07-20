@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Bookmark, BookmarkBorder, Message, Tag } from "@mui/icons-material";
+import {
+  Bookmark,
+  BookmarkBorder,
+  Message,
+  Star,
+  StarBorder,
+  Tag,
+} from "@mui/icons-material";
 import {
   Avatar,
   Button,
@@ -40,6 +47,7 @@ const ServiceListCard = ({
 }) => {
   const [isLoading, setIsLoading] = useState(profId == null); // loading = false,
   const [isBookmarked, setIsBookmarked] = useState(false); // bookmarked = false,
+  const [isRatted, setIsRatted] = useState(false); // isRatted = false
   const [profUserData, setProfUserData] = useState({});
   const [profUSData, setProfUSData] = useState({});
   const [userData, setUserData] = useState({});
@@ -112,14 +120,14 @@ const ServiceListCard = ({
         } in ${cityFilter}`
       : "");
 
-  console.log(
-    "profId:",
-    profId,
-    "profUserData:",
-    profUserData,
-    "cityFilter:",
-    cityFilter
-  );
+  // console.log(
+  //   "profId:",
+  //   profId,
+  //   "profUserData:",
+  //   profUserData,
+  //   "cityFilter:",
+  //   cityFilter
+  // );
 
   if (profId == null) {
     return (
@@ -202,20 +210,6 @@ const ServiceListCard = ({
               {makeAvtarText(userData?.full_name)?.slice(0, 2)}
             </Avatar>
           }
-          action={
-            <>
-              <IconButton>
-                <Message />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  setIsBookmarked((prev) => !prev);
-                }}
-              >
-                {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
-              </IconButton>
-            </>
-          }
           title={
             <Typography
               component={Link}
@@ -228,6 +222,27 @@ const ServiceListCard = ({
             </Typography>
           }
           subheader={status}
+          action={
+            <>
+              <IconButton
+                onClick={() => {
+                  setIsRatted((prev) => !prev);
+                }}
+              >
+                {isRatted ? <Star color="warning" /> : <StarBorder />}
+              </IconButton>
+              <IconButton>
+                <Message />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  setIsBookmarked((prev) => !prev);
+                }}
+              >
+                {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+              </IconButton>
+            </>
+          }
         />
       ) : (
         <CardHeader
@@ -325,7 +340,7 @@ const ServiceListCard = ({
             </Typography>
           </Grid>
           {authUser ? (
-            authUser?.id != userData?.id && (
+            authUser?.id !== userData?.id && (
               <Grid item xs>
                 <HireProfessionalModel
                   profName={userData?.full_name}

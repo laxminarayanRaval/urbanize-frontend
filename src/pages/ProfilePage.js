@@ -69,7 +69,7 @@ const ProfileLeftSection = ({
     : avtarMale;
 
   // const { professionaluser_set: profUserServiceData } = profUserData;
-  console.log("profUserServiceData: ", profUserServiceData);
+  // console.log("profUserServiceData: ", profUserServiceData);
 
   return (
     <Grid
@@ -142,10 +142,10 @@ const ProfileLeftSection = ({
           <IconButton
             title={`Call ${profUserData?.full_name}`}
             color="secondary"
-            disabled={!profuserData?.mobile_no}
+            disabled={!profUserData?.mobile_no}
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = `tel:${profuserData?.mobile_no}`;
+              window.location.href = `tel:${profUserData?.mobile_no}`;
             }}
           >
             <Phone />
@@ -171,7 +171,7 @@ const ProfileLeftSection = ({
         <TableBody>
           {!!profUserData?.date_of_birth && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Age :</Typography>
               </TableCell>
               <TableCell>
@@ -184,7 +184,7 @@ const ProfileLeftSection = ({
           )}
           {!!profUserData?.email && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Email :</Typography>
               </TableCell>
               <TableCell>
@@ -194,21 +194,21 @@ const ProfileLeftSection = ({
               </TableCell>
             </TableRow>
           )}
-          {!!profuserData?.mobile_no && (
+          {!!profUserData?.mobile_no && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Mobile :</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1" fontWeight="bold">
-                  {profuserData?.mobile_no}
+                  {profUserData?.mobile_no}
                 </Typography>
               </TableCell>
             </TableRow>
           )}
           {profUserServiceData?.startsTime && profUserServiceData?.endsTime && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Timing :</Typography>
               </TableCell>
               <TableCell>
@@ -221,7 +221,7 @@ const ProfileLeftSection = ({
           )}
           {profUserServiceData?.address && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Address :</Typography>
               </TableCell>
               <TableCell>
@@ -233,7 +233,7 @@ const ProfileLeftSection = ({
           )}
           {profUserServiceData?.cities && (
             <TableRow>
-              <TableCell sx={{ minWidth: 110, textAlign: "right", p: 0 }}>
+              <TableCell sx={{ minWidth: 80, textAlign: "right", p: 0 }}>
                 <Typography variant="body1">Cities :</Typography>
               </TableCell>
               <TableCell>
@@ -297,9 +297,9 @@ const ProfilePage = () => {
   const profId = currUser?.professionaluser_set;
 
   // console.log(profId, "-----", uid);
-  if (uid === profId) {
+  /* if (uid === profId) {
     return (
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid
           item
           xs={12}
@@ -318,15 +318,15 @@ const ProfilePage = () => {
             isAuth={isAuth}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} px={2} bgcolor="#DDD5">
+        <Grid item xs={12} sm={12} md={8} px={2}>
           <ProfileRightSection profId={uid} />
         </Grid>
       </Grid>
     );
   }
-
+ */
   return (
-    <Grid container>
+    <Grid container p={1}>
       <Grid
         item
         xs={12}
