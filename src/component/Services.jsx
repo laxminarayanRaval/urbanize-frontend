@@ -23,6 +23,19 @@ const SubServicesTabs = ({
   clickHandler,
   ...props
 }) => {
+  useEffect(() => {
+    if (selectedSubServiceId)
+      setTimeout(() => {
+        const element = document.querySelector("#" + selectedSubServiceId);
+        if (selectedSubServiceId) {
+          element?.scrollIntoView({
+            block: "center",
+            inline: "center",
+            behavior: "smooth",
+          });
+        }
+      }, 500);
+  }, [selectedSubServiceId]);
   const isSelected = (id) => selectedSubServiceId === id;
   return (
     <Grid
@@ -37,7 +50,11 @@ const SubServicesTabs = ({
     >
       {!currServices &&
         [1, 2, 3, 4].map((ele) => (
-          <Stack display="flex" key={ele} alignItems="center">
+          <Stack
+            display="flex"
+            key={`sekeleton-${ele * 4}`}
+            alignItems="center"
+          >
             <Skeleton
               variant="circle"
               sx={{ width: "100px", height: "100px", borderRadius: 10 }}
@@ -128,19 +145,6 @@ const Services = () => {
     CurrentService?.professionaluserservice_set?.filter((ele) =>
       ele?.subservice_ids?.includes(CurrentSubService?.id)
     );
-
-  useEffect(() => {
-    setTimeout(() => {
-      const element = document.querySelector("#" + CurrentSubService?.id);
-      if (CurrentSubService?.id) {
-        element?.scrollIntoView({
-          block: "center",
-          inline: "center",
-          behavior: "smooth",
-        });
-      }
-    }, 500);
-  }, [CurrentSubService?.id]);
 
   useEffect(() => {
     setSelectedSubServiceId(CurrentSubService?.id);

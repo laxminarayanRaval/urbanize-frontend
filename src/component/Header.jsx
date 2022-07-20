@@ -317,7 +317,7 @@ const ServiceDropdown = ({ sx, ...props }) => {
 const pages = [
   // { name: "Services", link: "services" },
   { name: "Pricing", link: "pricing" },
-  { name: "Contact Us", link: "contact_us" },
+  { name: "Contact_Us", link: "contact_us" },
 ];
 const ResponsiveAppBar = (props) => {
   const isAuth = useSelector((state) => state?.auth?.isAuthenticated);
@@ -377,7 +377,7 @@ const ResponsiveAppBar = (props) => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pathname, ...location } = useLocation();
-  console.log("pathname: ", pathname,"location: ", location);
+  // console.log("pathname: ", pathname,"location: ", location);
   const getCityHandler = (city) => {
     console.log("searchParams", searchParams);
     setSearchParams({ city });
@@ -488,10 +488,10 @@ const ResponsiveAppBar = (props) => {
               >
                 <Box role="navigation" onClick={handleCloseNavMenu}>
                   <List>
-                    {pages.map((page) => (
+                    {pages.map((page, index) => (
                       <ListItem
                         sx={{ ...underlineMagicStyle }}
-                        key={page.name}
+                        key={page.name + index}
                         disablePadding
                         onClick={handleCloseNavMenu}
                       >

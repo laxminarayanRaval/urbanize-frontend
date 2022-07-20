@@ -107,9 +107,9 @@ export default function Footer() {
           Urbanize Inc.
         </Typography>
         <Divider light sx={{ mt: 1 }} />
-        {socialLinks.map((ele) => (
+        {socialLinks.map((ele, index) => (
           <IconButton
-            key={ele.name}
+            key={ele.name + "-" + index}
             title={ele.name}
             component={Link}
             href={ele.href}
@@ -176,7 +176,7 @@ export default function Footer() {
               subservice: "Washing Machine Repair",
             },
           ].map((ele) => (
-            <ListItem key={ele} sx={{ py: 0.25 }}>
+            <ListItem key={ele.subservice} sx={{ py: 0.25 }}>
               {setListLinks(`/services/${ele.service}/`, ele.subservice)}
             </ListItem>
           ))}
