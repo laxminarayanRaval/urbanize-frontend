@@ -51,8 +51,9 @@ const Carousel = ({ dataArray, duration = 3 }) => {
             md: evenOdd ? "row" : "row-reverse",
           },
           alignItems: "center",
+          justifyContent: "center",
           mb: 2,
-          mx: 1,
+          // mx: 1,
         }}
       >
         {dataArray[activeSlid]?.img && (
@@ -65,7 +66,12 @@ const Carousel = ({ dataArray, duration = 3 }) => {
               justifyContent: evenOdd ? "flex-end" : "flex-start",
             }}
           >
-            <img src={dataArray[activeSlid]?.img} height="75%" />
+            <img
+              src={dataArray[activeSlid]?.img}
+              width="90%"
+              height="auto"
+              alt={dataArray[activeSlid]?.title}
+            />
           </Grid>
         )}
         <Grid
@@ -73,7 +79,7 @@ const Carousel = ({ dataArray, duration = 3 }) => {
           xs
           md
           textAlign={evenOdd ? "left" : "right"}
-          sx={{ maxWidth: {xs:"99% !important", md: "35% !important"} }}
+          sx={{ maxWidth: { xs: "99%", md: "40% !important" } }}
         >
           {dataArray[activeSlid]?.title}
 

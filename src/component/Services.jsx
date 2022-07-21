@@ -167,7 +167,17 @@ const Services = () => {
         clickHandler={subServiceChangeHandler}
       />
       {!selectedSubServiceId == 0 && (
-        <Grid container sx={{ width: "85%", mt: 2 }} item>
+        <Grid
+          container
+          sx={{
+            width: "85%",
+            mt: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          item
+        >
           <Grid
             item
             xs={12}
@@ -219,7 +229,7 @@ const Services = () => {
                 <ServiceListCard
                   profId={ele?.prof_id}
                   servId={CurrentSubService?.id}
-                  cityFilter={searchParams?.get('city')}
+                  cityFilter={searchParams?.get("city")}
                 />
               </Grid>
             ))

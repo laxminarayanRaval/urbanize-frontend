@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Bookmark,
   BookmarkBorder,
+  CurrencyRupee,
   Message,
   Star,
   StarBorder,
@@ -85,7 +86,7 @@ const ServiceListCard = ({
           const data = response.data;
           setProfUserData(data);
         });
-      console.log(`ProfUserData(${profId}): ${data}`);
+      // console.log(`ProfUserData(${profId}): ${data}`);
     }
     // setIsLoading(false);
   }, []);
@@ -102,7 +103,7 @@ const ServiceListCard = ({
         const data = response.data;
         setUserData(data);
       });
-      console.log(`UserData(${user_id}): ${data}`);
+      // console.log(`UserData(${user_id}): ${data}`);
     }
     // setIsLoading(false);
   }, [profUserData?.user_id]);
@@ -120,14 +121,16 @@ const ServiceListCard = ({
         } in ${cityFilter}`
       : "");
 
-  // console.log(
-  //   "profId:",
-  //   profId,
-  //   "profUserData:",
-  //   profUserData,
-  //   "cityFilter:",
-  //   cityFilter
-  // );
+  console.log(
+    //   "profId:",
+    //   profId,
+    //   "profUserData:",
+    //   profUserData,
+    "profUSData?.reviews_set",
+    profUSData?.reviews_set
+    //   "cityFilter:",
+    //   cityFilter
+  );
 
   if (profId == null) {
     return (
@@ -181,7 +184,7 @@ const ServiceListCard = ({
   return (
     <Card
       component={Paper}
-      elevation={8}
+      elevation={10}
       sx={{
         mx: 0.75,
         backgroundImage: `url('${
@@ -212,6 +215,7 @@ const ServiceListCard = ({
           }
           title={
             <Typography
+            variant="h6"
               component={Link}
               href={`/profile/${profUserData.id}/${makeSlug(
                 userData?.full_name
@@ -223,7 +227,12 @@ const ServiceListCard = ({
           }
           subheader={status}
           action={
-            <>
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
               <IconButton
                 onClick={() => {
                   setIsRatted((prev) => !prev);
@@ -231,17 +240,17 @@ const ServiceListCard = ({
               >
                 {isRatted ? <Star color="warning" /> : <StarBorder />}
               </IconButton>
-              <IconButton>
+              {/* <IconButton>
                 <Message />
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 onClick={() => {
                   setIsBookmarked((prev) => !prev);
                 }}
               >
-                {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+                {isBookmarked ? <Bookmark color="primary" /> : <BookmarkBorder />}
               </IconButton>
-            </>
+            </Grid>
           }
         />
       ) : (
@@ -313,6 +322,14 @@ const ServiceListCard = ({
       <CardContent sx={{ pb: "10px !important" }}>
         <Grid container flex alignItems="center" textAlign="center">
           <Grid item xs>
+            {profUSData?.reviews_set?.length > 0
+              ? `User Got ${profUSData.reviews_set.length} reviews`
+              : `No reviews Available`}<br />
+            <Typography variant="caption" color="text.secondary">
+              Reviews
+            </Typography>
+          </Grid>
+          <Grid item xs>
             <Tooltip title="Minimum Charges" arrow>
               <Typography variant="body1" fontWeight="bold">
                 ₹{profUSData?.charges}
@@ -322,12 +339,11 @@ const ServiceListCard = ({
               Charges
             </Typography>
           </Grid>
-          <Grid item xs>
-            {profUSData?.payment_modes?.map((ele, index) => (
-              <Tooltip key={`${ele}-${index}`} title="Payment Methods" arrow>
-                <Chip label={ele} size="small" color="primary" />
-              </Tooltip>
-            ))}
+          <Grid item xs={false}>
+            <Tooltip title={profUSData?.payment_modes?.join(", ")} arrow>
+              <CurrencyRupee />
+              {/* <Chip label={ele} size="small" color="primary" /> */}
+            </Tooltip>
           </Grid>
           <Grid item xs>
             <Tooltip title="Estimated Time to complete Task" arrow>

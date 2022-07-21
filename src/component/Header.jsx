@@ -18,6 +18,7 @@ import {
   Menu,
   MenuItem,
   Select,
+  Skeleton,
   Toolbar,
   Tooltip,
   Typography,
@@ -159,7 +160,7 @@ const ServiceDropdown = ({ sx, ...props }) => {
     <>
       <Button
         onClick={handleClickServices}
-        sx={{ ...sx, mx:1 }}
+        sx={{ ...sx, mx: 1 }}
         aria-controls={openService ? "services-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={openService ? "true" : undefined}
@@ -189,10 +190,10 @@ const ServiceDropdown = ({ sx, ...props }) => {
               display: "block",
               position: "absolute",
               top: 0,
-              right: 20,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
+              right: 32,
+              width: 15,
+              height: 15,
+              bgcolor: "background.default",
               transform: "translateY(-50%) rotate(45deg)",
               zIndex: 0,
             },
@@ -201,48 +202,63 @@ const ServiceDropdown = ({ sx, ...props }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {servicesData &&
-          servicesData?.map(({ id, service_name, subservice_set }, index) => (
-            <MenuItem
-              color="primary"
-              key={`${id}-${index}`}
-              onClick={(event) => {
-                handleClickSubServices(event, id);
-              }}
-              aria-controls={
-                openSubServices ? `${makeSlug(service_name)}` : undefined
-              }
-              aria-haspopup="true"
-              aria-expanded={openSubServices ? "true" : undefined}
-              disabled={!Boolean(subservice_set.length)}
-              title={
-                !Boolean(subservice_set.length)
-                  ? "Sub Services Not Available"
-                  : `${subservice_set.length} SubServices Available`
-              }
-            >
-              <ListItemText>
-                <Typography
-                  sx={{
-                    color:
-                      id === selectedServiceId
-                        ? (theme) => theme.palette.primary.main
-                        : "",
-                    fontWeight: id === selectedServiceId ? "bold" : "",
-                    "&:hover": {
-                      color: (theme) => theme.palette.primary.main,
-                      fontWeight: "bold",
-                    },
-                  }}
-                >
-                  {service_name}
-                </Typography>
-              </ListItemText>
-              <ListItemIcon>
-                <ArrowRight color={id === selectedServiceId ? "primary" : ""} />
-              </ListItemIcon>
-            </MenuItem>
-          ))}
+        {servicesData !== undefined
+          ? servicesData?.map(({ id, service_name, subservice_set }, index) => (
+              <MenuItem
+                color="primary"
+                key={`${id}-${index}`}
+                onClick={(event) => {
+                  handleClickSubServices(event, id);
+                }}
+                aria-controls={
+                  openSubServices ? `${makeSlug(service_name)}` : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={openSubServices ? "true" : undefined}
+                disabled={!Boolean(subservice_set.length)}
+                title={
+                  !Boolean(subservice_set.length)
+                    ? "Sub Services Not Available"
+                    : `${subservice_set.length} SubServices Available`
+                }
+              >
+                <ListItemText>
+                  <Typography
+                    sx={{
+                      color:
+                        id === selectedServiceId
+                          ? (theme) => theme.palette.primary.main
+                          : "",
+                      fontWeight: id === selectedServiceId ? "bold" : "",
+                      "&:hover": {
+                        color: (theme) => theme.palette.primary.main,
+                        fontWeight: "bold",
+                      },
+                    }}
+                  >
+                    {service_name}
+                  </Typography>
+                </ListItemText>
+                <ListItemIcon>
+                  <ArrowRight
+                    color={id === selectedServiceId ? "primary" : ""}
+                  />
+                </ListItemIcon>
+              </MenuItem>
+            ))
+          : [1, 2, 3, 4].map((ele, index) => (
+              <MenuItem
+                key={`service-minu-skeleton-${ele}-${index}`}
+                color="primary"
+                aria-haspopup="true"
+              >
+                <ListItemText>
+                  <Typography my={0.8}>
+                    <Skeleton animation="wave" height={20} width={200} />
+                  </Typography>
+                </ListItemText>
+              </MenuItem>
+            ))}
       </Menu>
       {servicesData
         ?.filter(({ id }) => id === selectedServiceId)
@@ -326,11 +342,6 @@ const ResponsiveAppBar = (props) => {
   const userMenuIconStyle = {
     fontSize: "large",
     mr: 1,
-    // border: "0px solid",
-    // borderColor: "primary",
-    // ":hover": {
-    //   borderLeft: "7px solid",
-    // },
   };
 
   const settings = isAuth

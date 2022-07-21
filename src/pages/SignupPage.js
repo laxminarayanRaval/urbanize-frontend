@@ -24,7 +24,7 @@ import { signup } from "../store/slices/authSlice";
 // import circle_check from "../assets/lottiefiles/circle_check.json";
 // import SignupAnimation from "../assets/lottiefiles/signup_animation.json";
 import enthusiasGif from "../assets/gifs/Enthusiastic.gif";
-import signupGif from "../assets/gifs/Sign_up01.gif";
+import signupGif from "../assets/gifs/signup.gif";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
@@ -93,7 +93,11 @@ const SignupPage = () => {
       <Grid
         container
         component="main"
-        sx={{ height: { xs: "max-content", md: "90vh" }, marginBottom: "5%" }}
+        sx={{
+          height: { xs: "max-content", md: "90vh" },
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         <Grid
           item
@@ -102,10 +106,10 @@ const SignupPage = () => {
           md={4}
           maxWidth="xs"
           sx={{
-            mx: "3%",
-            padding: "3%",
+            // mx: "3%",
+            // padding: "3%",
             // minHight: "max-content",
-            marginTop: "-3%",
+            mt: "-3vh",
           }}
         >
           <Typography component="h1" variant="h1">
@@ -267,12 +271,13 @@ const SignupPage = () => {
           item
           md={6}
           sx={{
-            marginLeft: "5%",
-            marginTop: "5%",
+            // marginLeft: "5%",
+            // marginTop: "5%",
             display: { xs: "none", md: "flex" },
+            justifyContent: "center",
           }}
         >
-          <img src={signupGif} alt="Sign Up" />
+          <img src={signupGif} width="80%" height="auto" alt="Sign Up" />
           {/* <Lottie
             animationData={SignupAnimation}
             style={{ width: "95%" }}

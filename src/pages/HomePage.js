@@ -38,11 +38,11 @@ const HomePage = () => {
         minHeight: "90vh",
         "& > div": {
           minHeight: { xs: "calc(20vh + 30px)", md: "calc(35vh + 25px)" },
-          width: { xs: "90%", md: "75%" },
+          width: "90%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          mt: 3,
+          // mt: 3,
         },
       }}
     >
