@@ -241,7 +241,7 @@ const SigninPage = (props) => {
         container
         component="main"
         sx={{
-          height: { xs: "max-content", md: "75vh" },
+          height: { xs: "max-content", md: "85vh" },
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -256,7 +256,7 @@ const SigninPage = (props) => {
           }}
           md={6}
         >
-          <img src={isForgetPassword ? forgotPasswordGif : signinGif} width="80%" height="auto" alt="Sign in" />
+          <img src={isForgetPassword ? forgotPasswordGif : signinGif} width="70%" height="auto" alt="Sign in" />
           {/* <Lottie
             animationData={SigninAnimation}
             style={{ width: "95%" }}

@@ -13,7 +13,7 @@ const PostServiceRequirementPage = ({ ...props }) => {
 
   return (
     <Grid container justifyContent="center">
-      <Grid item xs={12} md={10} textAlign="center">
+      <Grid item xs={12} md={10}>
         {userData?.userrequirement_set?.length > 0 ? (
           <>
             <Divider>
@@ -32,7 +32,7 @@ const PostServiceRequirementPage = ({ ...props }) => {
             })}
           </>
         ) : (
-          <Typography variant="h6">
+          <Typography variant="h6" textAlign="center">
             You've Not Posted Requirements Yet
           </Typography>
         )}
