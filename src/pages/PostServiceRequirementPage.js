@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Divider, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import UserRequirement from "../component/UserRequirement";
+import { UserRequirement, NewUserRequirementModal } from "../component";
 
 const PostServiceRequirementPage = ({ ...props }) => {
   const userData = useSelector((state) => state?.auth?.user);
@@ -41,14 +41,17 @@ const PostServiceRequirementPage = ({ ...props }) => {
         <Divider>
           <Typography variant="h4">Post New Requirement</Typography>
         </Divider>
-        <Button variant="outlined">Post Requirement</Button>
+        <NewUserRequirementModal
+          userName={userData?.full_name}
+          userContact={userData?.mobile_no ?? userData?.email}
+        />
       </Grid>
       {userData?.role === "prof" && (
         <Grid item xs={12} md={10} textAlign="center">
           <Divider>
             <Typography variant="h4">Professionals Section</Typography>
           </Divider>
-          <Typography variant="body1">Grab some Requirements</Typography>
+          <Typography variant="body1">You Might be interested in this, check once.</Typography>
         </Grid>
       )}
     </Grid>

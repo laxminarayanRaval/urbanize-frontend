@@ -40,6 +40,7 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
   return (
     <Card elevation={isOwner ? 12 : 4} sx={{ minWidth: "50%", m: 2 }}>
       <CardHeader
+        sx={{ p: 1 }}
         avatar={
           (userData?.full_name && (
             <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
@@ -61,7 +62,7 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
           )
         }
       />
-      <CardContent>
+      <CardContent sx={{ p: 1 }}>
         <Typography variant="h5">
           {data?.descriptive_msg ?? (
             <Skeleton variant="rectangular" height={80} />
@@ -69,7 +70,12 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
         </Typography>
       </CardContent>
       <CardActions
-        sx={{ display: "flex", justifyContent: "space-between", px: 1.5 }}
+        sx={{
+          p: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+        }}
       >
         {isOwner ? (
           <>
