@@ -245,6 +245,7 @@ const SigninPage = (props) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          p: 1,
         }}
       >
         <Grid

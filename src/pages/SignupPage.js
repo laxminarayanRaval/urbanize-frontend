@@ -97,6 +97,7 @@ const SignupPage = () => {
           height: { xs: "max-content", md: "90vh" },
           alignItems: "center",
           justifyContent: "center",
+          p: 1,
         }}
       >
         <Grid

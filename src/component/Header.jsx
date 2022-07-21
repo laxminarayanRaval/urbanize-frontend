@@ -400,7 +400,7 @@ const ResponsiveAppBar = (props) => {
     return () => {
       //   second;
     };
-  }, [getCityHandler]);
+  }, []);
 
   React.useEffect(() => {
     if (isAuth) dispatch(getUserDetails());
