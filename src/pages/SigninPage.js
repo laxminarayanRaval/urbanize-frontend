@@ -23,7 +23,7 @@ import { signin } from "../store/slices/authSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import authService from "../store/services/auth.service";
 
-import signinGif from "../assets/gifs/Tablet_login.gif";
+import signinGif from "../assets/gifs/signin.gif";
 import forgotPasswordGif from "../assets/gifs/Forgot_password.gif";
 
 const SigninPage = (props) => {
@@ -94,7 +94,7 @@ const SigninPage = (props) => {
     }
   };
   const showForgetPassword = () => (
-    <Grid elevation={3} mx={1} p={2} item xs={12} sm={12} md={4} maxWidth="sm">
+    <Grid item xs={12} sm={12} md={4} maxWidth="sm">
       <Typography component="h3" variant="h4">
         Please Enter Your Registered Email.
       </Typography>
@@ -126,7 +126,7 @@ const SigninPage = (props) => {
         >
           Send Reset Password Link
         </Button>
-        <Grid container>
+        <Grid container flex justifyContent="space-between" alignItems="center" >
           <Grid item xs>
             <Link
               href=""
@@ -146,7 +146,7 @@ const SigninPage = (props) => {
     </Grid>
   );
   const showSignin = () => (
-    <Grid elevation={3} mx={1} p={2} item xs={12} sm={12} md={4} maxWidth="sm">
+    <Grid item xs={12} sm={12} md={4} maxWidth="sm">
       <Typography component="h3" variant="h1">
         Sign in
       </Typography>
@@ -241,7 +241,8 @@ const SigninPage = (props) => {
         container
         component="main"
         sx={{
-          height: { xs: "max-content", md: "90vh" },
+          height: { xs: "max-content", md: "75vh" },
+          display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -255,7 +256,7 @@ const SigninPage = (props) => {
           }}
           md={6}
         >
-          <img src={isForgetPassword ? forgotPasswordGif : signinGif} alt="Sign in" />
+          <img src={isForgetPassword ? forgotPasswordGif : signinGif} width="80%" height="auto" alt="Sign in" />
           {/* <Lottie
             animationData={SigninAnimation}
             style={{ width: "95%" }}

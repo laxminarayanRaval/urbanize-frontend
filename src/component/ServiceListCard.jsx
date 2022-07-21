@@ -85,7 +85,7 @@ const ServiceListCard = ({
           const data = response.data;
           setProfUserData(data);
         });
-      console.log(`ProfUserData(${profId}): ${data}`);
+      // console.log(`ProfUserData(${profId}): ${data}`);
     }
     // setIsLoading(false);
   }, []);
@@ -102,7 +102,7 @@ const ServiceListCard = ({
         const data = response.data;
         setUserData(data);
       });
-      console.log(`UserData(${user_id}): ${data}`);
+      // console.log(`UserData(${user_id}): ${data}`);
     }
     // setIsLoading(false);
   }, [profUserData?.user_id]);
@@ -181,7 +181,7 @@ const ServiceListCard = ({
   return (
     <Card
       component={Paper}
-      elevation={8}
+      elevation={10}
       sx={{
         mx: 0.75,
         backgroundImage: `url('${
@@ -212,6 +212,7 @@ const ServiceListCard = ({
           }
           title={
             <Typography
+            variant="h6"
               component={Link}
               href={`/profile/${profUserData.id}/${makeSlug(
                 userData?.full_name
@@ -223,7 +224,12 @@ const ServiceListCard = ({
           }
           subheader={status}
           action={
-            <>
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
               <IconButton
                 onClick={() => {
                   setIsRatted((prev) => !prev);
@@ -231,17 +237,17 @@ const ServiceListCard = ({
               >
                 {isRatted ? <Star color="warning" /> : <StarBorder />}
               </IconButton>
-              <IconButton>
+              {/* <IconButton>
                 <Message />
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 onClick={() => {
                   setIsBookmarked((prev) => !prev);
                 }}
               >
-                {isBookmarked ? <Bookmark /> : <BookmarkBorder />}
+                {isBookmarked ? <Bookmark color="primary" /> : <BookmarkBorder />}
               </IconButton>
-            </>
+            </Grid>
           }
         />
       ) : (
@@ -322,7 +328,7 @@ const ServiceListCard = ({
               Charges
             </Typography>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={false}>
             {profUSData?.payment_modes?.map((ele, index) => (
               <Tooltip key={`${ele}-${index}`} title="Payment Methods" arrow>
                 <Chip label={ele} size="small" color="primary" />
