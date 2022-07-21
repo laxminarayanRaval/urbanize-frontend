@@ -42,7 +42,7 @@ const signout = () => {
 };
 
 const changePassword = ({ oldpassword, password, password2 }) => {
-  debugger;
+  // debugger;
   return axios.post(
     `${API_URL}/auth/change_password/`,
     {

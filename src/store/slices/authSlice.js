@@ -14,7 +14,7 @@ const checkAuth = () => {
 
     if (is_expired(exp)) {
       const { exp, ..._ } = jwtDecode(token.refresh);
-      debugger;
+      // debugger;
       console.log("refresh token expire : ", new Date(exp * 1000));
       if (is_expired(exp)) {
         localStorage.removeItem("token");
