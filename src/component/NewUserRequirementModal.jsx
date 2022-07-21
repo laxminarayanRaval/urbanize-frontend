@@ -19,6 +19,7 @@ import {
 import { Cancel } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import userService from "../store/services/user.service";
 
 const LoadingList = () => (
   <>
@@ -81,7 +82,7 @@ const SubServiceSelector = ({ setSubService, ...props }) => {
         <Select
           labelId="main-service-select-helper-label"
           id="main-service-select-helper"
-          value={selectedService ?? ''}
+          value={selectedService ?? ""}
           label="Service *"
           onChange={handleChangeService}
         >
@@ -104,7 +105,7 @@ const SubServiceSelector = ({ setSubService, ...props }) => {
           <Select
             labelId="main-service-select-helper-label"
             id="main-service-select-helper"
-            value={selectedSubService ?? ''}
+            value={selectedSubService ?? ""}
             label="Sub-Service *"
             onChange={handleChangeSubService}
           >
@@ -120,11 +121,14 @@ const SubServiceSelector = ({ setSubService, ...props }) => {
 };
 
 const NewUserRequirementModal = ({
+  userId = null,
   userName = null,
   userContact = null,
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const initialValue = {
     id: null,
@@ -154,12 +158,26 @@ const NewUserRequirementModal = ({
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    if (subService.id) {
+    setIsLoading(true);
+    if (subService.id && userId) {
       const data = {
         subservice_id: subService.id,
         descriptive_msg,
+        created_by: userId,
       };
       console.log("Form Submitted - ", data);
+      const dataX = userService.postUserRequirements(data).then(
+        (response) => {
+          console.log(" postUserRequirements response", response);
+          setIsSuccess(true);
+          setIsLoading(false);
+          handleClose();
+        },
+        (error) => {
+          console.log(" postUserRequirements    error", error);
+          setIsLoading(false);
+        }
+      );
     }
   };
 
@@ -192,44 +210,52 @@ const NewUserRequirementModal = ({
         </DialogTitle>
         <Divider variant="middle" />
         <DialogContent sx={{ py: 1, px: 2 }}>
-          <DialogContentText variant="subtitle2">
-            A New Post will be shown to all online professionals releted to
-            service requirement, you will need to wait for a professionals to
-            show interest below details.
-          </DialogContentText>
-          <SubServiceSelector
-            setSubService={(SSData) => setSubService(SSData)}
-          />
-          <TextField
-            margin="dense"
-            id="descMsg"
-            name="descMsg"
-            multiline
-            required
-            fullWidth
-            rows={4}
-            value={descriptive_msg}
-            spellCheck={false}
-            onChange={(event) => {
-              setDescriptiveMsg(event.target.value);
-            }}
-            helperText="You can Customize the Description, It can be Better for Understanding"
-            label="Requirements Description"
-          />
-          <Typography
-            variant="caption"
-            color={
-              !subService?.id || !(descriptive_msg?.length > 0)
-                ? "error"
-                : "primary"
-            }
-          >
-            {!subService?.id
-              ? "Please select a sub-service"
-              : !descriptive_msg?.length > 0
-              ? "Please Provide Some Description"
-              : "Looks Nice"}
-          </Typography>
+          {isSuccess ? (
+            <DialogContentText variant="subtitle2" color="success">
+              Published Successfully, you will see it shortly
+            </DialogContentText>
+          ) : (
+            <>
+              <DialogContentText variant="subtitle2">
+                A New Post will be shown to all online professionals releted to
+                service requirement, you will need to wait for a professionals
+                to show interest below details.
+              </DialogContentText>
+              <SubServiceSelector
+                setSubService={(SSData) => setSubService(SSData)}
+              />
+              <TextField
+                margin="dense"
+                id="descMsg"
+                name="descMsg"
+                multiline
+                required
+                fullWidth
+                rows={4}
+                value={descriptive_msg}
+                spellCheck={false}
+                onChange={(event) => {
+                  setDescriptiveMsg(event.target.value);
+                }}
+                helperText="You can Customize the Description, It can be Better for Understanding"
+                label="Requirements Description"
+              />
+              <Typography
+                variant="caption"
+                color={
+                  !subService?.id || !(descriptive_msg?.length > 0)
+                    ? "error"
+                    : "primary"
+                }
+              >
+                {!subService?.id
+                  ? "Please select a sub-service"
+                  : !descriptive_msg?.length > 0
+                  ? "Please Provide Some Description"
+                  : "Looks Nice"}
+              </Typography>
+            </>
+          )}
         </DialogContent>
         <DialogActions sx={{ py: 1, px: 2 }}>
           <Button color="danger" onClick={handleClose}>
@@ -241,7 +267,7 @@ const NewUserRequirementModal = ({
             type="submit"
             color="success"
           >
-            Publish
+            {isLoading ? "Loading..." : "Publish"}
           </Button>
         </DialogActions>
       </Dialog>

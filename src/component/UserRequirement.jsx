@@ -14,6 +14,7 @@ import moment from "moment";
 import { makeAvtarText } from "../utils/Helpers";
 import { useState } from "react";
 import { useEffect } from "react";
+import userService from "../store/services/user.service";
 
 const data = {
   id: null,
@@ -31,9 +32,15 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
   useEffect(() => {
     if (isOwner) setUserData(data?.created_by);
     else {
-      // make an api call to get the user data from created_by(uid) and set userData
-      // data = api(data?.created_by);
-      // setUserData(data?.created_by);
+      const dataX = userService.getUserDetailsById(data?.created_by).then(
+        (response) => {
+          // console.log("getUserDetailsById response: ", response);
+          setUserData(response.data);
+        },
+        (error) => {
+          console.log("getUserDetailsById    error: ", error);
+        }
+      );
     }
   }, [isOwner]);
 
@@ -77,17 +84,17 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
           alignItems: "flex-end",
         }}
       >
+        <Typography variant="body2">
+          {data?.interested_prof?.length ?? "No"}
+          {" interested professionals"}
+        </Typography>
         {isOwner ? (
           <>
-            <Typography variant="body2">
-              {data?.interested_prof?.length ?? "No"}
-              {" interested professionals"}
-            </Typography>
             <Button variant="outlined" color="success">
               Close Requirement
             </Button>
           </>
-        ) : userData?.full_name ? (
+        ) : (
           <Tooltip
             title={
               (data?.interested_prof?.length ?? "No") +
@@ -97,8 +104,6 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
           >
             <Button>Show Interest</Button>
           </Tooltip>
-        ) : (
-          <Skeleton variant="rectangular" height={30} width={120} />
         )}
       </CardActions>
     </Card>

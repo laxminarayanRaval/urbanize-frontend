@@ -50,15 +50,25 @@ const hireProfessionalService = (data) => {
   return axios.post(`${API_URL}/hire/professional/`, data, headers);
 };
 
+// /user/requirement/
+
+const getAllUserRequirements = async () =>
+  axios.get(`${API_URL}/user/requirement/`, headers);
+
+const postUserRequirements = async (data) =>
+  axios.post(`${API_URL}/user/requirement/`, data, headers);
+
 const userService = {
   beingUserProfessional,
   getAllServicesList,
+  getAllUserRequirements,
   getProfessionalService,
   getServiceList,
   getSubservicesList,
   getUserDetails,
   getUserDetailsById,
   hireProfessionalService,
+  postUserRequirements,
   professionalServiceListing,
   updateContactDetails,
 };

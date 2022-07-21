@@ -6,12 +6,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Fade,
   TextField,
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Cancel, Close } from "@mui/icons-material";
+import { Cancel } from "@mui/icons-material";
 import userService from "../store/services/user.service";
 import { setMessage } from "../store/slices/messageSlice";
 
@@ -25,6 +24,7 @@ const HireProfessionalModel = ({
 }) => {
   const [dd, mm, yyyy] = new Date().toLocaleDateString().split("/");
   const today = [yyyy, mm, dd].join("-").toString();
+  
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
