@@ -173,7 +173,7 @@ const NewUserRequirementModal = ({
 
           setIsSuccess(true);
           setIsLoading(false);
-          donePublish(response.data);
+          //   donePublish(response.data);
           //   handleClose();
         },
         (error) => {
@@ -198,7 +198,7 @@ const NewUserRequirementModal = ({
         component="form"
         onClose={handleClose}
         onSubmit={onSubmitHandler}
-        sx={{ width: "100%"}}
+        sx={{ width: "100%" }}
       >
         <DialogTitle
           sx={{

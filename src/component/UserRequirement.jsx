@@ -53,7 +53,7 @@ const UserRequirement = ({
     if (propsData.is_active) {
       if (!isOwner) {
         makeAPIcall({
-          interested_prof: userData.id,
+          interested_prof: userData?.professionaluser_set,
         });
       }
       if (isOwner) {
@@ -133,7 +133,7 @@ const UserRequirement = ({
                 propsData?.interested_prof?.length > 1 ? "s" : ""
               }`
             : "No Professional"}
-          {"has shown Interest"}
+          {" has shown Interest"}
         </Typography>
         {propsData.is_active ? (
           <Button

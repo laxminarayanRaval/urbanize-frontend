@@ -347,13 +347,6 @@ const ResponsiveAppBar = (props) => {
   const settings = isAuth
     ? [
         {
-          name: "Profile",
-          link: `profile/${userData?.professionaluser_set}/${makeSlug(
-            userData?.full_name
-          )}/`,
-          icon: <AccountBox sx={userMenuIconStyle} />,
-        },
-        {
           name: "Account",
           link: "account",
           icon: <ManageAccounts sx={userMenuIconStyle} />,
@@ -382,6 +375,16 @@ const ResponsiveAppBar = (props) => {
       name: "Became a Professional",
       link: "start_as_professional",
       icon: <AppRegistration sx={userMenuIconStyle} />,
+    });
+  }
+
+  if (userData && userData?.role === "prof") {
+    settings.push({
+      name: "Profile",
+      link: `profile/${userData?.professionaluser_set}/${makeSlug(
+        userData?.full_name
+      )}/`,
+      icon: <AccountBox sx={userMenuIconStyle} />,
     });
   }
 

@@ -52,6 +52,7 @@ const MenuProps = {
 
 // start ------ Apply for being Professional    ----------------------------------------
 const ProfessionalListing = ({ isCompleted, ...props }) => {
+  const userData = useSelector((state) => state?.auth?.user);
   const [citiesList, setCitiesList] = useState([]);
 
   const maxCityLimit = 8;
@@ -114,6 +115,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
       startsTime,
       endsTime,
       address,
+      user_id: userData?.id,
     };
     // console.log("formDataaaaaaaaaaaa: ", formData);
 
@@ -315,6 +317,7 @@ const ProfessionalListing = ({ isCompleted, ...props }) => {
 
 // start ------ List Your Services              ----------------------------------------
 const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
+  const userData = useSelector((state) => state?.auth?.user);
   const Services = useSelector((state) => state?.content?.services);
 
   const servicesList = [];
@@ -372,6 +375,7 @@ const ServicesListing = ({ isCompleted, prof_id = "", ...props }) => {
     payment_modes: selectedPayMeth,
     charges: charges,
     description,
+    prof_id: userData?.professionaluser_set,
   };
 
   const submitDataHandler = (event) => {
@@ -824,7 +828,7 @@ const StartProfessionalPage = (props) => {
       component: (
         <DoneAnimation
           isCompleted={isCompletedHandler}
-          user_id={userData?.id ?? ""}
+          user_id={userData?.professionaluser_set ?? ""}
           user_name={userData?.full_name ?? ""}
         />
       ),

@@ -31,6 +31,7 @@ const PostServiceRequirementPage = ({ ...props }) => {
     if (userData?.role === "prof") {
       const data = userService.getAllUserRequirements().then(
         (response) => {
+          console.log("setUserRequirements(response.data);", response);
           setUserRequirements(response.data);
         },
         (error) => {
