@@ -6,7 +6,25 @@ import userService from "../store/services/user.service";
 
 const PostServiceRequirementPage = ({ ...props }) => {
   const userData = useSelector((state) => state?.auth?.user);
+  const [ownUserReq, setOwnUserReq] = useState(null);
   const [userRequirements, setUserRequirements] = useState(null);
+
+  useEffect(() => {
+    if (userData?.userrequirement_set?.length > 0) {
+      setOwnUserReq(userData?.userrequirement_set);
+    }
+  }, [userData?.userrequirement_set]);
+
+  const newPostDataHandler = (data) => {
+    data.then(
+      (response) => {
+        console.log("donePublishresponse", response);
+      },
+      (error) => {
+        console.log("donePublisherror", error);
+      }
+    );
+  };
 
   useEffect(() => {
     // console.log("userData?.role", userData?.role === "prof");
@@ -22,20 +40,27 @@ const PostServiceRequirementPage = ({ ...props }) => {
     }
   }, [userData?.role === "prof"]);
 
+  // console.log("userData", userData?.professionaluser_set);
+
   return (
     <Grid container justifyContent="center">
       <Grid item xs={12} md={10}>
-        {userData?.userrequirement_set?.length > 0 ? (
+        {ownUserReq ? (
           <>
             <Divider>
               <Typography variant="h4">
                 Previously Posted Requirements
               </Typography>
             </Divider>
-            {userData?.userrequirement_set?.map((ele) => {
-              // console.log(ele);
+            {/* {userRequirements
+            ?.filter((ele) => ele.created_by === userData?.id)
+            ?.map((ele) => (
+              <UserRequirement key={ele.id} data={{ ...ele, created_by: userData }} isOwner={true} />
+            ))} */}
+            {ownUserReq?.map((ele) => {
               return (
                 <UserRequirement
+                  key={ele.id}
                   data={{ ...ele, created_by: userData }}
                   isOwner={true}
                 />
@@ -56,6 +81,7 @@ const PostServiceRequirementPage = ({ ...props }) => {
           userId={userData?.id}
           userName={userData?.full_name}
           userContact={userData?.mobile_no ?? userData?.email}
+          donePublish={newPostDataHandler}
         />
       </Grid>
       {userData?.role === "prof" && (
@@ -67,9 +93,10 @@ const PostServiceRequirementPage = ({ ...props }) => {
             You Might be interested in this, check once.
           </Typography>
           {userRequirements
-            ?.filter((ele) => ele.created_by !== userData?.id)
+            ?.filter((ele) => ele.is_active && ele.created_by !== userData?.id)
+            ?.sort((curr, next) => curr.subservice_id > next.subservice_id)
             ?.map((ele) => (
-              <UserRequirement data={{ ...ele }} />
+              <UserRequirement key={ele.id} data={{ ...ele }} />
             ))}
         </Grid>
       )}

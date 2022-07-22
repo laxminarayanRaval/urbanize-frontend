@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import userService from "../store/services/user.service";
 
-const data = {
+const propsDataInitial = {
   id: null,
   is_active: null,
   descriptive_msg: null,
@@ -27,25 +27,68 @@ const data = {
   created_by: null,
 };
 
-const UserRequirement = ({ data, isOwner = false, ...props }) => {
+const UserRequirement = ({
+  data: propsData = propsDataInitial,
+  isOwner = false,
+  ...props
+}) => {
   const [userData, setUserData] = useState();
+
   useEffect(() => {
-    if (isOwner) setUserData(data?.created_by);
+    if (isOwner) setUserData(propsData?.created_by);
     else {
-      const dataX = userService.getUserDetailsById(data?.created_by).then(
+      const dataX = userService.getUserDetailsById(propsData?.created_by).then(
         (response) => {
           // console.log("getUserDetailsById response: ", response);
           setUserData(response.data);
         },
         (error) => {
-          console.log("getUserDetailsById    error: ", error);
+          console.log("getUserDetailsById    error: ", error.response);
         }
       );
     }
   }, [isOwner]);
 
+  const buttonClickHandler = () => {
+    if (propsData.is_active) {
+      if (!isOwner) {
+        makeAPIcall({
+          interested_prof: userData.id,
+        });
+      }
+      if (isOwner) {
+        debugger;
+        makeAPIcall({
+          is_active: false,
+        });
+      }
+    }
+  };
+
+  const makeAPIcall = (data) => {
+    if (propsData.id) {
+      const dataX = userService.patchUserRequirements(propsData.id, data).then(
+        (response) => {
+          console.log(
+            "response",
+            response,
+            response?.status,
+            response?.statusText,
+            response?.data
+          );
+        },
+        (error) => {
+          console.log("error", error.response);
+        }
+      );
+    }
+  };
+
   return (
-    <Card elevation={isOwner ? 12 : 4} sx={{ minWidth: "50%", m: 2 }}>
+    <Card
+      elevation={isOwner ? 12 : 4}
+      sx={{ maxWidth: "100%", bgcolor: propsData.is_active ? "" : "#ddd", m: 2 }}
+    >
       <CardHeader
         sx={{ p: 1 }}
         avatar={
@@ -64,14 +107,14 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
         }
         title={userData?.full_name ?? <Skeleton animation="wave" height={20} />}
         subheader={
-          moment(data?.created_at).fromNow() ?? (
+          moment(propsData?.created_at).fromNow() ?? (
             <Skeleton animation="wave" height={10} />
           )
         }
       />
       <CardContent sx={{ p: 1 }}>
-        <Typography variant="h5">
-          {data?.descriptive_msg ?? (
+        <Typography variant="h5" sx={{ whiteSpace: "pre-line" }}>
+          {propsData?.descriptive_msg ?? (
             <Skeleton variant="rectangular" height={80} />
           )}
         </Typography>
@@ -85,25 +128,25 @@ const UserRequirement = ({ data, isOwner = false, ...props }) => {
         }}
       >
         <Typography variant="body2">
-          {data?.interested_prof?.length ?? "No"}
-          {" interested professionals"}
+          {propsData?.interested_prof?.length > 0
+            ? `${propsData?.interested_prof?.length} Professional${
+                propsData?.interested_prof?.length > 1 ? "s" : ""
+              }`
+            : "No Professional"}
+          {"has shown Interest"}
         </Typography>
-        {isOwner ? (
-          <>
-            <Button variant="outlined" color="success">
-              Close Requirement
-            </Button>
-          </>
-        ) : (
-          <Tooltip
-            title={
-              (data?.interested_prof?.length ?? "No") +
-              " professionals has showed interest"
-            }
-            arrow
+        {propsData.is_active ? (
+          <Button
+            onClick={buttonClickHandler}
+            variant="outlined"
+            color={isOwner ? "success" : "primary"}
           >
-            <Button>Show Interest</Button>
-          </Tooltip>
+            {isOwner ? "Close Requirement" : "Show Interest"}
+          </Button>
+        ) : (
+          <Typography variant="h6" color="error" textAlign="center">
+            This Requirement is Closed
+          </Typography>
         )}
       </CardActions>
     </Card>

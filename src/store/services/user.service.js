@@ -58,6 +58,9 @@ const getAllUserRequirements = async () =>
 const postUserRequirements = async (data) =>
   axios.post(`${API_URL}/user/requirement/`, data, headers);
 
+const patchUserRequirements = async (id, data) =>
+  axios.patch(`${API_URL}/user/requirement/${id}/`, data, headers);
+
 const userService = {
   beingUserProfessional,
   getAllServicesList,
@@ -68,6 +71,7 @@ const userService = {
   getUserDetails,
   getUserDetailsById,
   hireProfessionalService,
+  patchUserRequirements,
   postUserRequirements,
   professionalServiceListing,
   updateContactDetails,

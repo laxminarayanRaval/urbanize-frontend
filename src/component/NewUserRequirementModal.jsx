@@ -17,9 +17,9 @@ import {
   Typography,
 } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import userService from "../store/services/user.service";
+import { useSelector } from "react-redux";
 
 const LoadingList = () => (
   <>
@@ -124,6 +124,7 @@ const NewUserRequirementModal = ({
   userId = null,
   userName = null,
   userContact = null,
+  donePublish,
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -168,10 +169,12 @@ const NewUserRequirementModal = ({
       console.log("Form Submitted - ", data);
       const dataX = userService.postUserRequirements(data).then(
         (response) => {
-          console.log(" postUserRequirements response", response);
+          console.log(" postUserRequirements response", response.data);
+
           setIsSuccess(true);
           setIsLoading(false);
-          handleClose();
+          donePublish(response.data);
+          //   handleClose();
         },
         (error) => {
           console.log(" postUserRequirements    error", error);
@@ -195,6 +198,7 @@ const NewUserRequirementModal = ({
         component="form"
         onClose={handleClose}
         onSubmit={onSubmitHandler}
+        sx={{ width: "100%"}}
       >
         <DialogTitle
           sx={{
@@ -258,17 +262,25 @@ const NewUserRequirementModal = ({
           )}
         </DialogContent>
         <DialogActions sx={{ py: 1, px: 2 }}>
-          <Button color="danger" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button
-            disabled={!subService?.id || !(descriptive_msg?.length > 0)}
-            variant="outlined"
-            type="submit"
-            color="success"
-          >
-            {isLoading ? "Loading..." : "Publish"}
-          </Button>
+          {isSuccess ? (
+            <Button color="success" onClick={handleClose}>
+              Close
+            </Button>
+          ) : (
+            <>
+              <Button color="danger" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                disabled={!subService?.id || !(descriptive_msg?.length > 0)}
+                variant="outlined"
+                type="submit"
+                color="success"
+              >
+                {isLoading ? "Loading..." : "Publish"}
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </>
