@@ -87,7 +87,7 @@ const UserRequirement = ({
   return (
     <Card
       elevation={isOwner ? 12 : 4}
-      sx={{ maxWidth: "100%", bgcolor: propsData.is_active ? "" : "#ddd", m: 2 }}
+      sx={{ maxWidth: "95%", bgcolor: propsData.is_active ? "" : "#ddd", m: 2 }}
     >
       <CardHeader
         sx={{ p: 1 }}

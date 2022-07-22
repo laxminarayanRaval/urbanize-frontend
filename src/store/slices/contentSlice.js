@@ -41,7 +41,7 @@ export const contentSlice = createSlice({
   initialState,
   extraReducers: {
     [getService.pending]: (state) => {
-      state.services = [];
+      // state.services = [];
     },
     [getService.rejected]: (state) => {
       state.services = [];

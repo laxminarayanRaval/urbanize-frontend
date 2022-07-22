@@ -202,7 +202,7 @@ const authSlice = createSlice({
       state.user.mobile = action.payload.mobile;
     },
     [getUserDetails.pending]: (state) => {
-      state.user = null;
+      // state.user = null;
     },
     [getUserDetails.fulfilled]: (state, action) => {
       state.user = { ...action.payload };

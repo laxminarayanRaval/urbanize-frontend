@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grid, Paper, Stack, Typography, Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { makeSlug, revertSlug } from "../utils/Helpers";
 import { useEffect } from "react";
 import ServiceListCard from "./ServiceListCard";
@@ -79,17 +79,12 @@ const SubServicesTabs = ({
             textAlign: "center",
           }}
           onClick={(event) => {
-            // clickHandler(event);
-            // window.history.pushState(
-            //   null,
-            //   `${subService.service_name} | ${currServices?.service_name}`,
-            //   `/services/${makeSlug(currServices?.service_name)}/${makeSlug(
-            //     subService.service_name
-            //   )}/`
-            // );
-            window.location.href = `/services/${makeSlug(
-              currServices?.service_name
-            )}/${makeSlug(subService.service_name)}/`;
+            clickHandler(
+              event,
+              `/services/${makeSlug(currServices?.service_name)}/${makeSlug(
+                subService.service_name
+              )}/`
+            );
           }}
         >
           <Box
@@ -114,6 +109,7 @@ const SubServicesTabs = ({
 };
 
 const Services = () => {
+  const navigate = useNavigate();
   const [selectedSubServiceId, setSelectedSubServiceId] = useState(0);
   const services = useSelector((state) => state?.content?.services);
   // const subservices = useSelector((state) => state?.content?.subservices);
@@ -139,14 +135,14 @@ const Services = () => {
     setSelectedSubServiceId(CurrentSubService?.id);
   }, [CurrentService]);
 
-  /* console.log(
+  console.log(
     "CurrentService: ",
     CurrentService ?? "Finding...",
     "CurrentSubService: ",
     CurrentSubService ?? "Finding...",
     "AvailableProfessionals: ",
     AvailableProfessionals ?? "Finding..."
-  ); */
+  );
 
   useEffect(() => {
     if (selectedSubServiceId) {
@@ -154,9 +150,12 @@ const Services = () => {
     }
   }, [CurrentSubService]);
 
-  const subServiceChangeHandler = (event) => {
+  const subServiceChangeHandler = (event, path) => {
     if (event.target.id === selectedSubServiceId) setSelectedSubServiceId(0);
-    else setSelectedSubServiceId(event.target.id);
+    else {
+      setSelectedSubServiceId(event.target.id);
+      navigate(path);
+    }
   };
 
   return (
@@ -164,7 +163,9 @@ const Services = () => {
       <SubServicesTabs
         currServices={CurrentService}
         selectedSubServiceId={selectedSubServiceId}
-        clickHandler={subServiceChangeHandler}
+        clickHandler={(event, path) => {
+          subServiceChangeHandler(event, path);
+        }}
       />
       {!selectedSubServiceId == 0 && (
         <Grid
